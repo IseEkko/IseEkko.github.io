@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://IseEkko.github.io/</id>
     <title>isekko</title>
-    <updated>2022-01-09T14:39:03.557Z</updated>
+    <updated>2022-01-10T14:18:09.892Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://IseEkko.github.io/"/>
     <link rel="self" href="https://IseEkko.github.io/atom.xml"/>
@@ -10,4 +10,106 @@
     <logo>https://IseEkko.github.io/images/avatar.png</logo>
     <icon>https://IseEkko.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, isekko</rights>
+    <entry>
+        <title type="html"><![CDATA[二叉树的最大深度]]></title>
+        <id>https://IseEkko.github.io/post/er-cha-shu-de-zui-da-shen-du/</id>
+        <link href="https://IseEkko.github.io/post/er-cha-shu-de-zui-da-shen-du/">
+        </link>
+        <updated>2022-01-10T13:36:10.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="题目">题目</h1>
+<p>给定一个二叉树，找出其最大深度。</p>
+<p>二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。</p>
+<p>说明: 叶子节点是指没有子节点的节点。</p>
+<p>示例：<br>
+给定二叉树 [3,9,20,null,null,15,7]，</p>
+<pre><code>  3
+/  \
+</code></pre>
+<p>9  20<br>
+/  <br>
+15   7<br>
+返回它的最大深度 3 。</p>
+<h1 id="思考">思考</h1>
+<p>拿到这个题目我们最先想到的就是层序遍历，为什么呢？<br>
+我们首先要明白层序遍历我们最后的结果是什么，层序遍历我们最后得到的是一个二位数组。<br>
+那我们换个角度去看他，最大的深度是不是就是层序遍历最后二维数组的层数。答案是肯定的。<br>
+上面是我最先能使用的方法。</p>
+<h1 id="解题">解题</h1>
+<p>这里解题的方式有两种</p>
+<h2 id="递归法">递归法</h2>
+<p>这里我们回顾一下递归的三个要素。根据三要素来书写代码。<br>
+1. 确定输入和返回值<br>
+2. 确定终止条件<br>
+3. 确定单层逻辑<br>
+那么下面我们来详细的书写一下代码<br>
+首先我们确定输入和返回值，这里我们首先输入的肯定是节点，然后返回的是深度</p>
+<pre><code> function fun(){
+    func getDepths(root *TreeNode) int
+ }
+ fun();
+</code></pre>
+<p>第二步是确定终止的条件，这里我们终止的条件是节点是nil<br>
+if root ==nil{<br>
+return 0<br>
+}<br>
+第三步确定单层的逻辑<br>
+Left := getDepths(root.Left)<br>
+Right := getDepths(root.Right)<br>
+deth := 1 + max(Left,Right)<br>
+这里需要注意的是，我们最后得到的是高度，这里的高度是需要加一的。</p>
+<p>最后的源码：</p>
+<pre><code>func maxDepth(root *TreeNode) int {
+   return getDepths(root)
+}
+
+func getDepths(root *TreeNode) int{
+    if root ==nil{
+        return 0
+    }
+    Left := getDepths(root.Left)
+    Right := getDepths(root.Right)
+    deth := 1 + max(Left,Right)
+    return deth
+}
+
+func max(Left,Right int)int{
+    if Left &gt; Right{
+        return Left
+    }
+        return Right
+}
+</code></pre>
+<h3 id="迭代法">迭代法</h3>
+<p>这个方法也就是我之前想到的那个方法，也就是使用层讯遍历去完成这个题目，这里我们就不在过多的解析<br>
+在后面的层序遍历的地方我会把这段代码详细的解析一遍。</p>
+<pre><code>func maxDepth(root *TreeNode) int {
+    var res [][]int
+    if root == nil{
+        return 0
+    }
+    st:= list.New()
+    st.PushBack(root)
+    var Arrtem []int
+    for st.Len() &gt; 0{
+        lenth := st.Len()
+        for i := 0;i&lt;lenth;i++{
+            node := st.Remove(st.Front()).(*TreeNode)
+            if node.Left != nil{
+                st.PushBack(node.Left)
+            }
+            if node.Right != nil{
+                st.PushBack(node.Right)
+            }
+            Arrtem = append(Arrtem,node.Val)
+        }
+        res  = append(res,Arrtem)
+        Arrtem = []int{}
+    }
+    result := len(res)
+  return result
+}
+
+</code></pre>
+]]></content>
+    </entry>
 </feed>
