@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://IseEkko.github.io/</id>
     <title>isekko</title>
-    <updated>2022-01-11T09:16:43.695Z</updated>
+    <updated>2022-01-11T11:17:42.211Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://IseEkko.github.io/"/>
     <link rel="self" href="https://IseEkko.github.io/atom.xml"/>
@@ -10,6 +10,32 @@
     <logo>https://IseEkko.github.io/images/avatar.png</logo>
     <icon>https://IseEkko.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, isekko</rights>
+    <entry>
+        <title type="html"><![CDATA[gorm介绍]]></title>
+        <id>https://IseEkko.github.io/post/gorm-jie-shao/</id>
+        <link href="https://IseEkko.github.io/post/gorm-jie-shao/">
+        </link>
+        <updated>2022-01-11T11:03:42.000Z</updated>
+        <summary type="html"><![CDATA[<p>gorm让我们从繁琐的sql中解脱出来，<br>
+努力的学习gorm，但是也别忘记了sql是怎么写的</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>gorm让我们从繁琐的sql中解脱出来，<br>
+努力的学习gorm，但是也别忘记了sql是怎么写的</p>
+<!-- more -->
+<figure data-type="image" tabindex="1"><img src="https://IseEkko.github.io//post-images/1641899816277.png" alt="" loading="lazy"></figure>
+<h1 id="gorm">GORM</h1>
+<p>这里不是我第一次学习gorm，只是这次想具体的去学习一下这个gorm，因为我的sql能力很弱，在写项目的时候清楚的看到了自己的不足，还有就是对gorm使用的不足，这里最关键的就是我其实对sql学得不是很好，后面还要更新对sql的学习，越到后面越发现这基础的重要性。</p>
+<h1 id="什么是gorm">什么是GORM</h1>
+<p>gorm就是go中封装的一种orm，orm对象关系映射，对于我们理解来说，就是一个为了让我们更好的操作数据库的一个工具。<br>
+下面我把官网放在下面。<br>
+<a href="https://gorm.io/zh_CN/docs/index.html">GORM官网中文文档</a></p>
+<h1 id="对于gorm的感觉">对于GORM的感觉</h1>
+<p>其实对于这个gorm呢，在开发的时候确实速度是很快的，我们不用过多的在意sql是怎么写的。但是这样会弱化我们对sql的理解，所以我们觉得这个东西对于我们大学生来说，我认为我们写每一个方法的时候，我们多在意一下它生成的sql这样，我们不会弱化了我们对sql的理解。<br>
+当然了。我的sql很菜，我还是字学习gorm的时候，好好的学习一下sql，系统的学习一下。</p>
+<p>上面就是我给大家分享的gorm，下面我将会更新gorm中使用的细节。<br>
+有那里写的不好的地方，希望大家多指教指教。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[平衡二叉树]]></title>
         <id>https://IseEkko.github.io/post/ping-heng-er-cha-shu/</id>
