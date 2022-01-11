@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://IseEkko.github.io/</id>
     <title>isekko</title>
-    <updated>2022-01-10T14:39:51.279Z</updated>
+    <updated>2022-01-11T03:47:30.709Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://IseEkko.github.io/"/>
     <link rel="self" href="https://IseEkko.github.io/atom.xml"/>
@@ -16,7 +16,8 @@
         <link href="https://IseEkko.github.io/post/er-cha-shu-de-zui-da-shen-du/">
         </link>
         <updated>2022-01-10T13:36:10.000Z</updated>
-        <content type="html"><![CDATA[<p><img src="https://IseEkko.github.io//post-images/1641825317112.png" alt="" loading="lazy"># 题目<br>
+        <content type="html"><![CDATA[<!-- more -->
+<p><img src="https://IseEkko.github.io//post-images/1641825317112.png" alt="" loading="lazy"># 题目<br>
 给定一个二叉树，找出其最大深度。</p>
 <p>二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。</p>
 <p>说明: 叶子节点是指没有子节点的节点。</p>
@@ -28,7 +29,8 @@
 <p>9  20<br>
 /  <br>
 15   7<br>
-返回它的最大深度 3 。</p>
+返回它的最大深度 3</p>
+<!-- more -->
 <h1 id="思考">思考</h1>
 <p>拿到这个题目我们最先想到的就是层序遍历，为什么呢？<br>
 我们首先要明白层序遍历我们最后的结果是什么，层序遍历我们最后得到的是一个二位数组。<br>
