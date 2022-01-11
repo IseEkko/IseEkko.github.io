@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://IseEkko.github.io/</id>
     <title>isekko</title>
-    <updated>2022-01-11T11:20:39.420Z</updated>
+    <updated>2022-01-11T11:41:46.379Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://IseEkko.github.io/"/>
     <link rel="self" href="https://IseEkko.github.io/atom.xml"/>
@@ -10,6 +10,30 @@
     <logo>https://IseEkko.github.io/images/avatar.png</logo>
     <icon>https://IseEkko.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, isekko</rights>
+    <entry>
+        <title type="html"><![CDATA[GORM-使用]]></title>
+        <id>https://IseEkko.github.io/post/gorm-lian-jie/</id>
+        <link href="https://IseEkko.github.io/post/gorm-lian-jie/">
+        </link>
+        <updated>2022-01-11T11:25:59.000Z</updated>
+        <summary type="html"><![CDATA[<p>这里将总结出使用gorm中的方法</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>这里将总结出使用gorm中的方法</p>
+<!-- more -->
+<h1 id="开始连接">开始连接</h1>
+<p>这里我们将开始学习使用gorm连接数据库，这里我们要知道后面我们使用的方法都是通过连接获取的对象进行操作的。那么下面我们就开始创建这个连接。</p>
+<p>当然最开始我们肯定是要导入gorm包的，这里我们就不再展示了</p>
+<p>这里在连接的时候，我们这里肯定是要先书写连接dns</p>
+<pre><code>dsn := &quot;用户名:密码@tcp(ip:3306)/数据库名称?charset=utf8mb4&amp;parseTime=True&amp;loc=Local&quot;
+</code></pre>
+<p>写好了这个连接名过后，使用 gorm.Open()进行连接的创建</p>
+<pre><code>db, err := gorm.Open(mysql.Open(dsn), &amp;gorm.Config{
+		Logger: newLogger,
+	})
+</code></pre>
+<p>上面我们就创建好了这个连接对象，然后后面的操作我们对将在这个基础上进行。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[gorm介绍]]></title>
         <id>https://IseEkko.github.io/post/gorm-jie-shao/</id>

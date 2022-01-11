@@ -2,7 +2,7 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>二叉树的最大深度 | isekko</title>
+<title>GORM-使用 | isekko</title>
 <meta name="description" content="对个人笔记的总结，这个网站的笔记将会是我经过提炼过后的笔记。" />
 <link rel="shortcut icon" href="https://IseEkko.github.io//favicon.ico">
 <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
@@ -15,15 +15,12 @@
 <script src="https://IseEkko.github.io//media/js/jquery.magnific-popup.min.js"></script>
 <script src="https://IseEkko.github.io//media/js/functions.js"></script>
     <meta name="referrer" content="never">
-    <meta name="description" content="二叉树的最大深度。我们使用什么方法去破解？
+    <meta name="description" content="这里将总结出使用gorm中的方法
 
-# 题目
-给定一个二叉树，找出其最大深度。
-二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。
-说明: 叶子节点是指没有子节点的节点。
-示例：
-给定二叉树 [3,9,20,null,nul..." />
-    <meta name="keywords" content="算法" />
+开始连接
+这里我们将开始学习使用gorm连接数据库，这里我们要知道后面我们使用的方法都是通过连接获取的对象进行操作的。那么下面我们就开始创建这个连接。
+当然最开始我们肯定是要导入gorm包的，这里我们就不..." />
+    <meta name="keywords" content="" />
     <script src="https://IseEkko.github.io//media/js/waterfall.min.js"></script>
     <script src="https://IseEkko.github.io//media/js/prism.min.js"></script>
   </head>
@@ -97,23 +94,21 @@
       <main id="single" class="main grid-container fullcover no-sidebar aos-init aos-animate" data-aos="fade">
 
         <div class="center content">
-          <div class="featured-image cover" style="background-image: url('https://isekko-1306311182.cos.ap-nanjing.myqcloud.com/scs/iShot2022-01-10%2022.32.48.png');">
+          <div class="featured-image cover" style="background-image: url('https://IseEkko.github.io//post-images/gorm-lian-jie.png');">
             <div class="meta top"> 
-              <time class="meta-info" style="float:left;" datetime="2022-01-10"><i class="fa fa-calendar"></i><span class="lately">1 天前</span></time>
+              <time class="meta-info" style="float:left;" datetime="2022-01-11"><i class="fa fa-calendar"></i><span class="lately">16 分钟前</span></time>
               
-              <a href="https://IseEkko.github.io/post/er-cha-shu-de-zui-da-shen-du/#comments" class="comments meta-info" title="">
-                <i class="fa fa-comment remixicon"></i><span class="comment-count valine-comment-count" data-xid="/er-cha-shu-de-zui-da-shen-du/"> </span>
+              <a href="https://IseEkko.github.io/post/gorm-lian-jie/#comments" class="comments meta-info" title="">
+                <i class="fa fa-comment remixicon"></i><span class="comment-count valine-comment-count" data-xid="/gorm-lian-jie/"> </span>
               </a>
-              <span id="/er-cha-shu-de-zui-da-shen-du/" class="leancloud_visitors views-counter meta-info" title=""><i class="fa fa-leancloud remixicon"></i><span class="leancloud-visitors-count"></span></span>
+              <span id="/gorm-lian-jie/" class="leancloud_visitors views-counter meta-info" title=""><i class="fa fa-leancloud remixicon"></i><span class="leancloud-visitors-count"></span></span>
               
             </div>
             <div class="info">
               <div class="tags ">
                 
-                      <a href="https://IseEkko.github.io/tag/89sSoit-w/" class="ctag ctag-0 ctag-89sSoit-w" aria-label="">算法</a>
-                    
               </div>
-              <h1 class="title ularge white bold">二叉树的最大深度</h1>
+              <h1 class="title ularge white bold">GORM-使用</h1>
             </div>
           </div>
         </div>  
@@ -123,102 +118,20 @@
             <article class="main-article post">
               <section class="post-content">
                 <div class="text">
-                  <p>二叉树的最大深度。我们使用什么方法去破解？</p>
+                  <p>这里将总结出使用gorm中的方法</p>
 <!-- more -->
-<p><img src="https://IseEkko.github.io//post-images/1641825317112.png" alt="" loading="lazy"># 题目<br>
-给定一个二叉树，找出其最大深度。</p>
-<p>二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。</p>
-<p>说明: 叶子节点是指没有子节点的节点。</p>
-<p>示例：<br>
-给定二叉树 [3,9,20,null,null,15,7]，</p>
-<pre><code>  3
-/  \
+<h1 id="开始连接">开始连接</h1>
+<p>这里我们将开始学习使用gorm连接数据库，这里我们要知道后面我们使用的方法都是通过连接获取的对象进行操作的。那么下面我们就开始创建这个连接。</p>
+<p>当然最开始我们肯定是要导入gorm包的，这里我们就不再展示了</p>
+<p>这里在连接的时候，我们这里肯定是要先书写连接dns</p>
+<pre><code>dsn := &quot;用户名:密码@tcp(ip:3306)/数据库名称?charset=utf8mb4&amp;parseTime=True&amp;loc=Local&quot;
 </code></pre>
-<p>9  20<br>
-/  <br>
-15   7<br>
-返回它的最大深度 3</p>
-<h1 id="思考">思考</h1>
-<p>拿到这个题目我们最先想到的就是层序遍历，为什么呢？<br>
-我们首先要明白层序遍历我们最后的结果是什么，层序遍历我们最后得到的是一个二位数组。<br>
-那我们换个角度去看他，最大的深度是不是就是层序遍历最后二维数组的层数。答案是肯定的。<br>
-上面是我最先能使用的方法。</p>
-<h1 id="解题">解题</h1>
-<p>这里解题的方式有两种</p>
-<h2 id="递归法">递归法</h2>
-<p>这里我们回顾一下递归的三个要素。根据三要素来书写代码。<br>
-1. 确定输入和返回值<br>
-2. 确定终止条件<br>
-3. 确定单层逻辑<br>
-那么下面我们来详细的书写一下代码<br>
-首先我们确定输入和返回值，这里我们首先输入的肯定是节点，然后返回的是深度</p>
-<pre><code> function fun(){
-    func getDepths(root *TreeNode) int
- }
- fun();
+<p>写好了这个连接名过后，使用 gorm.Open()进行连接的创建</p>
+<pre><code>db, err := gorm.Open(mysql.Open(dsn), &amp;gorm.Config{
+		Logger: newLogger,
+	})
 </code></pre>
-<p>第二步是确定终止的条件，这里我们终止的条件是节点是nil<br>
-if root ==nil{<br>
-return 0<br>
-}<br>
-第三步确定单层的逻辑<br>
-Left := getDepths(root.Left)<br>
-Right := getDepths(root.Right)<br>
-deth := 1 + max(Left,Right)<br>
-这里需要注意的是，我们最后得到的是高度，这里的高度是需要加一的。</p>
-<p>最后的源码：</p>
-<pre><code>func maxDepth(root *TreeNode) int {
-   return getDepths(root)
-}
-
-func getDepths(root *TreeNode) int{
-    if root ==nil{
-        return 0
-    }
-    Left := getDepths(root.Left)
-    Right := getDepths(root.Right)
-    deth := 1 + max(Left,Right)
-    return deth
-}
-
-func max(Left,Right int)int{
-    if Left &gt; Right{
-        return Left
-    }
-        return Right
-}
-</code></pre>
-<h3 id="迭代法">迭代法</h3>
-<p>这个方法也就是我之前想到的那个方法，也就是使用层讯遍历去完成这个题目，这里我们就不在过多的解析<br>
-在后面的层序遍历的地方我会把这段代码详细的解析一遍。</p>
-<pre><code>func maxDepth(root *TreeNode) int {
-    var res [][]int
-    if root == nil{
-        return 0
-    }
-    st:= list.New()
-    st.PushBack(root)
-    var Arrtem []int
-    for st.Len() &gt; 0{
-        lenth := st.Len()
-        for i := 0;i&lt;lenth;i++{
-            node := st.Remove(st.Front()).(*TreeNode)
-            if node.Left != nil{
-                st.PushBack(node.Left)
-            }
-            if node.Right != nil{
-                st.PushBack(node.Right)
-            }
-            Arrtem = append(Arrtem,node.Val)
-        }
-        res  = append(res,Arrtem)
-        Arrtem = []int{}
-    }
-    result := len(res)
-  return result
-}
-
-</code></pre>
+<p>上面我们就创建好了这个连接对象，然后后面的操作我们对将在这个基础上进行。</p>
 
                 </div>
                 <div class="clear"></div>
@@ -228,19 +141,19 @@ func max(Left,Right int)int{
 
             <section class="related section">
               
-              <article class="prev grid-50 tablet-grid-50 grid-parent">
-                <div class="thumb cover lazy loaded" style="background-image: url('https://IseEkko.github.io//post-images/er-cha-shu-de-zui-xiao-shen-du.jpg');"></div>
-                 <a href="https://IseEkko.github.io/post/er-cha-shu-de-zui-xiao-shen-du/" class="full-link"></a>
+              
+              <article class="next grid-50 tablet-grid-50 grid-parent">
+                <div class="thumb cover lazy loaded" style="background-image: url('http://localhost:4000/post-images/1641899816277.png');"></div>
+                 <a href="https://IseEkko.github.io/post/gorm-jie-shao/" class="full-link"></a>
                  <div class="info">
                   <time datetime="2022-01-11">2022-01-11</time>
-                  <h4 class="title white no-margin">二叉树的最小深度</h4>
+                  <h4 class="title white no-margin">gorm介绍</h4>
                 </div>
                  <span class="epcl-button red">
-                  <img src="https://IseEkko.github.io//media/images/left-arrow.svg" width="15" alt="Left Arrow">
+                  <img src="https://IseEkko.github.io//media/images/right-arrow.svg" width="15" alt="Left Arrow">
                 </span>
                 <div class="overlay"></div>
               </article>
-              
               
 
                 <div class="clear"></div>
