@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://IseEkko.github.io/</id>
     <title>isekko</title>
-    <updated>2022-01-11T09:04:25.658Z</updated>
+    <updated>2022-01-11T09:12:17.382Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://IseEkko.github.io/"/>
     <link rel="self" href="https://IseEkko.github.io/atom.xml"/>
@@ -77,9 +77,14 @@ return num
         <link href="https://IseEkko.github.io/post/er-cha-shu-de-zui-xiao-shen-du/">
         </link>
         <updated>2022-01-11T07:01:46.000Z</updated>
-        <content type="html"><![CDATA[<h1 id="题目">题目</h1>
-<p>给定一个二叉树，找出其最小深度。</p>
-<p>最小深度是从根节点到最近叶子节点的最短路径上的节点数量。</p>
+        <summary type="html"><![CDATA[<p>对于二叉树最小深度的解题相关，包含源码</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>对于二叉树最小深度的解题相关，包含源码</p>
+<!-- more -->
+<h1 id="题目">题目</h1>
+<p>给定一个二叉树，找出其最小深度。<br>
+最小深度是从根节点到最近叶子节点的最短路径上的节点数量。</p>
+<!-- more -->
 <p>说明：叶子节点是指没有子节点的节点。</p>
 <figure data-type="image" tabindex="1"><img src="https://assets.leetcode.com/uploads/2020/10/12/ex_depth.jpg" alt="avatar" loading="lazy"></figure>
 <p>示例 1：</p>
