@@ -2,7 +2,7 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>二叉树的最小深度 | isekko</title>
+<title>平衡二叉树 | isekko</title>
 <meta name="description" content="对个人笔记的总结，这个网站的笔记将会是我经过提炼过后的笔记。" />
 <link rel="shortcut icon" href="https://IseEkko.github.io//favicon.ico">
 <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
@@ -15,16 +15,14 @@
 <script src="https://IseEkko.github.io//media/js/jquery.magnific-popup.min.js"></script>
 <script src="https://IseEkko.github.io//media/js/functions.js"></script>
     <meta name="referrer" content="never">
-    <meta name="description" content="题目
-给定一个二叉树，找出其最小深度。
-最小深度是从根节点到最近叶子节点的最短路径上的节点数量。
-说明：叶子节点是指没有子节点的节点。
-
+    <meta name="description" content="
+题目
+给定一个二叉树，判断它是否是高度平衡的二叉树。
+本题中，一棵高度平衡二叉树定义为：
+一个二叉树每个节点 的左右两个子树的高度差的绝对值不超过 1 。
 示例 1：
-输入：root = [3,9,20,null,null,15,7]
-输出：2
-示例 2：
-..." />
+ 
+输入：root = [3,9,20,null,null,15,7]..." />
     <meta name="keywords" content="" />
     <script src="https://IseEkko.github.io//media/js/waterfall.min.js"></script>
     <script src="https://IseEkko.github.io//media/js/prism.min.js"></script>
@@ -99,21 +97,21 @@
       <main id="single" class="main grid-container fullcover no-sidebar aos-init aos-animate" data-aos="fade">
 
         <div class="center content">
-          <div class="featured-image cover" style="background-image: url('https://IseEkko.github.io//post-images/er-cha-shu-de-zui-xiao-shen-du.jpg');">
+          <div class="featured-image cover" style="background-image: url('/media/images/gridea.jpg');">
             <div class="meta top"> 
-              <time class="meta-info" style="float:left;" datetime="2022-01-11"><i class="fa fa-calendar"></i><span class="lately">2 小时前</span></time>
+              <time class="meta-info" style="float:left;" datetime="2022-01-11"><i class="fa fa-calendar"></i><span class="lately">1 小时前</span></time>
               
-              <a href="https://IseEkko.github.io/post/er-cha-shu-de-zui-xiao-shen-du/#comments" class="comments meta-info" title="">
-                <i class="fa fa-comment remixicon"></i><span class="comment-count valine-comment-count" data-xid="/er-cha-shu-de-zui-xiao-shen-du/"> </span>
+              <a href="https://IseEkko.github.io/post/ping-heng-er-cha-shu/#comments" class="comments meta-info" title="">
+                <i class="fa fa-comment remixicon"></i><span class="comment-count valine-comment-count" data-xid="/ping-heng-er-cha-shu/"> </span>
               </a>
-              <span id="/er-cha-shu-de-zui-xiao-shen-du/" class="leancloud_visitors views-counter meta-info" title=""><i class="fa fa-leancloud remixicon"></i><span class="leancloud-visitors-count"></span></span>
+              <span id="/ping-heng-er-cha-shu/" class="leancloud_visitors views-counter meta-info" title=""><i class="fa fa-leancloud remixicon"></i><span class="leancloud-visitors-count"></span></span>
               
             </div>
             <div class="info">
               <div class="tags ">
                 
               </div>
-              <h1 class="title ularge white bold">二叉树的最小深度</h1>
+              <h1 class="title ularge white bold">平衡二叉树</h1>
             </div>
           </div>
         </div>  
@@ -123,45 +121,57 @@
             <article class="main-article post">
               <section class="post-content">
                 <div class="text">
-                  <h1 id="题目">题目</h1>
-<p>给定一个二叉树，找出其最小深度。</p>
-<p>最小深度是从根节点到最近叶子节点的最短路径上的节点数量。</p>
-<p>说明：叶子节点是指没有子节点的节点。</p>
-<figure data-type="image" tabindex="1"><img src="https://assets.leetcode.com/uploads/2020/10/12/ex_depth.jpg" alt="avatar" loading="lazy"></figure>
-<p>示例 1：</p>
+                  <figure data-type="image" tabindex="1"><img src="https://IseEkko.github.io//post-images/1641891619971.png" alt="" loading="lazy"></figure>
+<h1 id="题目">题目</h1>
+<p>给定一个二叉树，判断它是否是高度平衡的二叉树。</p>
+<p>本题中，一棵高度平衡二叉树定义为：</p>
+<p>一个二叉树每个节点 的左右两个子树的高度差的绝对值不超过 1 。</p>
+<p>示例 1：<br>
+ <img src="https://assets.leetcode.com/uploads/2020/10/06/balance_1.jpg" alt="" loading="lazy"></p>
 <p>输入：root = [3,9,20,null,null,15,7]<br>
-输出：2<br>
-示例 2：</p>
-<p>输入：root = [2,null,3,null,4,null,5,null,6]<br>
-输出：5</p>
+输出：true<br>
+示例 2：<br>
+ <img src="https://assets.leetcode.com/uploads/2020/10/06/balance_2.jpg" alt="" loading="lazy"></p>
+<p>输入：root = [1,2,2,3,3,null,null,4,4]<br>
+输出：false<br>
+示例 3：</p>
+<p>输入：root = []<br>
+输出：true</p>
 <h1 id="思路">思路</h1>
-<pre><code> 对于这个题目，最开始我是没有什么思路的，后面去看了解析才知道怎么写到。这里把之前看到的进行一个总结。
-  这个题目的主要思想就是后序遍历，后序遍历就是对树的中间节点进行最后的操作。
-</code></pre>
-<h1 id="解题源码">解题源码</h1>
-<pre><code>func minDepth(root *TreeNode) int {
-  return getDepth(root)
+<p>题目很简单，思路也很清晰，也就是我们去看树的高度差不大于1.我们只要依据这个条件去写代码就可以了</p>
+<h1 id="解题">解题</h1>
+<pre><code>func isBalanced(root *TreeNode) bool {
+if root == nil{
+    return true
+}
+if (!isBalanced(root.Left)||!isBalanced(root.Right)){
+    return false
+}
+Left := getDepath(root.Left)+1
+Right := getDepath(root.Right)+1
+if (abs(Left-Right)&gt;1){
+    return false
+}
+return true
 }
 
-func getDepth(root *TreeNode)int{
+func getDepath(root *TreeNode)int{
     if root == nil{
         return 0
     }
-    left := getDepth(root.Left)
-    right := getDepth(root.Right)
-    if (root.Left ==nil&amp;&amp;root.Right != nil){
-        return right+1
-    }
-    if (root.Left != nil&amp;&amp; root.Right == nil){
-        return left+1
-    }
-    return 1+min(left,right)
+    return max(getDepath(root.Left),getDepath(root.Right))+1
 }
-func min(left,right int)int{
-    if left&lt;right{
+func max(left,right int)int{
+    if left &gt;right{
         return left
     }
     return right
+}
+func abs(num int)int{
+if num&lt;0{
+    return -num
+}
+return num
 }
 </code></pre>
 
@@ -173,26 +183,13 @@ func min(left,right int)int{
 
             <section class="related section">
               
-              <article class="prev grid-50 tablet-grid-50 grid-parent">
-                <div class="thumb cover lazy loaded" style="background-image: url('https://IseEkko.github.io//media/images/gridea.jpg');"></div>
-                 <a href="https://IseEkko.github.io/post/ping-heng-er-cha-shu/" class="full-link"></a>
-                 <div class="info">
-                  <time datetime="2022-01-11">2022-01-11</time>
-                  <h4 class="title white no-margin">平衡二叉树</h4>
-                </div>
-                 <span class="epcl-button red">
-                  <img src="https://IseEkko.github.io//media/images/left-arrow.svg" width="15" alt="Left Arrow">
-                </span>
-                <div class="overlay"></div>
-              </article>
-              
               
               <article class="next grid-50 tablet-grid-50 grid-parent">
-                <div class="thumb cover lazy loaded" style="background-image: url('https://isekko-1306311182.cos.ap-nanjing.myqcloud.com/scs/iShot2022-01-10%2022.32.48.png');"></div>
-                 <a href="https://IseEkko.github.io/post/er-cha-shu-de-zui-da-shen-du/" class="full-link"></a>
+                <div class="thumb cover lazy loaded" style="background-image: url('https://IseEkko.github.io//post-images/er-cha-shu-de-zui-xiao-shen-du.jpg');"></div>
+                 <a href="https://IseEkko.github.io/post/er-cha-shu-de-zui-xiao-shen-du/" class="full-link"></a>
                  <div class="info">
-                  <time datetime="2022-01-10">2022-01-10</time>
-                  <h4 class="title white no-margin">二叉树的最大深度</h4>
+                  <time datetime="2022-01-11">2022-01-11</time>
+                  <h4 class="title white no-margin">二叉树的最小深度</h4>
                 </div>
                  <span class="epcl-button red">
                   <img src="https://IseEkko.github.io//media/images/right-arrow.svg" width="15" alt="Left Arrow">
