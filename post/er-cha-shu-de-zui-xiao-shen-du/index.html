@@ -1,8 +1,8 @@
 <html>
   <head>
-  <meta charset="utf-8" />
+    <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>标签列表 | isekko</title>
+<title>二叉树的最小深度 | isekko</title>
 <meta name="description" content="对个人笔记的总结，这个网站的笔记将会是我经过提炼过后的笔记。" />
 <link rel="shortcut icon" href="https://IseEkko.github.io//favicon.ico">
 <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
@@ -14,11 +14,22 @@
 <script src="https://IseEkko.github.io//media/js/view-image.min.js"></script>
 <script src="https://IseEkko.github.io//media/js/jquery.magnific-popup.min.js"></script>
 <script src="https://IseEkko.github.io//media/js/functions.js"></script>
+    <meta name="referrer" content="never">
+    <meta name="description" content="题目
+给定一个二叉树，找出其最小深度。
+最小深度是从根节点到最近叶子节点的最短路径上的节点数量。
+说明：叶子节点是指没有子节点的节点。
+
+示例 1：
+输入：root = [3,9,20,null,null,15,7]
+输出：2
+示例 2：
+..." />
+    <meta name="keywords" content="" />
+    <script src="https://IseEkko.github.io//media/js/waterfall.min.js"></script>
+    <script src="https://IseEkko.github.io//media/js/prism.min.js"></script>
   </head>
   <body>
-    <!-- start: #wrapper -->
-    <div class="wrapper">
-      
             <header id="header" class="grid-container">
         <!-- start: .menu-wrapper -->
         <div class="menu-mobile"> 
@@ -85,24 +96,132 @@
         </div>
       </div>
 
-      <main id="tags" class="main fullcover no-sidebar content">
-        <div class="grid-container module-wrapper enable-masonry aos-init aos-animate" data-aos="fade-up">
+      <main id="single" class="main grid-container fullcover no-sidebar aos-init aos-animate" data-aos="fade">
+
+        <div class="center content">
+          <div class="featured-image cover" style="background-image: url('https://IseEkko.github.io//post-images/er-cha-shu-de-zui-xiao-shen-du.jpg');">
+            <div class="meta top"> 
+              <time class="meta-info" style="float:left;" datetime="2022-01-11"><i class="fa fa-calendar"></i><span class="lately">20 分钟前</span></time>
+              
+              <a href="https://IseEkko.github.io/post/er-cha-shu-de-zui-xiao-shen-du/#comments" class="comments meta-info" title="">
+                <i class="fa fa-comment remixicon"></i><span class="comment-count valine-comment-count" data-xid="/er-cha-shu-de-zui-xiao-shen-du/"> </span>
+              </a>
+              <span id="/er-cha-shu-de-zui-xiao-shen-du/" class="leancloud_visitors views-counter meta-info" title=""><i class="fa fa-leancloud remixicon"></i><span class="leancloud-visitors-count"></span></span>
+              
+            </div>
+            <div class="info">
+              <div class="tags ">
+                
+              </div>
+              <h1 class="title ularge white bold">二叉树的最小深度</h1>
+            </div>
+          </div>
+        </div>  
+
         <div class="epcl-page-wrapper">
-          <div class="left-content grid-70 np-mobile widget_epcl_related_articles">
+          <div class="left-content grid-70 np-mobile">
+            <article class="main-article post">
+              <section class="post-content">
+                <div class="text">
+                  <h1 id="题目">题目</h1>
+<p>给定一个二叉树，找出其最小深度。</p>
+<p>最小深度是从根节点到最近叶子节点的最短路径上的节点数量。</p>
+<p>说明：叶子节点是指没有子节点的节点。</p>
+<figure data-type="image" tabindex="1"><img src="https://assets.leetcode.com/uploads/2020/10/12/ex_depth.jpg" alt="avatar" loading="lazy"></figure>
+<p>示例 1：</p>
+<p>输入：root = [3,9,20,null,null,15,7]<br>
+输出：2<br>
+示例 2：</p>
+<p>输入：root = [2,null,3,null,4,null,5,null,6]<br>
+输出：5</p>
+<h1 id="思路">思路</h1>
+<pre><code> 对于这个题目，最开始我是没有什么思路的，后面去看了解析才知道怎么写到。这里把之前看到的进行一个总结。
+  这个题目的主要思想就是后序遍历，后序遍历就是对树的中间节点进行最后的操作。
+</code></pre>
+<h1 id="解题源码">解题源码</h1>
+<pre><code>func minDepth(root *TreeNode) int {
+  return getDepth(root)
+}
 
-          <div class="widget_tag_cloud tagcloud">
-            
-              <a href="https://IseEkko.github.io/tag/89sSoit-w/" class="ctag ctag-0 ctag-89sSoit-w" aria-label="">算法</a>
-            
-          </div>
-        </div>
+func getDepth(root *TreeNode)int{
+    if root == nil{
+        return 0
+    }
+    left := getDepth(root.Left)
+    right := getDepth(root.Right)
+    if (root.Left ==nil&amp;&amp;root.Right != nil){
+        return right+1
+    }
+    if (root.Left != nil&amp;&amp; root.Right == nil){
+        return left+1
+    }
+    return 1+min(left,right)
+}
+func min(left,right int)int{
+    if left&lt;right{
+        return left
+    }
+    return right
+}
+</code></pre>
 
-        </div>
+                </div>
+                <div class="clear"></div>
+              </section>
+            </article>
+            <div class="clear"></div>
+
+            <section class="related section">
+              
+              
+              <article class="next grid-50 tablet-grid-50 grid-parent">
+                <div class="thumb cover lazy loaded" style="background-image: url('https://isekko-1306311182.cos.ap-nanjing.myqcloud.com/scs/iShot2022-01-10%2022.32.48.png');"></div>
+                 <a href="https://IseEkko.github.io/post/er-cha-shu-de-zui-da-shen-du/" class="full-link"></a>
+                 <div class="info">
+                  <time datetime="2022-01-10">2022-01-10</time>
+                  <h4 class="title white no-margin">二叉树的最大深度</h4>
+                </div>
+                 <span class="epcl-button red">
+                  <img src="https://IseEkko.github.io//media/images/right-arrow.svg" width="15" alt="Left Arrow">
+                </span>
+                <div class="overlay"></div>
+              </article>
+              
+
+                <div class="clear"></div>
+            </section>
+
+              <div class="clear"></div>
+              
+            
+              <div id="comments" class="bg-white hosted ">
+                <div class="clear"></div>
+<script>
+jQuery(document).ready(function($){
+    $('.vemoji-btn').text('😀');
+    $("#comments").on('click', 'span.vat',function(){
+        $(this).parent('div.vmeta').next("div.vcontent").after($("div.vwrap"));
+        $('textarea#veditor').focus();
+    })
+    if(window.location.hash){
+        var checkExist = setInterval(function() {
+            if ($(window.location.hash).length) {
+                $('html, body').animate({scrollTop: $(window.location.hash).offset().top-200}, 600);
+                clearInterval(checkExist);
+            }
+        }, 100);
+    }
+})
+</script>
+
+              </div>
+            
+
+            </div>
           </div>
-        </div>
       </main>
 
-        <footer id="footer" class="grid-container">
+          <footer id="footer" class="grid-container">
         <div class="widgets row gradient-effect">
             <div class="default-sidebar border-effect">
               <div class="grid-33 tablet-grid-50 mobile-grid-100">
@@ -233,6 +352,9 @@
     })
 </script>
     
+
+      
+    <script src="https://IseEkko.github.io//media/js/functions-post.js"></script>
 
     </div>
     <!-- end: #wrapper -->

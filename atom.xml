@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://IseEkko.github.io/</id>
     <title>isekko</title>
-    <updated>2022-01-11T06:33:41.705Z</updated>
+    <updated>2022-01-11T07:21:29.476Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://IseEkko.github.io/"/>
     <link rel="self" href="https://IseEkko.github.io/atom.xml"/>
@@ -10,6 +10,55 @@
     <logo>https://IseEkko.github.io/images/avatar.png</logo>
     <icon>https://IseEkko.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, isekko</rights>
+    <entry>
+        <title type="html"><![CDATA[二叉树的最小深度]]></title>
+        <id>https://IseEkko.github.io/post/er-cha-shu-de-zui-xiao-shen-du/</id>
+        <link href="https://IseEkko.github.io/post/er-cha-shu-de-zui-xiao-shen-du/">
+        </link>
+        <updated>2022-01-11T07:01:46.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="题目">题目</h1>
+<p>给定一个二叉树，找出其最小深度。</p>
+<p>最小深度是从根节点到最近叶子节点的最短路径上的节点数量。</p>
+<p>说明：叶子节点是指没有子节点的节点。</p>
+<figure data-type="image" tabindex="1"><img src="https://assets.leetcode.com/uploads/2020/10/12/ex_depth.jpg" alt="avatar" loading="lazy"></figure>
+<p>示例 1：</p>
+<p>输入：root = [3,9,20,null,null,15,7]<br>
+输出：2<br>
+示例 2：</p>
+<p>输入：root = [2,null,3,null,4,null,5,null,6]<br>
+输出：5</p>
+<h1 id="思路">思路</h1>
+<pre><code> 对于这个题目，最开始我是没有什么思路的，后面去看了解析才知道怎么写到。这里把之前看到的进行一个总结。
+  这个题目的主要思想就是后序遍历，后序遍历就是对树的中间节点进行最后的操作。
+</code></pre>
+<h1 id="解题源码">解题源码</h1>
+<pre><code>func minDepth(root *TreeNode) int {
+  return getDepth(root)
+}
+
+func getDepth(root *TreeNode)int{
+    if root == nil{
+        return 0
+    }
+    left := getDepth(root.Left)
+    right := getDepth(root.Right)
+    if (root.Left ==nil&amp;&amp;root.Right != nil){
+        return right+1
+    }
+    if (root.Left != nil&amp;&amp; root.Right == nil){
+        return left+1
+    }
+    return 1+min(left,right)
+}
+func min(left,right int)int{
+    if left&lt;right{
+        return left
+    }
+    return right
+}
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[二叉树的最大深度]]></title>
         <id>https://IseEkko.github.io/post/er-cha-shu-de-zui-da-shen-du/</id>
