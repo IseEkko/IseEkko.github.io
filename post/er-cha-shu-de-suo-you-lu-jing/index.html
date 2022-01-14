@@ -2,7 +2,7 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>gorm | isekko</title>
+<title>二叉树的所有路径 | isekko</title>
 <meta name="description" content="对个人笔记的总结，这个网站的笔记将会是我经过提炼过后的笔记。" />
 <link rel="shortcut icon" href="https://IseEkko.github.io//favicon.ico">
 <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
@@ -14,11 +14,20 @@
 <script src="https://IseEkko.github.io//media/js/view-image.min.js"></script>
 <script src="https://IseEkko.github.io//media/js/jquery.magnific-popup.min.js"></script>
 <script src="https://IseEkko.github.io//media/js/functions.js"></script>
+    <meta name="referrer" content="never">
+    <meta name="description" content="关于二叉树的所有路径的题目，这里我们是用递归的思想写出来的题目
+
+题目
+给你一个二叉树的根节点 root ，按 任意顺序 ，返回所有从根节点到叶子节点的路径。
+叶子节点 是指没有子节点的节点。
+示例 1：
+
+输入：root = [1,2,3..." />
+    <meta name="keywords" content="算法" />
+    <script src="https://IseEkko.github.io//media/js/waterfall.min.js"></script>
+    <script src="https://IseEkko.github.io//media/js/prism.min.js"></script>
   </head>
   <body>
-    <!-- start: #wrapper -->
-    <div class="wrapper">
-      
             <header id="header" class="grid-container">
         <!-- start: .menu-wrapper -->
         <div class="menu-mobile"> 
@@ -85,45 +94,168 @@
         </div>
       </div>
 
-      <main id="home" class="main fullcover no-sidebar content">
-        <div class="grid-container module-wrapper enable-masonry aos-init aos-animate" data-aos="fade-up">
-        <div class="epcl-page-wrapper">
-          <div class="left-content grid-70 np-mobile widget_epcl_related_articles">
-                
-            <!-- start: .articles -->
-            <div class="main-article post">
-  <h2 class="year"># gorm</h2>
-    
-      <article class="item default grid-33 tablet-grid-50 np-mobile">
-        <a href="https://IseEkko.github.io/post/gorm-jie-shao/" class="thumb hover-effect">
-          <span class="fullimage cover" style="display: block;background-image: url('http://localhost:4000/post-images/1641899816277.png');"></span>
-        </a>
-        <div class="info gradient-effect">
-          <time datetime="2022-01-11">2022-01-11</time>
-          <h4 class="title usmall">
-            <a href="https://IseEkko.github.io/post/gorm-jie-shao/">gorm介绍</a>
-          </h4>
-        </div>
-      </article>
+      <main id="single" class="main grid-container fullcover no-sidebar aos-init aos-animate" data-aos="fade">
 
-    
-    <div class="clear"></div>
-</div>
-            <!-- end: .articles -->
-            
-                        <div class="epcl-pagination section">
-              <div class="nav">
-                
-                
-              </div>
+        <div class="center content">
+          <div class="featured-image cover" style="background-image: url('https://pica.zhimg.com/80/v2-5f08c8f9581cb37ac5a437c1de9f984c_720w.jpg?source=1940ef5c');">
+            <div class="meta top"> 
+              <time class="meta-info" style="float:left;" datetime="2022-01-14"><i class="fa fa-calendar"></i><span class="lately">6 小时前</span></time>
+              
             </div>
+            <div class="info">
+              <div class="tags ">
+                
+                      <a href="https://IseEkko.github.io/tag/89sSoit-w/" class="ctag ctag-0 ctag-89sSoit-w" aria-label="">算法</a>
+                    
+              </div>
+              <h1 class="title ularge white bold">二叉树的所有路径</h1>
+            </div>
+          </div>
+        </div>  
+
+        <div class="epcl-page-wrapper">
+          <div class="left-content grid-70 np-mobile">
+            <article class="main-article post">
+              <section class="post-content">
+                <div class="text">
+                  <p>关于二叉树的所有路径的题目，这里我们是用递归的思想写出来的题目</p>
+<!-- more -->
+<h1 id="题目">题目</h1>
+<p>给你一个二叉树的根节点 root ，按 任意顺序 ，返回所有从根节点到叶子节点的路径。<br>
+叶子节点 是指没有子节点的节点。<br>
+示例 1：<br>
+<img src="https://assets.leetcode.com/uploads/2021/03/12/paths-tree.jpg" alt="" loading="lazy"><br>
+输入：root = [1,2,3,null,5]<br>
+输出：[&quot;1-&gt;2-&gt;5&quot;,&quot;1-&gt;3&quot;]<br>
+示例 2：</p>
+<p>输入：root = [1]<br>
+输出：[&quot;1&quot;]</p>
+<h1 id="思路">思路</h1>
+<p>我们这里使用的是递归的思想，也就是递归的三步骤，我们按照三步骤逐步的向下写</p>
+<h1 id="解题过程">解题过程</h1>
+<p>首先我们思考第一步</p>
+<h3 id="定义函数确定返回值和输入值">定义函数确定返回值和输入值</h3>
+<p>func(node *TreeNode,path string)<br>
+这里传入的值是节点，然后和路径</p>
+<h3 id="确定终止条件">确定终止条件</h3>
+<p>这的终止条件有些不一样，开始写的时候，我写的条件是</p>
+<pre><code>if root == nil{
+    ...
+}
+</code></pre>
+<p>显然这里的题目条件没有这么简单，所以我们这里需要注意一下这里的条件 ，因为如果是我之前书写的条件，那么我们后面就会有一大堆的判断，显然是不合理的。所以我们这里要思考一些终止条件。<br>
+我们知道，我们路径终止的条件是什么，是节点左右节点都为空，所以我们的终止条件就来了。</p>
+<pre><code>if (node.Left ==nil &amp;&amp; node.Right == nil){
+</code></pre>
+<p>上面就是我们的终止条件</p>
+<h3 id="单层逻辑">单层逻辑</h3>
+<p>这里的单层逻辑就不过多的赘述，我们直接上代码</p>
+<pre><code>  if (node.Left ==nil &amp;&amp; node.Right == nil){
+              s  := path + strconv.Itoa(node.Val)
+              res = append(res,s)
+              return
+          }
+          path = path + strconv.Itoa(node.Val) + &quot;-&gt;&quot;
+          if node.Left != nil{
+             allpath(node.Left,path)
+          }
+          if node.Right != nil{
+              allpath(node.Right,path)
+          }
+</code></pre>
+<h1 id="最终题目代码">最终题目代码</h1>
+<pre><code>func binaryTreePaths(root *TreeNode) []string { 
+      var res []string
+      var allpath func(node *TreeNode,path string)
+      allpath = func(node *TreeNode,path string){
+          if (node.Left ==nil &amp;&amp; node.Right == nil){
+              s  := path + strconv.Itoa(node.Val)
+              res = append(res,s)
+              return
+          }
+          path = path + strconv.Itoa(node.Val) + &quot;-&gt;&quot;
+          if node.Left != nil{
+             allpath(node.Left,path)
+          }
+          if node.Right != nil{
+              allpath(node.Right,path)
+          }
+      }
+      allpath(root,&quot;&quot;)
+      return res
+}
+</code></pre>
+
+                </div>
+                <div class="clear"></div>
+              </section>
+            </article>
+            <div class="clear"></div>
+
+            <section class="related section">
+              
+              <article class="prev grid-50 tablet-grid-50 grid-parent">
+                <div class="thumb cover lazy loaded" style="background-image: url('https://IseEkko.github.io//post-images/lu-jing-zong-he.jpg');"></div>
+                 <a href="https://IseEkko.github.io/post/lu-jing-zong-he/" class="full-link"></a>
+                 <div class="info">
+                  <time datetime="2022-01-14">2022-01-14</time>
+                  <h4 class="title white no-margin">路径总和</h4>
+                </div>
+                 <span class="epcl-button red">
+                  <img src="https://IseEkko.github.io//media/images/left-arrow.svg" width="15" alt="Left Arrow">
+                </span>
+                <div class="overlay"></div>
+              </article>
+              
+              
+              <article class="next grid-50 tablet-grid-50 grid-parent">
+                <div class="thumb cover lazy loaded" style="background-image: url('https://IseEkko.github.io//post-images/gorm-lian-jie.png');"></div>
+                 <a href="https://IseEkko.github.io/post/gorm-lian-jie/" class="full-link"></a>
+                 <div class="info">
+                  <time datetime="2022-01-13">2022-01-13</time>
+                  <h4 class="title white no-margin">GORM-使用</h4>
+                </div>
+                 <span class="epcl-button red">
+                  <img src="https://IseEkko.github.io//media/images/right-arrow.svg" width="15" alt="Left Arrow">
+                </span>
+                <div class="overlay"></div>
+              </article>
+              
+
+                <div class="clear"></div>
+            </section>
+
+              <div class="clear"></div>
+              
             
+              <div id="comments" class="bg-white hosted ">
+                <div class="clear"></div>
+<script>
+jQuery(document).ready(function($){
+    $('.vemoji-btn').text('😀');
+    $("#comments").on('click', 'span.vat',function(){
+        $(this).parent('div.vmeta').next("div.vcontent").after($("div.vwrap"));
+        $('textarea#veditor').focus();
+    })
+    if(window.location.hash){
+        var checkExist = setInterval(function() {
+            if ($(window.location.hash).length) {
+                $('html, body').animate({scrollTop: $(window.location.hash).offset().top-200}, 600);
+                clearInterval(checkExist);
+            }
+        }, 100);
+    }
+})
+</script>
+
+              </div>
+            
+
+            </div>
           </div>
-          </div>
-        </div>
       </main>
 
-        <footer id="footer" class="grid-container">
+          <footer id="footer" class="grid-container">
         <div class="widgets row gradient-effect">
             <div class="default-sidebar border-effect">
               <div class="grid-33 tablet-grid-50 mobile-grid-100">
@@ -270,6 +402,9 @@
     })
 </script>
     
+
+      
+    <script src="https://IseEkko.github.io//media/js/functions-post.js"></script>
 
     </div>
     <!-- end: #wrapper -->

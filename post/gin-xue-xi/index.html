@@ -2,7 +2,7 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>gorm | isekko</title>
+<title>GIN学习 | isekko</title>
 <meta name="description" content="对个人笔记的总结，这个网站的笔记将会是我经过提炼过后的笔记。" />
 <link rel="shortcut icon" href="https://IseEkko.github.io//favicon.ico">
 <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
@@ -14,11 +14,21 @@
 <script src="https://IseEkko.github.io//media/js/view-image.min.js"></script>
 <script src="https://IseEkko.github.io//media/js/jquery.magnific-popup.min.js"></script>
 <script src="https://IseEkko.github.io//media/js/functions.js"></script>
+    <meta name="referrer" content="never">
+    <meta name="description" content="详细的学习gin的知识点，不是第一次学习了，这次梳理一个学习的文档出来
+
+第一个gin程序
+ 这里我们开始演示一下gin的开始程序，也就是快速入门。
+ 我们来看一下代码：
+
+package main
+
+import &quot;github..." />
+    <meta name="keywords" content="GIN" />
+    <script src="https://IseEkko.github.io//media/js/waterfall.min.js"></script>
+    <script src="https://IseEkko.github.io//media/js/prism.min.js"></script>
   </head>
   <body>
-    <!-- start: #wrapper -->
-    <div class="wrapper">
-      
             <header id="header" class="grid-container">
         <!-- start: .menu-wrapper -->
         <div class="menu-mobile"> 
@@ -85,45 +95,280 @@
         </div>
       </div>
 
-      <main id="home" class="main fullcover no-sidebar content">
-        <div class="grid-container module-wrapper enable-masonry aos-init aos-animate" data-aos="fade-up">
-        <div class="epcl-page-wrapper">
-          <div class="left-content grid-70 np-mobile widget_epcl_related_articles">
-                
-            <!-- start: .articles -->
-            <div class="main-article post">
-  <h2 class="year"># gorm</h2>
-    
-      <article class="item default grid-33 tablet-grid-50 np-mobile">
-        <a href="https://IseEkko.github.io/post/gorm-jie-shao/" class="thumb hover-effect">
-          <span class="fullimage cover" style="display: block;background-image: url('http://localhost:4000/post-images/1641899816277.png');"></span>
-        </a>
-        <div class="info gradient-effect">
-          <time datetime="2022-01-11">2022-01-11</time>
-          <h4 class="title usmall">
-            <a href="https://IseEkko.github.io/post/gorm-jie-shao/">gorm介绍</a>
-          </h4>
-        </div>
-      </article>
+      <main id="single" class="main grid-container fullcover no-sidebar aos-init aos-animate" data-aos="fade">
 
-    
-    <div class="clear"></div>
-</div>
-            <!-- end: .articles -->
-            
-                        <div class="epcl-pagination section">
-              <div class="nav">
-                
-                
-              </div>
+        <div class="center content">
+          <div class="featured-image cover" style="background-image: url('https://avatars.githubusercontent.com/u/7894478?s=200&amp;v=4');">
+            <div class="meta top"> 
+              <time class="meta-info" style="float:left;" datetime="2022-01-14"><i class="fa fa-calendar"></i><span class="lately">3 小时前</span></time>
+              
             </div>
+            <div class="info">
+              <div class="tags ">
+                
+                      <a href="https://IseEkko.github.io/tag/O3--25kKR/" class="ctag ctag-0 ctag-O3--25kKR" aria-label="">GIN</a>
+                    
+              </div>
+              <h1 class="title ularge white bold">GIN学习</h1>
+            </div>
+          </div>
+        </div>  
+
+        <div class="epcl-page-wrapper">
+          <div class="left-content grid-70 np-mobile">
+            <article class="main-article post">
+              <section class="post-content">
+                <div class="text">
+                  <p>详细的学习gin的知识点，不是第一次学习了，这次梳理一个学习的文档出来</p>
+<!-- more -->
+<h1 id="第一个gin程序">第一个gin程序</h1>
+<pre><code> 这里我们开始演示一下gin的开始程序，也就是快速入门。
+ 我们来看一下代码：
+</code></pre>
+<pre><code>package main
+
+import &quot;github.com/gin-gonic/gin&quot;
+
+func main() {
+	r := gin.Default()
+	r.GET(&quot;/ping&quot;, func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			&quot;message&quot;: &quot;pong&quot;,
+		})
+	})
+	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
+}
+</code></pre>
+<p>这里我们详细的拆分一下这个代码，</p>
+<h2 id="导包">导包</h2>
+<p>这里我们可以使用go mod进行包的导入</p>
+<h2 id="代码细节">代码细节</h2>
+<p>第一行代码</p>
+<pre><code>	r := gin.Default()
+</code></pre>
+<p>这个一行代码，就是产生了一个gin的实例<br>
+然后后面进行操作，</p>
+<pre><code>r.GET(&quot;/ping&quot;, func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			&quot;message&quot;: &quot;pong&quot;,
+		})
+	})
+</code></pre>
+<p>这里面首先有一个GET方法，对于这个GET方法我们首先来看一下它的源码</p>
+<pre><code>// GET is a shortcut for router.Handle(&quot;GET&quot;, path, handle).
+func (group *RouterGroup) GET(relativePath string, handlers ...HandlerFunc) IRoutes {
+	return group.handle(http.MethodGet, relativePath, handlers)
+}
+</code></pre>
+<p>看到源码我们可以看到里面的参数，首先第一个参数就是注册的路径，然后第二个就是处理器的注册。<br>
+在这里我们注册的是一个匿名函数。当然我们也可以修改成：</p>
+<pre><code>
+func  pong(c *gin.Context)  {
+	c.JSON(200, gin.H{
+		&quot;message&quot;: &quot;pong&quot;,
+	})
+}
+func main() {
+	r := gin.Default()
+	r.GET(&quot;/ping&quot;, pong)
+	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
+}
+</code></pre>
+<p>在这里我们需要注意的就是这个函数的类型要是：func  (c *gin.Context)<br>
+然后我们可以发现在传递参数的里面，我们使用的是gin.H<br>
+我们点开它的源码：</p>
+<pre><code>// H is a shortcut for map[string]interface{}
+type H map[string]interface{}
+</code></pre>
+<p>我们看到了它就是一个map类型，因为在gin中经常使用的原因，所以开发者对它进行了封装。这样我们使用起来就更加的方便。</p>
+<h1 id="gin中new和default的不同">gin中new和Default的不同</h1>
+<p>在这里我们介绍两个方法，他们返回回来的都是一个*Engine<br>
+那么它们有什么不一样呢，在这里我们要知道的是不一样的点是使用Default后它会默认开启两个中间件，一个是recover一个是logger。</p>
+<h1 id="路由分组和url">路由分组和URL</h1>
+<p>在我们的开发中，我们为了程序的可读性，我们一般会把路由进行分组。<br>
+也是为了后期更好的寻找路由。<br>
+那么我们如何进行分组呢？<br>
+我们使用的是Group方法。</p>
+<pre><code>package main
+
+import &quot;github.com/gin-gonic/gin&quot;
+
+func  pong(c *gin.Context)  {
+	c.JSON(200, gin.H{
+		&quot;message&quot;: &quot;pong&quot;,
+	})
+}
+//演示分组
+func main() {
+	r := gin.Default()
+    group := r.Group(&quot;/v1&quot;)
+	{
+		group.GET(&quot;/ping&quot;, pong)
+	}
+
+	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
+}
+</code></pre>
+<h1 id="获取url参数">获取url参数</h1>
+<p>这里我们通过url传入参数，那么我们怎么操作呢?</p>
+<pre><code>package main
+
+import &quot;github.com/gin-gonic/gin&quot;
+
+func  pong(c *gin.Context)  {
+	id := c.Param(&quot;id&quot;)
+	c.JSON(200, gin.H{
+		&quot;message&quot;: id,
+	})
+}
+//演示分组
+func main() {
+	r := gin.Default()
+    group := r.Group(&quot;/v1&quot;)
+	{
+		group.GET(&quot;/:id&quot;, pong)
+	}
+
+	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
+}
+</code></pre>
+<p>但是呢我们可以发现这个东西是有问题的，我们这里设定的是id，按照我们常识这里，我们知道id一般来说是数字，但是这里不管是数值还是什么都可以传输。<br>
+那么我们怎么进行限制呢？<br>
+这里我们运用到了之后的表单验证的方式。</p>
+<pre><code>package main
+
+import (
+	&quot;github.com/gin-gonic/gin&quot;
+	&quot;net/http&quot;
+)
+
+type Person struct {
+	ID string `uri:&quot;id&quot; binding:&quot;required,uuid&quot;`
+	Name string `uri:&quot;name&quot; binding:&quot;required&quot;`
+}
+func main() {
+	r := gin.Default()
+    r.GET(&quot;/:name/:id&quot;, func(context *gin.Context) {
+		var person Person
+		if err := context.ShouldBindUri(&amp;person);err != nil{
+		context.Status(404)
+		return
+		}
+		context.JSON(http.StatusOK,gin.H{
+			&quot;name&quot;:person.Name,
+			&quot;id&quot;:person.ID,
+		})
+	})
+
+	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
+}
+</code></pre>
+<h1 id="获取get和post参数">获取GET和POST参数</h1>
+<p>这两种方式是我们比较常见的方式。那么下面我们详细的说明一下</p>
+<h2 id="get">GET</h2>
+<p>使用到的方法有两个一个是DefaultQuery和Query。这两个方法的区别在于，前者是可以有默认值的，后者不能设置默认值</p>
+<pre><code>package main
+
+import (
+	&quot;github.com/gin-gonic/gin&quot;
+	&quot;net/http&quot;
+)
+
+func main() {
+	r := gin.Default()
+    r.GET(&quot;/name&quot;,name)
+
+	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
+}
+
+func name(c *gin.Context){
+	name := c.DefaultQuery(&quot;name&quot;,&quot;lzz&quot;)
+	c.JSON(http.StatusOK,gin.H{
+		&quot;name&quot;:name,
+	})
+}
+</code></pre>
+<h2 id="post">POST</h2>
+<p>在post中我们要取出参数，我们也有两个方法，两个方法的区别和上面是一样的。<br>
+分别是DefaultPostForm和PostForm。</p>
+<pre><code>package main
+
+import (
+	&quot;github.com/gin-gonic/gin&quot;
+	&quot;net/http&quot;
+)
+
+func main() {
+	r := gin.Default()
+    r.POST(&quot;/postname&quot;,Postname)
+	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
+}
+
+func Postname(c *gin.Context) {
+	posrname := c.DefaultPostForm(&quot;name&quot;,&quot;lzz&quot;)
+	c.JSON(http.StatusOK,gin.H{
+		&quot;name&quot;:posrname,
+	})
+}
+</code></pre>
+
+                </div>
+                <div class="clear"></div>
+              </section>
+            </article>
+            <div class="clear"></div>
+
+            <section class="related section">
+              
+              
+              <article class="next grid-50 tablet-grid-50 grid-parent">
+                <div class="thumb cover lazy loaded" style="background-image: url('https://IseEkko.github.io//post-images/lu-jing-zong-he.jpg');"></div>
+                 <a href="https://IseEkko.github.io/post/lu-jing-zong-he/" class="full-link"></a>
+                 <div class="info">
+                  <time datetime="2022-01-14">2022-01-14</time>
+                  <h4 class="title white no-margin">路径总和</h4>
+                </div>
+                 <span class="epcl-button red">
+                  <img src="https://IseEkko.github.io//media/images/right-arrow.svg" width="15" alt="Left Arrow">
+                </span>
+                <div class="overlay"></div>
+              </article>
+              
+
+                <div class="clear"></div>
+            </section>
+
+              <div class="clear"></div>
+              
             
+              <div id="comments" class="bg-white hosted ">
+                <div class="clear"></div>
+<script>
+jQuery(document).ready(function($){
+    $('.vemoji-btn').text('😀');
+    $("#comments").on('click', 'span.vat',function(){
+        $(this).parent('div.vmeta').next("div.vcontent").after($("div.vwrap"));
+        $('textarea#veditor').focus();
+    })
+    if(window.location.hash){
+        var checkExist = setInterval(function() {
+            if ($(window.location.hash).length) {
+                $('html, body').animate({scrollTop: $(window.location.hash).offset().top-200}, 600);
+                clearInterval(checkExist);
+            }
+        }, 100);
+    }
+})
+</script>
+
+              </div>
+            
+
+            </div>
           </div>
-          </div>
-        </div>
       </main>
 
-        <footer id="footer" class="grid-container">
+          <footer id="footer" class="grid-container">
         <div class="widgets row gradient-effect">
             <div class="default-sidebar border-effect">
               <div class="grid-33 tablet-grid-50 mobile-grid-100">
@@ -270,6 +515,9 @@
     })
 </script>
     
+
+      
+    <script src="https://IseEkko.github.io//media/js/functions-post.js"></script>
 
     </div>
     <!-- end: #wrapper -->

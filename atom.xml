@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://IseEkko.github.io/</id>
     <title>isekko</title>
-    <updated>2022-01-13T13:03:17.835Z</updated>
+    <updated>2022-01-14T12:26:50.720Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://IseEkko.github.io/"/>
     <link rel="self" href="https://IseEkko.github.io/atom.xml"/>
@@ -10,6 +10,390 @@
     <logo>https://IseEkko.github.io/images/avatar.png</logo>
     <icon>https://IseEkko.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, isekko</rights>
+    <entry>
+        <title type="html"><![CDATA[GIN学习]]></title>
+        <id>https://IseEkko.github.io/post/gin-xue-xi/</id>
+        <link href="https://IseEkko.github.io/post/gin-xue-xi/">
+        </link>
+        <updated>2022-01-14T09:22:02.000Z</updated>
+        <summary type="html"><![CDATA[<p>详细的学习gin的知识点，不是第一次学习了，这次梳理一个学习的文档出来</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>详细的学习gin的知识点，不是第一次学习了，这次梳理一个学习的文档出来</p>
+<!-- more -->
+<h1 id="第一个gin程序">第一个gin程序</h1>
+<pre><code> 这里我们开始演示一下gin的开始程序，也就是快速入门。
+ 我们来看一下代码：
+</code></pre>
+<pre><code>package main
+
+import &quot;github.com/gin-gonic/gin&quot;
+
+func main() {
+	r := gin.Default()
+	r.GET(&quot;/ping&quot;, func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			&quot;message&quot;: &quot;pong&quot;,
+		})
+	})
+	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
+}
+</code></pre>
+<p>这里我们详细的拆分一下这个代码，</p>
+<h2 id="导包">导包</h2>
+<p>这里我们可以使用go mod进行包的导入</p>
+<h2 id="代码细节">代码细节</h2>
+<p>第一行代码</p>
+<pre><code>	r := gin.Default()
+</code></pre>
+<p>这个一行代码，就是产生了一个gin的实例<br>
+然后后面进行操作，</p>
+<pre><code>r.GET(&quot;/ping&quot;, func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			&quot;message&quot;: &quot;pong&quot;,
+		})
+	})
+</code></pre>
+<p>这里面首先有一个GET方法，对于这个GET方法我们首先来看一下它的源码</p>
+<pre><code>// GET is a shortcut for router.Handle(&quot;GET&quot;, path, handle).
+func (group *RouterGroup) GET(relativePath string, handlers ...HandlerFunc) IRoutes {
+	return group.handle(http.MethodGet, relativePath, handlers)
+}
+</code></pre>
+<p>看到源码我们可以看到里面的参数，首先第一个参数就是注册的路径，然后第二个就是处理器的注册。<br>
+在这里我们注册的是一个匿名函数。当然我们也可以修改成：</p>
+<pre><code>
+func  pong(c *gin.Context)  {
+	c.JSON(200, gin.H{
+		&quot;message&quot;: &quot;pong&quot;,
+	})
+}
+func main() {
+	r := gin.Default()
+	r.GET(&quot;/ping&quot;, pong)
+	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
+}
+</code></pre>
+<p>在这里我们需要注意的就是这个函数的类型要是：func  (c *gin.Context)<br>
+然后我们可以发现在传递参数的里面，我们使用的是gin.H<br>
+我们点开它的源码：</p>
+<pre><code>// H is a shortcut for map[string]interface{}
+type H map[string]interface{}
+</code></pre>
+<p>我们看到了它就是一个map类型，因为在gin中经常使用的原因，所以开发者对它进行了封装。这样我们使用起来就更加的方便。</p>
+<h1 id="gin中new和default的不同">gin中new和Default的不同</h1>
+<p>在这里我们介绍两个方法，他们返回回来的都是一个*Engine<br>
+那么它们有什么不一样呢，在这里我们要知道的是不一样的点是使用Default后它会默认开启两个中间件，一个是recover一个是logger。</p>
+<h1 id="路由分组和url">路由分组和URL</h1>
+<p>在我们的开发中，我们为了程序的可读性，我们一般会把路由进行分组。<br>
+也是为了后期更好的寻找路由。<br>
+那么我们如何进行分组呢？<br>
+我们使用的是Group方法。</p>
+<pre><code>package main
+
+import &quot;github.com/gin-gonic/gin&quot;
+
+func  pong(c *gin.Context)  {
+	c.JSON(200, gin.H{
+		&quot;message&quot;: &quot;pong&quot;,
+	})
+}
+//演示分组
+func main() {
+	r := gin.Default()
+    group := r.Group(&quot;/v1&quot;)
+	{
+		group.GET(&quot;/ping&quot;, pong)
+	}
+
+	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
+}
+</code></pre>
+<h1 id="获取url参数">获取url参数</h1>
+<p>这里我们通过url传入参数，那么我们怎么操作呢?</p>
+<pre><code>package main
+
+import &quot;github.com/gin-gonic/gin&quot;
+
+func  pong(c *gin.Context)  {
+	id := c.Param(&quot;id&quot;)
+	c.JSON(200, gin.H{
+		&quot;message&quot;: id,
+	})
+}
+//演示分组
+func main() {
+	r := gin.Default()
+    group := r.Group(&quot;/v1&quot;)
+	{
+		group.GET(&quot;/:id&quot;, pong)
+	}
+
+	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
+}
+</code></pre>
+<p>但是呢我们可以发现这个东西是有问题的，我们这里设定的是id，按照我们常识这里，我们知道id一般来说是数字，但是这里不管是数值还是什么都可以传输。<br>
+那么我们怎么进行限制呢？<br>
+这里我们运用到了之后的表单验证的方式。</p>
+<pre><code>package main
+
+import (
+	&quot;github.com/gin-gonic/gin&quot;
+	&quot;net/http&quot;
+)
+
+type Person struct {
+	ID string `uri:&quot;id&quot; binding:&quot;required,uuid&quot;`
+	Name string `uri:&quot;name&quot; binding:&quot;required&quot;`
+}
+func main() {
+	r := gin.Default()
+    r.GET(&quot;/:name/:id&quot;, func(context *gin.Context) {
+		var person Person
+		if err := context.ShouldBindUri(&amp;person);err != nil{
+		context.Status(404)
+		return
+		}
+		context.JSON(http.StatusOK,gin.H{
+			&quot;name&quot;:person.Name,
+			&quot;id&quot;:person.ID,
+		})
+	})
+
+	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
+}
+</code></pre>
+<h1 id="获取get和post参数">获取GET和POST参数</h1>
+<p>这两种方式是我们比较常见的方式。那么下面我们详细的说明一下</p>
+<h2 id="get">GET</h2>
+<p>使用到的方法有两个一个是DefaultQuery和Query。这两个方法的区别在于，前者是可以有默认值的，后者不能设置默认值</p>
+<pre><code>package main
+
+import (
+	&quot;github.com/gin-gonic/gin&quot;
+	&quot;net/http&quot;
+)
+
+func main() {
+	r := gin.Default()
+    r.GET(&quot;/name&quot;,name)
+
+	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
+}
+
+func name(c *gin.Context){
+	name := c.DefaultQuery(&quot;name&quot;,&quot;lzz&quot;)
+	c.JSON(http.StatusOK,gin.H{
+		&quot;name&quot;:name,
+	})
+}
+</code></pre>
+<h2 id="post">POST</h2>
+<p>在post中我们要取出参数，我们也有两个方法，两个方法的区别和上面是一样的。<br>
+分别是DefaultPostForm和PostForm。</p>
+<pre><code>package main
+
+import (
+	&quot;github.com/gin-gonic/gin&quot;
+	&quot;net/http&quot;
+)
+
+func main() {
+	r := gin.Default()
+    r.POST(&quot;/postname&quot;,Postname)
+	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
+}
+
+func Postname(c *gin.Context) {
+	posrname := c.DefaultPostForm(&quot;name&quot;,&quot;lzz&quot;)
+	c.JSON(http.StatusOK,gin.H{
+		&quot;name&quot;:posrname,
+	})
+}
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[路径总和]]></title>
+        <id>https://IseEkko.github.io/post/lu-jing-zong-he/</id>
+        <link href="https://IseEkko.github.io/post/lu-jing-zong-he/">
+        </link>
+        <updated>2022-01-14T07:16:36.000Z</updated>
+        <summary type="html"><![CDATA[<p>计算二叉树路径上的和，是不是等于目标值。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>计算二叉树路径上的和，是不是等于目标值。</p>
+<!-- more -->
+<h1 id="题目">题目</h1>
+<p>给你二叉树的根节点 root 和一个表示目标和的整数 targetSum 。判断该树中是否存在 根节点到叶子节点 的路径，这条路径上所有节点值相加等于目标和 targetSum 。如果存在，返回 true ；否则，返回 false 。</p>
+<p>叶子节点 是指没有子节点的节点。<br>
+示例 1：</p>
+<p><img src="https://assets.leetcode.com/uploads/2021/01/18/pathsum1.jpg" alt="" loading="lazy"><br>
+输入：root = [5,4,8,11,null,13,4,7,2,null,null,null,1], targetSum = 22<br>
+输出：true<br>
+解释：等于目标和的根节点到叶节点路径如上图所示。<br>
+示例 2：<br>
+<img src="https://assets.leetcode.com/uploads/2021/01/18/pathsum2.jpg" alt="" loading="lazy"><br>
+输入：root = [1,2,3], targetSum = 5<br>
+输出：false<br>
+解释：树中存在两条根节点到叶子节点的路径：<br>
+(1 --&gt; 2): 和为 3<br>
+(1 --&gt; 3): 和为 4<br>
+不存在 sum = 5 的根节点到叶子节点的路径。<br>
+示例 3：</p>
+<p>输入：root = [], targetSum = 0<br>
+输出：false<br>
+解释：由于树是空的，所以不存在根节点到叶子节点的路径。</p>
+<p>来源：力扣（LeetCode）<br>
+链接：https://leetcode-cn.com/problems/path-sum<br>
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</p>
+<h1 id="思路">思路</h1>
+<p>这一个题目的思路不是很难，只是需要判断的东西会多一些，但是总体来说还是简单的。<br>
+这里我们还是使用递归来解答这个题目，使用的方法还是递归的三步骤</p>
+<h1 id="解题">解题</h1>
+<h3 id="首先确认须传入的参数和返回的参数值">首先确认须传入的参数和返回的参数值</h3>
+<pre><code>   这个题目最终是要判断是不是符合条件，所以我们的返回值我们用bool类型。因为我们还是对节点进行操作，所以我们传入的参数也就是节点，因为我们还要进行数值的判断，所以我们还要传入这个需要比对的值。
+</code></pre>
+<pre><code>trave(root *TreeNode,targetSum int)bool
+</code></pre>
+<h3 id="确定终止条件">确定终止条件</h3>
+<p>这里我们的终止条件就是看到最后叶子节点的时候，我们最后得到的值是是不是对应的值<br>
+也就是：</p>
+<pre><code>  if root.Left == nil&amp;&amp; root.Right == nil&amp;&amp; targetSum == 0{
+        return true
+    }
+    if root.Left == nil&amp;&amp; root.Right == nil{
+        return false
+    }
+</code></pre>
+<h3 id="确定单层逻辑">确定单层逻辑</h3>
+<p>这里我们确认一些单层的逻辑，也就是在这里我们用到了回溯的思想，如果我们没有找到相应的路径我们就回溯然后再次寻找，直到确认返回为止。</p>
+<pre><code>if root.Left != nil{
+        targetSum = targetSum - root.Left.Val
+        if trave(root.Left,targetSum){
+            return true
+            }
+        targetSum = targetSum + root.Left.Val
+        }
+    if root.Right != nil {
+        targetSum = targetSum-root.Right.Val
+        if trave(root.Right,targetSum){
+            return true
+            }
+        targetSum = targetSum+root.Right.Val
+    }
+    return false
+</code></pre>
+<h1 id="解题源码">解题源码</h1>
+<p>最后我们通过上面的步骤得到了最终的代码；</p>
+<pre><code>func hasPathSum(root *TreeNode, targetSum int) bool {
+if root == nil{
+    return false
+}
+return trave(root,targetSum-root.Val)
+}
+func trave(root *TreeNode,targetSum int)bool{
+    if root.Left == nil&amp;&amp; root.Right == nil&amp;&amp; targetSum == 0{
+        return true
+    }
+    if root.Left == nil&amp;&amp; root.Right == nil{
+        return false
+    }
+
+    if root.Left != nil{
+        targetSum = targetSum - root.Left.Val
+        if trave(root.Left,targetSum){
+            return true
+            }
+        targetSum = targetSum + root.Left.Val
+        }
+    if root.Right != nil {
+        targetSum = targetSum-root.Right.Val
+        if trave(root.Right,targetSum){
+            return true
+            }
+        targetSum = targetSum+root.Right.Val
+    }
+    return false
+}
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[二叉树的所有路径]]></title>
+        <id>https://IseEkko.github.io/post/er-cha-shu-de-suo-you-lu-jing/</id>
+        <link href="https://IseEkko.github.io/post/er-cha-shu-de-suo-you-lu-jing/">
+        </link>
+        <updated>2022-01-14T06:41:41.000Z</updated>
+        <summary type="html"><![CDATA[<p>关于二叉树的所有路径的题目，这里我们是用递归的思想写出来的题目</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>关于二叉树的所有路径的题目，这里我们是用递归的思想写出来的题目</p>
+<!-- more -->
+<h1 id="题目">题目</h1>
+<p>给你一个二叉树的根节点 root ，按 任意顺序 ，返回所有从根节点到叶子节点的路径。<br>
+叶子节点 是指没有子节点的节点。<br>
+示例 1：<br>
+<img src="https://assets.leetcode.com/uploads/2021/03/12/paths-tree.jpg" alt="" loading="lazy"><br>
+输入：root = [1,2,3,null,5]<br>
+输出：[&quot;1-&gt;2-&gt;5&quot;,&quot;1-&gt;3&quot;]<br>
+示例 2：</p>
+<p>输入：root = [1]<br>
+输出：[&quot;1&quot;]</p>
+<h1 id="思路">思路</h1>
+<p>我们这里使用的是递归的思想，也就是递归的三步骤，我们按照三步骤逐步的向下写</p>
+<h1 id="解题过程">解题过程</h1>
+<p>首先我们思考第一步</p>
+<h3 id="定义函数确定返回值和输入值">定义函数确定返回值和输入值</h3>
+<p>func(node *TreeNode,path string)<br>
+这里传入的值是节点，然后和路径</p>
+<h3 id="确定终止条件">确定终止条件</h3>
+<p>这的终止条件有些不一样，开始写的时候，我写的条件是</p>
+<pre><code>if root == nil{
+    ...
+}
+</code></pre>
+<p>显然这里的题目条件没有这么简单，所以我们这里需要注意一下这里的条件 ，因为如果是我之前书写的条件，那么我们后面就会有一大堆的判断，显然是不合理的。所以我们这里要思考一些终止条件。<br>
+我们知道，我们路径终止的条件是什么，是节点左右节点都为空，所以我们的终止条件就来了。</p>
+<pre><code>if (node.Left ==nil &amp;&amp; node.Right == nil){
+</code></pre>
+<p>上面就是我们的终止条件</p>
+<h3 id="单层逻辑">单层逻辑</h3>
+<p>这里的单层逻辑就不过多的赘述，我们直接上代码</p>
+<pre><code>  if (node.Left ==nil &amp;&amp; node.Right == nil){
+              s  := path + strconv.Itoa(node.Val)
+              res = append(res,s)
+              return
+          }
+          path = path + strconv.Itoa(node.Val) + &quot;-&gt;&quot;
+          if node.Left != nil{
+             allpath(node.Left,path)
+          }
+          if node.Right != nil{
+              allpath(node.Right,path)
+          }
+</code></pre>
+<h1 id="最终题目代码">最终题目代码</h1>
+<pre><code>func binaryTreePaths(root *TreeNode) []string { 
+      var res []string
+      var allpath func(node *TreeNode,path string)
+      allpath = func(node *TreeNode,path string){
+          if (node.Left ==nil &amp;&amp; node.Right == nil){
+              s  := path + strconv.Itoa(node.Val)
+              res = append(res,s)
+              return
+          }
+          path = path + strconv.Itoa(node.Val) + &quot;-&gt;&quot;
+          if node.Left != nil{
+             allpath(node.Left,path)
+          }
+          if node.Right != nil{
+              allpath(node.Right,path)
+          }
+      }
+      allpath(root,&quot;&quot;)
+      return res
+}
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[GORM-使用]]></title>
         <id>https://IseEkko.github.io/post/gorm-lian-jie/</id>
