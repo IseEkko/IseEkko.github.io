@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://IseEkko.github.io/</id>
     <title>isekko</title>
-    <updated>2022-01-14T12:26:50.720Z</updated>
+    <updated>2022-01-15T12:22:13.541Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://IseEkko.github.io/"/>
     <link rel="self" href="https://IseEkko.github.io/atom.xml"/>
@@ -209,6 +209,62 @@ func Postname(c *gin.Context) {
 		&quot;name&quot;:posrname,
 	})
 }
+</code></pre>
+<h1 id="关于gin表单验证">关于gin表单验证</h1>
+<pre><code> 我们在做web开发的时候，肯定是会遇见表单验证的需求的，表单验证也是为了一定的安全性。
+</code></pre>
+<p>关于表单验证这里我们直接上代码，详情可以查看官方文档。</p>
+<pre><code>package main
+
+import (
+	&quot;fmt&quot;
+	&quot;github.com/gin-gonic/gin&quot;
+	&quot;net/http&quot;
+)
+
+type LoginForm struct {
+	User string `form:&quot;user1&quot; json:&quot;user&quot; binding:&quot;required,min=3,max=10&quot;`
+	Password string `form:&quot;password&quot; json:&quot;password&quot; binding:&quot;required&quot;`
+}
+
+type SignUpForm struct {
+	Age        uint8  `form:&quot;age&quot; json:&quot;age&quot; binding:&quot;gte=1,lte=130&quot;`
+	Name       string `form:&quot;name&quot; binding:&quot;required,min=3&quot;`
+	Email      string `form:&quot;email&quot; binding:&quot;required,email&quot;`
+	Password   string `form:&quot;password&quot; binding:&quot;required&quot;`
+	RePassword string `form:&quot;re_password&quot; binding:&quot;required,eqfield=Password&quot;`
+}
+func main() {
+   router := gin.Default()
+   router.POST(&quot;/login&quot;, func(c *gin.Context) {
+	   var login LoginForm
+	  if  err := c.ShouldBind(&amp;login);err != nil{
+		  fmt.Println(err.Error())
+		 c.JSON(http.StatusBadRequest,gin.H{
+			  &quot;err&quot;: err.Error(),
+		  })
+		  return
+	  }
+		  c.JSON(http.StatusOK,gin.H{
+			  &quot;msg&quot;:&quot;登录成功&quot;,
+		  })
+   })
+   router.POST(&quot;/sigin&quot;, func(context *gin.Context) {
+	var siginUpForm  SignUpForm
+	if err := context.ShouldBind(&amp;siginUpForm); err != nil{
+		fmt.Println(err.Error())
+		context.JSON(http.StatusBadRequest,gin.H{
+			&quot;err&quot;:err.Error(),
+		})
+		return
+	}
+	context.JSON(http.StatusOK,gin.H{
+		&quot;msg&quot;:&quot;成功&quot;,
+	})
+   })
+   router.Run()
+}
+
 </code></pre>
 ]]></content>
     </entry>

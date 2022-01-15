@@ -85,7 +85,7 @@ import &quot;github..." />
       <div class="hide-on-mobile hide-on-tablet hide-on-desktop">
         <div id="search-lightbox" class="grid-container grid-small grid-parent mfp-hide">
           <div class="search-wrapper section">
-            <form id="gridea-search-form" data-update="1642163205285" action="/search/index.html" class="search-form" _lpchecked="1">
+            <form id="gridea-search-form" data-update="1642249331171" action="/search/index.html" class="search-form" _lpchecked="1">
               <input type="text" name="q" id="s" value="" class="search-field" placeholder="搜点啥..." aria-label="搜点啥..." required="">
               <button type="submit" class="submit" aria-label="Submit">
                 <i class="fa fa-search-line"></i>
@@ -100,7 +100,7 @@ import &quot;github..." />
         <div class="center content">
           <div class="featured-image cover" style="background-image: url('https://avatars.githubusercontent.com/u/7894478?s=200&amp;v=4');">
             <div class="meta top"> 
-              <time class="meta-info" style="float:left;" datetime="2022-01-14"><i class="fa fa-calendar"></i><span class="lately">3 小时前</span></time>
+              <time class="meta-info" style="float:left;" datetime="2022-01-14"><i class="fa fa-calendar"></i><span class="lately">1 天前</span></time>
               
             </div>
             <div class="info">
@@ -310,6 +310,62 @@ func Postname(c *gin.Context) {
 		&quot;name&quot;:posrname,
 	})
 }
+</code></pre>
+<h1 id="关于gin表单验证">关于gin表单验证</h1>
+<pre><code> 我们在做web开发的时候，肯定是会遇见表单验证的需求的，表单验证也是为了一定的安全性。
+</code></pre>
+<p>关于表单验证这里我们直接上代码，详情可以查看官方文档。</p>
+<pre><code>package main
+
+import (
+	&quot;fmt&quot;
+	&quot;github.com/gin-gonic/gin&quot;
+	&quot;net/http&quot;
+)
+
+type LoginForm struct {
+	User string `form:&quot;user1&quot; json:&quot;user&quot; binding:&quot;required,min=3,max=10&quot;`
+	Password string `form:&quot;password&quot; json:&quot;password&quot; binding:&quot;required&quot;`
+}
+
+type SignUpForm struct {
+	Age        uint8  `form:&quot;age&quot; json:&quot;age&quot; binding:&quot;gte=1,lte=130&quot;`
+	Name       string `form:&quot;name&quot; binding:&quot;required,min=3&quot;`
+	Email      string `form:&quot;email&quot; binding:&quot;required,email&quot;`
+	Password   string `form:&quot;password&quot; binding:&quot;required&quot;`
+	RePassword string `form:&quot;re_password&quot; binding:&quot;required,eqfield=Password&quot;`
+}
+func main() {
+   router := gin.Default()
+   router.POST(&quot;/login&quot;, func(c *gin.Context) {
+	   var login LoginForm
+	  if  err := c.ShouldBind(&amp;login);err != nil{
+		  fmt.Println(err.Error())
+		 c.JSON(http.StatusBadRequest,gin.H{
+			  &quot;err&quot;: err.Error(),
+		  })
+		  return
+	  }
+		  c.JSON(http.StatusOK,gin.H{
+			  &quot;msg&quot;:&quot;登录成功&quot;,
+		  })
+   })
+   router.POST(&quot;/sigin&quot;, func(context *gin.Context) {
+	var siginUpForm  SignUpForm
+	if err := context.ShouldBind(&amp;siginUpForm); err != nil{
+		fmt.Println(err.Error())
+		context.JSON(http.StatusBadRequest,gin.H{
+			&quot;err&quot;:err.Error(),
+		})
+		return
+	}
+	context.JSON(http.StatusOK,gin.H{
+		&quot;msg&quot;:&quot;成功&quot;,
+	})
+   })
+   router.Run()
+}
+
 </code></pre>
 
                 </div>
