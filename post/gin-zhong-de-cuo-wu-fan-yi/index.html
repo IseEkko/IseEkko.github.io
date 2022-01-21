@@ -1,8 +1,8 @@
 <html>
   <head>
-  <meta charset="utf-8" />
+    <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>标签列表 | isekko</title>
+<title>GIN中的错误翻译 | isekko</title>
 <meta name="description" content="对个人笔记的总结，这个网站的笔记将会是我经过提炼过后的笔记。" />
 <link rel="shortcut icon" href="https://IseEkko.github.io//favicon.ico">
 <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
@@ -14,11 +14,18 @@
 <script src="https://IseEkko.github.io//media/js/view-image.min.js"></script>
 <script src="https://IseEkko.github.io//media/js/jquery.magnific-popup.min.js"></script>
 <script src="https://IseEkko.github.io//media/js/functions.js"></script>
+    <meta name="referrer" content="never">
+    <meta name="description" content="我们在书写程序的时候，遇见报错对于一些程序员来说全英文的报错不是很友好，这里找到了一个错误翻译的方法
+
+关于翻译器的导入
+这里我们先要导入预备的资源，然后再创建翻译器
+我们需要导入的包
+&quot;github.com/gin-gonic/..." />
+    <meta name="keywords" content="GIN" />
+    <script src="https://IseEkko.github.io//media/js/waterfall.min.js"></script>
+    <script src="https://IseEkko.github.io//media/js/prism.min.js"></script>
   </head>
   <body>
-    <!-- start: #wrapper -->
-    <div class="wrapper">
-      
             <header id="header" class="grid-container">
         <!-- start: .menu-wrapper -->
         <div class="menu-mobile"> 
@@ -85,28 +92,183 @@
         </div>
       </div>
 
-      <main id="tags" class="main fullcover no-sidebar content">
-        <div class="grid-container module-wrapper enable-masonry aos-init aos-animate" data-aos="fade-up">
+      <main id="single" class="main grid-container fullcover no-sidebar aos-init aos-animate" data-aos="fade">
+
+        <div class="center content">
+          <div class="featured-image cover" style="background-image: url('/media/images/gridea.jpg');">
+            <div class="meta top"> 
+              <time class="meta-info" style="float:left;" datetime="2022-01-21"><i class="fa fa-calendar"></i><span class="lately">17 分钟前</span></time>
+              
+            </div>
+            <div class="info">
+              <div class="tags ">
+                
+                      <a href="https://IseEkko.github.io/tag/O3--25kKR/" class="ctag ctag-0 ctag-O3--25kKR" aria-label="">GIN</a>
+                    
+              </div>
+              <h1 class="title ularge white bold">GIN中的错误翻译</h1>
+            </div>
+          </div>
+        </div>  
+
         <div class="epcl-page-wrapper">
-          <div class="left-content grid-70 np-mobile widget_epcl_related_articles">
+          <div class="left-content grid-70 np-mobile">
+            <article class="main-article post">
+              <section class="post-content">
+                <div class="text">
+                  <p>我们在书写程序的时候，遇见报错对于一些程序员来说全英文的报错不是很友好，这里找到了一个错误翻译的方法</p>
+<!-- more -->
+<h2 id="关于翻译器的导入">关于翻译器的导入</h2>
+<p>这里我们先要导入预备的资源，然后再创建翻译器<br>
+我们需要导入的包</p>
+<pre><code>&quot;github.com/gin-gonic/gin/binding&quot;
+	&quot;github.com/go-playground/locales/en&quot;
+	&quot;github.com/go-playground/locales/zh&quot;
+	ut &quot;github.com/go-playground/universal-translator&quot;
+	&quot;github.com/go-playground/validator/v10&quot;
+	en_translations &quot;github.com/go-playground/validator/v10/translations/en&quot;
+	zh_translations &quot;github.com/go-playground/validator/v10/translations/zh&quot;
+</code></pre>
+<p>导入这些包后我们就可以开始相关的书写了，这里大家需要注意的是，我们在书写的时候，导包可以是自动导入的，这里写出来是怕同学忘记有那些包，或者导包失败导致后序的代码无效。</p>
+<h2 id="初始化翻译器">初始化翻译器</h2>
+<pre><code>//翻译的更换
+func InitTrans(locale string)(err error){
+	if v,ok := binding.Validator.Engine().(*validator.Validate);ok{
+		//注册一个获取json的tag自定义方法
+		v.RegisterTagNameFunc(func(fld reflect.StructField) string {
+			name := strings.SplitN(fld.Tag.Get(&quot;json&quot;),&quot;,&quot;,2)[0]
+			if name == &quot;-&quot;{
+				return &quot;&quot;
+			}
+			return name
+		})
+		zhT := zh.New()//中文翻译器
+		enT := en.New()//英文翻译器
+		uni := ut.New(enT,zhT,enT)
+		trans,ok = uni.GetTranslator(locale)
+		if !ok {
+			return fmt.Errorf(&quot;uni.GetTranslator(%s)&quot;,locale)
+		}
+		switch locale{
+		case &quot;en&quot;:
+			en_translations.RegisterDefaultTranslations(v,trans)
+		case &quot;zh&quot;:
+			zh_translations.RegisterDefaultTranslations(v,trans)
+		default:
+			zh_translations.RegisterDefaultTranslations(v,trans)
+		}
+	}
+	return nil
+}
+</code></pre>
+<p>后面我们发现了一个问题，就是我们出现的效果是这样的有前缀的，结构体前缀，当然我们是不需要的所以后序我们添加上了：</p>
+<pre><code>func RemoveTopStruct(fileds map[string]string)map[string]string  {
+	rsp := map[string]string{}
+	for field ,err := range fileds{
+		rsp[field[strings.Index(field,&quot;.&quot;)+1:]] = err
+		}
+		return rsp
+}
+</code></pre>
+<p>这个方法我们可以得到tag。<br>
+然后我们在测试的时候，发现了一个问题，就是我们得到的错误，字段他没有按照tag来完成书写，这个时候我们加上了这一段代码实现功能。</p>
+<pre><code>//注册一个获取json的tag自定义方法
+		v.RegisterTagNameFunc(func(fld reflect.StructField) string {
+			name := strings.SplitN(fld.Tag.Get(&quot;json&quot;),&quot;,&quot;,2)[0]
+			if name == &quot;-&quot;{
+				return &quot;&quot;
+			}
+			return name
+		})
+</code></pre>
+<h2 id="最后使用">最后使用</h2>
+<p>在使用的时候，我们需要注意的事情，我们要注册一个全局的变量，这样才能在任何的地方使用。</p>
+<pre><code>var trans ut.Translator
+</code></pre>
+<p>创建完成后，使用</p>
+<pre><code>//初始化翻译
+	if err := InitTrans(&quot;zh&quot;);err != nil{
+	  fmt.Println(&quot;初始化翻译器错误&quot;)
+	  return
+	}
+   router := gin.Default()
+   router.POST(&quot;/login&quot;, func(c *gin.Context) {
+	   var login LoginForm
+	  if  err := c.ShouldBind(&amp;login);err != nil{
+		  errs ,ok := err.(validator.ValidationErrors)
+		  if !ok {
+			  c.JSON(http.StatusOK,gin.H{
+				  &quot;msg&quot;:err.Error(),
+			  })
+		  }
+		 c.JSON(http.StatusBadRequest,gin.H{
+			  &quot;err&quot;: RemoveTopStruct(errs.Translate(trans)),
+		  })
+		  return
+	  }
+		  c.JSON(http.StatusOK,gin.H{
+			  &quot;msg&quot;:&quot;登录成功&quot;,
+		  })
+   })
+</code></pre>
 
-          <div class="widget_tag_cloud tagcloud">
-            
-              <a href="https://IseEkko.github.io/tag/O3--25kKR/" class="ctag ctag-0 ctag-O3--25kKR" aria-label="">GIN</a>
-            
-              <a href="https://IseEkko.github.io/tag/89sSoit-w/" class="ctag ctag-1 ctag-89sSoit-w" aria-label="">算法</a>
-            
-              <a href="https://IseEkko.github.io/tag/lE3fv7REd/" class="ctag ctag-2 ctag-lE3fv7REd" aria-label="">gorm</a>
-            
-          </div>
-        </div>
+                </div>
+                <div class="clear"></div>
+              </section>
+            </article>
+            <div class="clear"></div>
 
-        </div>
+            <section class="related section">
+              
+              
+              <article class="next grid-50 tablet-grid-50 grid-parent">
+                <div class="thumb cover lazy loaded" style="background-image: url('https://avatars.githubusercontent.com/u/7894478?s=200&amp;v=4');"></div>
+                 <a href="https://IseEkko.github.io/post/gin-xue-xi/" class="full-link"></a>
+                 <div class="info">
+                  <time datetime="2022-01-14">2022-01-14</time>
+                  <h4 class="title white no-margin">GIN学习</h4>
+                </div>
+                 <span class="epcl-button red">
+                  <img src="https://IseEkko.github.io//media/images/right-arrow.svg" width="15" alt="Left Arrow">
+                </span>
+                <div class="overlay"></div>
+              </article>
+              
+
+                <div class="clear"></div>
+            </section>
+
+              <div class="clear"></div>
+              
+            
+              <div id="comments" class="bg-white hosted ">
+                <div class="clear"></div>
+<script>
+jQuery(document).ready(function($){
+    $('.vemoji-btn').text('😀');
+    $("#comments").on('click', 'span.vat',function(){
+        $(this).parent('div.vmeta').next("div.vcontent").after($("div.vwrap"));
+        $('textarea#veditor').focus();
+    })
+    if(window.location.hash){
+        var checkExist = setInterval(function() {
+            if ($(window.location.hash).length) {
+                $('html, body').animate({scrollTop: $(window.location.hash).offset().top-200}, 600);
+                clearInterval(checkExist);
+            }
+        }, 100);
+    }
+})
+</script>
+
+              </div>
+            
+
+            </div>
           </div>
-        </div>
       </main>
 
-        <footer id="footer" class="grid-container">
+          <footer id="footer" class="grid-container">
         <div class="widgets row gradient-effect">
             <div class="default-sidebar border-effect">
               <div class="grid-33 tablet-grid-50 mobile-grid-100">
@@ -255,6 +417,9 @@
     })
 </script>
     
+
+      
+    <script src="https://IseEkko.github.io//media/js/functions-post.js"></script>
 
     </div>
     <!-- end: #wrapper -->
