@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://IseEkko.github.io/</id>
     <title>isekko</title>
-    <updated>2022-01-21T11:43:27.189Z</updated>
+    <updated>2022-01-21T13:47:19.158Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://IseEkko.github.io/"/>
     <link rel="self" href="https://IseEkko.github.io/atom.xml"/>
@@ -10,6 +10,116 @@
     <logo>https://IseEkko.github.io/images/avatar.png</logo>
     <icon>https://IseEkko.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, isekko</rights>
+    <entry>
+        <title type="html"><![CDATA[GIN中间件]]></title>
+        <id>https://IseEkko.github.io/post/gin-zhong-jian-jian/</id>
+        <link href="https://IseEkko.github.io/post/gin-zhong-jian-jian/">
+        </link>
+        <updated>2022-01-21T13:32:35.000Z</updated>
+        <summary type="html"><![CDATA[<p>关于中间件的使用，和原理</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>关于中间件的使用，和原理</p>
+<!-- more -->
+<h2 id="使用中间件">使用中间件</h2>
+<p>关于中间件的使用，让我想到了gin.Default()和gin.new(）的区别，区别在什么呢，使用Default，默认是使用了两个全局中间件，那么我们查看default的源码，我们可以知道中间件是怎么使用的，下面我看一下default的源码：</p>
+<pre><code>func Default() *Engine {
+	debugPrintWARNINGDefault()
+	engine := New()
+	engine.Use(Logger(), Recovery())
+	return engine
+}
+</code></pre>
+<p>这里我们直接把目光看到：engine.Use(Logger(), Recovery())，这里直接使用use就使用的中间件。所以我们知道了使用中间件使用的是，use这个方法。</p>
+<pre><code>package main
+
+import (
+	&quot;fmt&quot;
+	&quot;github.com/gin-gonic/gin&quot;
+	&quot;net/http&quot;
+	&quot;time&quot;
+)
+
+func main() {
+	//我们在前面的学习我们知道了，使用default。会默认的使用两个中间件。
+	//这我们为了演示使用中间件，这里我们就使用NEw创建
+//r := gin.Default()
+    r := gin.New()
+	//使用logger中间件
+	r.Use(mylogger())
+	//使用recovery
+	r.Use(gin.Recovery())
+	//上面的使用方法是为全局使用的。
+
+	/**
+	下面这个方式，是在这个组内的路由都会使用到这个中间件。
+	 */
+	auth := r.Group(&quot;/goods&quot;, func(c *gin.Context) {
+
+	})
+	auth.Use(authsre)
+	auth.GET(&quot;/ceshi&quot;)
+	auth.GET(&quot;/c&quot;)
+	r.Run()
+}
+
+func authsre(context *gin.Context) {
+	fmt.Println(&quot;goods中间件&quot;)
+}
+
+func mylogger() gin.HandlerFunc{
+	return func(c *gin.Context) {
+		t := time.Now()
+		c.Set(&quot;example&quot;,&quot;123456&quot;)
+		c.Next()
+		end := time.Since(t)
+		fmt.Printf(&quot;耗时：%v \n&quot;,end)
+		status := c.Writer.Status()
+		fmt.Println(&quot;状态：&quot;,status)
+	}
+}
+
+func  TokenReqiired()gin.HandlerFunc  {
+	return func(c *gin.Context){
+		var token string
+		for k,v := range c.Request.Header{
+			if k == &quot;x-token&quot;{
+				if k == &quot;x-token&quot;{
+					token = v[0]
+				}
+			}
+		}
+		if token != &quot;bobby&quot;{
+			c.JSON(http.StatusUnauthorized,gin.H{
+				&quot;msg&quot;:&quot;未登录&quot;,
+			})
+			return
+			//这里只能使用c.Abort()就会阻止后面的逻辑的运行。用return 是没有用的
+		}
+		c.Next()
+	}
+}
+</code></pre>
+<p>上面就是我们使用中间件的方式。</p>
+<h2 id="原理解析">原理解析</h2>
+<p>这里我们发现一个问题，在中间件中，我们使用了return处理逻辑的时候，发现我们不想让后面的逻辑运行，但是使用return还是使用了，那么这是为什么呢。<br>
+这里我们需要注意的就是这中间件执行的流程<br>
+这里我们知道我们使用中间件使用的是，use去注册调用的，这个时候我们查看一个他的源码：</p>
+<pre><code>func (group *RouterGroup) Use(middleware ...HandlerFunc) IRoutes {
+	group.Handlers = append(group.Handlers, middleware...)
+	return group.returnObj()
+}
+</code></pre>
+<p>点开过后，我们发现这里有一个：group.Handlers</p>
+<pre><code>// HandlersChain defines a HandlerFunc array.
+type HandlersChain []HandlerFunc
+</code></pre>
+<p>这里发现了一个切片，然后我们再去查看运行逻辑中，我们是怎么注册路由的，然后我们点开同样发现了这个切片，然后我们对比了一下，我们发现了一个问题，也就是中间件和运行的逻辑分别是不同的handler并不是一体的，他们会按照顺序被安排到这个切片中，所以我们return是无效的，这个时候我们应该怎么办呢。<br>
+这里原理也很简单，也就是我们不想去执行这些handler的时候，我们直接把后面的删除，或者把指针移到最后面就可以了。<br>
+使用到的方法是：<br>
+c.Abort()<br>
+在上面我们书写的使用中间件源码中也有。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[GIN中的错误翻译]]></title>
         <id>https://IseEkko.github.io/post/gin-zhong-de-cuo-wu-fan-yi/</id>
