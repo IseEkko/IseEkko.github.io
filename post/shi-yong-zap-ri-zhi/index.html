@@ -2,7 +2,7 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>GIN学习 | isekko</title>
+<title>使用zap日志 | isekko</title>
 <meta name="description" content="对个人笔记的总结，这个网站的笔记将会是我经过提炼过后的笔记。" />
 <link rel="shortcut icon" href="https://IseEkko.github.io//favicon.ico">
 <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
@@ -15,16 +15,18 @@
 <script src="https://IseEkko.github.io//media/js/jquery.magnific-popup.min.js"></script>
 <script src="https://IseEkko.github.io//media/js/functions.js"></script>
     <meta name="referrer" content="never">
-    <meta name="description" content="详细的学习gin的知识点，不是第一次学习了，这次梳理一个学习的文档出来
+    <meta name="description" content="使用zap日志
 
-第一个gin程序
- 这里我们开始演示一下gin的开始程序，也就是快速入门。
- 我们来看一下代码：
-
+将日志打印到文件里面
 package main
 
-import &quot;github..." />
-    <meta name="keywords" content="GIN" />
+import (
+	&quot;go.uber.org/zap&quot;
+	&quot;time&quot;
+)
+
+func NewLogger() (*zap.Logg..." />
+    <meta name="keywords" content="" />
     <script src="https://IseEkko.github.io//media/js/waterfall.min.js"></script>
     <script src="https://IseEkko.github.io//media/js/prism.min.js"></script>
   </head>
@@ -98,18 +100,16 @@ import &quot;github..." />
       <main id="single" class="main grid-container fullcover no-sidebar aos-init aos-animate" data-aos="fade">
 
         <div class="center content">
-          <div class="featured-image cover" style="background-image: url('https://avatars.githubusercontent.com/u/7894478?s=200&amp;v=4');">
+          <div class="featured-image cover" style="background-image: url('/media/images/gridea.jpg');">
             <div class="meta top"> 
-              <time class="meta-info" style="float:left;" datetime="2022-01-14"><i class="fa fa-calendar"></i><span class="lately">2 个月前</span></time>
+              <time class="meta-info" style="float:left;" datetime="2022-02-12"><i class="fa fa-calendar"></i><span class="lately">20 天前</span></time>
               
             </div>
             <div class="info">
               <div class="tags ">
                 
-                      <a href="https://IseEkko.github.io/tag/O3--25kKR/" class="ctag ctag-0 ctag-O3--25kKR" aria-label="">GIN</a>
-                    
               </div>
-              <h1 class="title ularge white bold">GIN学习</h1>
+              <h1 class="title ularge white bold">使用zap日志</h1>
             </div>
           </div>
         </div>  
@@ -119,253 +119,38 @@ import &quot;github..." />
             <article class="main-article post">
               <section class="post-content">
                 <div class="text">
-                  <p>详细的学习gin的知识点，不是第一次学习了，这次梳理一个学习的文档出来</p>
+                  <p>使用zap日志</p>
 <!-- more -->
-<h1 id="第一个gin程序">第一个gin程序</h1>
-<pre><code> 这里我们开始演示一下gin的开始程序，也就是快速入门。
- 我们来看一下代码：
-</code></pre>
+<h2 id="将日志打印到文件里面">将日志打印到文件里面</h2>
 <pre><code>package main
 
-import &quot;github.com/gin-gonic/gin&quot;
+import (
+	&quot;go.uber.org/zap&quot;
+	&quot;time&quot;
+)
 
-func main() {
-	r := gin.Default()
-	r.GET(&quot;/ping&quot;, func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			&quot;message&quot;: &quot;pong&quot;,
-		})
-	})
-	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
-}
-</code></pre>
-<p>这里我们详细的拆分一下这个代码，</p>
-<h2 id="导包">导包</h2>
-<p>这里我们可以使用go mod进行包的导入</p>
-<h2 id="代码细节">代码细节</h2>
-<p>第一行代码</p>
-<pre><code>	r := gin.Default()
-</code></pre>
-<p>这个一行代码，就是产生了一个gin的实例<br>
-然后后面进行操作，</p>
-<pre><code>r.GET(&quot;/ping&quot;, func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			&quot;message&quot;: &quot;pong&quot;,
-		})
-	})
-</code></pre>
-<p>这里面首先有一个GET方法，对于这个GET方法我们首先来看一下它的源码</p>
-<pre><code>// GET is a shortcut for router.Handle(&quot;GET&quot;, path, handle).
-func (group *RouterGroup) GET(relativePath string, handlers ...HandlerFunc) IRoutes {
-	return group.handle(http.MethodGet, relativePath, handlers)
-}
-</code></pre>
-<p>看到源码我们可以看到里面的参数，首先第一个参数就是注册的路径，然后第二个就是处理器的注册。<br>
-在这里我们注册的是一个匿名函数。当然我们也可以修改成：</p>
-<pre><code>
-func  pong(c *gin.Context)  {
-	c.JSON(200, gin.H{
-		&quot;message&quot;: &quot;pong&quot;,
-	})
-}
-func main() {
-	r := gin.Default()
-	r.GET(&quot;/ping&quot;, pong)
-	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
-}
-</code></pre>
-<p>在这里我们需要注意的就是这个函数的类型要是：func  (c *gin.Context)<br>
-然后我们可以发现在传递参数的里面，我们使用的是gin.H<br>
-我们点开它的源码：</p>
-<pre><code>// H is a shortcut for map[string]interface{}
-type H map[string]interface{}
-</code></pre>
-<p>我们看到了它就是一个map类型，因为在gin中经常使用的原因，所以开发者对它进行了封装。这样我们使用起来就更加的方便。</p>
-<h1 id="gin中new和default的不同">gin中new和Default的不同</h1>
-<p>在这里我们介绍两个方法，他们返回回来的都是一个*Engine<br>
-那么它们有什么不一样呢，在这里我们要知道的是不一样的点是使用Default后它会默认开启两个中间件，一个是recover一个是logger。</p>
-<h1 id="路由分组和url">路由分组和URL</h1>
-<p>在我们的开发中，我们为了程序的可读性，我们一般会把路由进行分组。<br>
-也是为了后期更好的寻找路由。<br>
-那么我们如何进行分组呢？<br>
-我们使用的是Group方法。</p>
-<pre><code>package main
-
-import &quot;github.com/gin-gonic/gin&quot;
-
-func  pong(c *gin.Context)  {
-	c.JSON(200, gin.H{
-		&quot;message&quot;: &quot;pong&quot;,
-	})
-}
-//演示分组
-func main() {
-	r := gin.Default()
-    group := r.Group(&quot;/v1&quot;)
-	{
-		group.GET(&quot;/ping&quot;, pong)
+func NewLogger() (*zap.Logger, error) {
+	ctg := zap.NewProductionConfig()
+	ctg.OutputPaths = []string{
+		&quot;./myproject.log&quot;,
 	}
-
-	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
+	return ctg.Build()
 }
-</code></pre>
-<h1 id="获取url参数">获取url参数</h1>
-<p>这里我们通过url传入参数，那么我们怎么操作呢?</p>
-<pre><code>package main
-
-import &quot;github.com/gin-gonic/gin&quot;
-
-func  pong(c *gin.Context)  {
-	id := c.Param(&quot;id&quot;)
-	c.JSON(200, gin.H{
-		&quot;message&quot;: id,
-	})
-}
-//演示分组
 func main() {
-	r := gin.Default()
-    group := r.Group(&quot;/v1&quot;)
-	{
-		group.GET(&quot;/:id&quot;, pong)
+	looger, err := NewLogger()
+	if err != nil {
+		panic(err)
 	}
-
-	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
+	sugar := looger.Sugar()
+	defer sugar.Sync()
+	url := &quot;https://imooc.com&quot;
+	sugar.Info(&quot;failed to fetch URL&quot;,
+		// Structured context as loosely typed key-value pairs.
+		&quot;url&quot;, url,
+		&quot;attempt&quot;, 3,
+		&quot;backoff&quot;, time.Second,
+	)
 }
-</code></pre>
-<p>但是呢我们可以发现这个东西是有问题的，我们这里设定的是id，按照我们常识这里，我们知道id一般来说是数字，但是这里不管是数值还是什么都可以传输。<br>
-那么我们怎么进行限制呢？<br>
-这里我们运用到了之后的表单验证的方式。</p>
-<pre><code>package main
-
-import (
-	&quot;github.com/gin-gonic/gin&quot;
-	&quot;net/http&quot;
-)
-
-type Person struct {
-	ID string `uri:&quot;id&quot; binding:&quot;required,uuid&quot;`
-	Name string `uri:&quot;name&quot; binding:&quot;required&quot;`
-}
-func main() {
-	r := gin.Default()
-    r.GET(&quot;/:name/:id&quot;, func(context *gin.Context) {
-		var person Person
-		if err := context.ShouldBindUri(&amp;person);err != nil{
-		context.Status(404)
-		return
-		}
-		context.JSON(http.StatusOK,gin.H{
-			&quot;name&quot;:person.Name,
-			&quot;id&quot;:person.ID,
-		})
-	})
-
-	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
-}
-</code></pre>
-<h1 id="获取get和post参数">获取GET和POST参数</h1>
-<p>这两种方式是我们比较常见的方式。那么下面我们详细的说明一下</p>
-<h2 id="get">GET</h2>
-<p>使用到的方法有两个一个是DefaultQuery和Query。这两个方法的区别在于，前者是可以有默认值的，后者不能设置默认值</p>
-<pre><code>package main
-
-import (
-	&quot;github.com/gin-gonic/gin&quot;
-	&quot;net/http&quot;
-)
-
-func main() {
-	r := gin.Default()
-    r.GET(&quot;/name&quot;,name)
-
-	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
-}
-
-func name(c *gin.Context){
-	name := c.DefaultQuery(&quot;name&quot;,&quot;lzz&quot;)
-	c.JSON(http.StatusOK,gin.H{
-		&quot;name&quot;:name,
-	})
-}
-</code></pre>
-<h2 id="post">POST</h2>
-<p>在post中我们要取出参数，我们也有两个方法，两个方法的区别和上面是一样的。<br>
-分别是DefaultPostForm和PostForm。</p>
-<pre><code>package main
-
-import (
-	&quot;github.com/gin-gonic/gin&quot;
-	&quot;net/http&quot;
-)
-
-func main() {
-	r := gin.Default()
-    r.POST(&quot;/postname&quot;,Postname)
-	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
-}
-
-func Postname(c *gin.Context) {
-	posrname := c.DefaultPostForm(&quot;name&quot;,&quot;lzz&quot;)
-	c.JSON(http.StatusOK,gin.H{
-		&quot;name&quot;:posrname,
-	})
-}
-</code></pre>
-<h1 id="关于gin表单验证">关于gin表单验证</h1>
-<pre><code> 我们在做web开发的时候，肯定是会遇见表单验证的需求的，表单验证也是为了一定的安全性。
-</code></pre>
-<p>关于表单验证这里我们直接上代码，详情可以查看官方文档。</p>
-<pre><code>package main
-
-import (
-	&quot;fmt&quot;
-	&quot;github.com/gin-gonic/gin&quot;
-	&quot;net/http&quot;
-)
-
-type LoginForm struct {
-	User string `form:&quot;user1&quot; json:&quot;user&quot; binding:&quot;required,min=3,max=10&quot;`
-	Password string `form:&quot;password&quot; json:&quot;password&quot; binding:&quot;required&quot;`
-}
-
-type SignUpForm struct {
-	Age        uint8  `form:&quot;age&quot; json:&quot;age&quot; binding:&quot;gte=1,lte=130&quot;`
-	Name       string `form:&quot;name&quot; binding:&quot;required,min=3&quot;`
-	Email      string `form:&quot;email&quot; binding:&quot;required,email&quot;`
-	Password   string `form:&quot;password&quot; binding:&quot;required&quot;`
-	RePassword string `form:&quot;re_password&quot; binding:&quot;required,eqfield=Password&quot;`
-}
-func main() {
-   router := gin.Default()
-   router.POST(&quot;/login&quot;, func(c *gin.Context) {
-	   var login LoginForm
-	  if  err := c.ShouldBind(&amp;login);err != nil{
-		  fmt.Println(err.Error())
-		 c.JSON(http.StatusBadRequest,gin.H{
-			  &quot;err&quot;: err.Error(),
-		  })
-		  return
-	  }
-		  c.JSON(http.StatusOK,gin.H{
-			  &quot;msg&quot;:&quot;登录成功&quot;,
-		  })
-   })
-   router.POST(&quot;/sigin&quot;, func(context *gin.Context) {
-	var siginUpForm  SignUpForm
-	if err := context.ShouldBind(&amp;siginUpForm); err != nil{
-		fmt.Println(err.Error())
-		context.JSON(http.StatusBadRequest,gin.H{
-			&quot;err&quot;:err.Error(),
-		})
-		return
-	}
-	context.JSON(http.StatusOK,gin.H{
-		&quot;msg&quot;:&quot;成功&quot;,
-	})
-   })
-   router.Run()
-}
-
 </code></pre>
 
                 </div>
@@ -376,26 +161,13 @@ func main() {
 
             <section class="related section">
               
-              <article class="prev grid-50 tablet-grid-50 grid-parent">
-                <div class="thumb cover lazy loaded" style="background-image: url('https://IseEkko.github.io//media/images/O3--25kKR.jpg');"></div>
-                 <a href="https://IseEkko.github.io/post/gin-zhong-de-cuo-wu-fan-yi/" class="full-link"></a>
-                 <div class="info">
-                  <time datetime="2022-01-21">2022-01-21</time>
-                  <h4 class="title white no-margin">GIN中的错误翻译</h4>
-                </div>
-                 <span class="epcl-button red">
-                  <img src="https://IseEkko.github.io//media/images/left-arrow.svg" width="15" alt="Left Arrow">
-                </span>
-                <div class="overlay"></div>
-              </article>
-              
               
               <article class="next grid-50 tablet-grid-50 grid-parent">
-                <div class="thumb cover lazy loaded" style="background-image: url('https://IseEkko.github.io//post-images/lu-jing-zong-he.jpg');"></div>
-                 <a href="https://IseEkko.github.io/post/lu-jing-zong-he/" class="full-link"></a>
+                <div class="thumb cover lazy loaded" style="background-image: url('https://IseEkko.github.io//media/images/gridea.jpg');"></div>
+                 <a href="https://IseEkko.github.io/post/zi-ji-wen-ti-1/" class="full-link"></a>
                  <div class="info">
-                  <time datetime="2022-01-14">2022-01-14</time>
-                  <h4 class="title white no-margin">路径总和</h4>
+                  <time datetime="2022-02-09">2022-02-09</time>
+                  <h4 class="title white no-margin">子集问题（1）</h4>
                 </div>
                  <span class="epcl-button red">
                   <img src="https://IseEkko.github.io//media/images/right-arrow.svg" width="15" alt="Left Arrow">

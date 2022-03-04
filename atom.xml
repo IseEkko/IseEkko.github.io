@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://IseEkko.github.io/</id>
     <title>isekko</title>
-    <updated>2022-02-09T06:59:05.164Z</updated>
+    <updated>2022-03-04T09:14:46.355Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://IseEkko.github.io/"/>
     <link rel="self" href="https://IseEkko.github.io/atom.xml"/>
@@ -10,6 +10,49 @@
     <logo>https://IseEkko.github.io/images/avatar.png</logo>
     <icon>https://IseEkko.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, isekko</rights>
+    <entry>
+        <title type="html"><![CDATA[使用zap日志]]></title>
+        <id>https://IseEkko.github.io/post/shi-yong-zap-ri-zhi/</id>
+        <link href="https://IseEkko.github.io/post/shi-yong-zap-ri-zhi/">
+        </link>
+        <updated>2022-02-12T05:34:31.000Z</updated>
+        <summary type="html"><![CDATA[<p>使用zap日志</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>使用zap日志</p>
+<!-- more -->
+<h2 id="将日志打印到文件里面">将日志打印到文件里面</h2>
+<pre><code>package main
+
+import (
+	&quot;go.uber.org/zap&quot;
+	&quot;time&quot;
+)
+
+func NewLogger() (*zap.Logger, error) {
+	ctg := zap.NewProductionConfig()
+	ctg.OutputPaths = []string{
+		&quot;./myproject.log&quot;,
+	}
+	return ctg.Build()
+}
+func main() {
+	looger, err := NewLogger()
+	if err != nil {
+		panic(err)
+	}
+	sugar := looger.Sugar()
+	defer sugar.Sync()
+	url := &quot;https://imooc.com&quot;
+	sugar.Info(&quot;failed to fetch URL&quot;,
+		// Structured context as loosely typed key-value pairs.
+		&quot;url&quot;, url,
+		&quot;attempt&quot;, 3,
+		&quot;backoff&quot;, time.Second,
+	)
+}
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[子集问题（1）]]></title>
         <id>https://IseEkko.github.io/post/zi-ji-wen-ti-1/</id>
@@ -948,73 +991,6 @@ fmt.Println(&quot;总共记录：&quot;,result.RowsAffected)
 当然了。我的sql很菜，我还是字学习gorm的时候，好好的学习一下sql，系统的学习一下。</p>
 <p>上面就是我给大家分享的gorm，下面我将会更新gorm中使用的细节。<br>
 有那里写的不好的地方，希望大家多指教指教。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[平衡二叉树]]></title>
-        <id>https://IseEkko.github.io/post/ping-heng-er-cha-shu/</id>
-        <link href="https://IseEkko.github.io/post/ping-heng-er-cha-shu/">
-        </link>
-        <updated>2022-01-11T07:34:17.000Z</updated>
-        <summary type="html"><![CDATA[<p>什么是平衡二叉树？<br>
-我们应该怎么去判断？</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>什么是平衡二叉树？<br>
-我们应该怎么去判断？</p>
-<!-- more -->
-<figure data-type="image" tabindex="1"><img src="https://IseEkko.github.io//post-images/1641891619971.png" alt="" loading="lazy"></figure>
-<h1 id="题目">题目</h1>
-<p>给定一个二叉树，判断它是否是高度平衡的二叉树。</p>
-<p>本题中，一棵高度平衡二叉树定义为：</p>
-<p>一个二叉树每个节点 的左右两个子树的高度差的绝对值不超过 1 。</p>
-<p>示例 1：<br>
- <img src="https://assets.leetcode.com/uploads/2020/10/06/balance_1.jpg" alt="" loading="lazy"></p>
-<p>输入：root = [3,9,20,null,null,15,7]<br>
-输出：true<br>
-示例 2：<br>
- <img src="https://assets.leetcode.com/uploads/2020/10/06/balance_2.jpg" alt="" loading="lazy"></p>
-<p>输入：root = [1,2,2,3,3,null,null,4,4]<br>
-输出：false<br>
-示例 3：</p>
-<p>输入：root = []<br>
-输出：true</p>
-<h1 id="思路">思路</h1>
-<p>题目很简单，思路也很清晰，也就是我们去看树的高度差不大于1.我们只要依据这个条件去写代码就可以了</p>
-<h1 id="解题">解题</h1>
-<pre><code>func isBalanced(root *TreeNode) bool {
-if root == nil{
-    return true
-}
-if (!isBalanced(root.Left)||!isBalanced(root.Right)){
-    return false
-}
-Left := getDepath(root.Left)+1
-Right := getDepath(root.Right)+1
-if (abs(Left-Right)&gt;1){
-    return false
-}
-return true
-}
-
-func getDepath(root *TreeNode)int{
-    if root == nil{
-        return 0
-    }
-    return max(getDepath(root.Left),getDepath(root.Right))+1
-}
-func max(left,right int)int{
-    if left &gt;right{
-        return left
-    }
-    return right
-}
-func abs(num int)int{
-if num&lt;0{
-    return -num
-}
-return num
-}
-</code></pre>
 ]]></content>
     </entry>
 </feed>
