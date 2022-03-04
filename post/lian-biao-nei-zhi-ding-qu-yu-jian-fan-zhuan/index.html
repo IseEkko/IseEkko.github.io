@@ -2,7 +2,7 @@
   <head>
     <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>路径总和 | isekko</title>
+<title>链表内指定区域间反转 | isekko</title>
 <meta name="description" content="对个人笔记的总结，这个网站的笔记将会是我经过提炼过后的笔记。" />
 <link rel="shortcut icon" href="https://IseEkko.github.io//favicon.ico">
 <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
@@ -15,10 +15,12 @@
 <script src="https://IseEkko.github.io//media/js/jquery.magnific-popup.min.js"></script>
 <script src="https://IseEkko.github.io//media/js/functions.js"></script>
     <meta name="referrer" content="never">
-    <meta name="description" content="计算二叉树路径上的和，是不是等于目标值。
+    <meta name="description" content="题目
+这个问题较之前的链表反转，存在很多不同的地方，这里我们将详细的进行说明
 
-题目
-给你二叉树的根节点 root 和一个表示目标和的整数 targetSum 。判断该树中是否存在 根节点到叶子节点 的路径，这条路径上所有节点值相加等于目标和 targetSum 。如果存在，..." />
+思路总结
+这个问题在面试中也是很容易考察的，我在书写的时候出现了思维上次的错误，查看了解析过后我发现了自己在这个问题上的不足。在这里一步一步的进行解析。
+首先我..." />
     <meta name="keywords" content="算法" />
     <script src="https://IseEkko.github.io//media/js/waterfall.min.js"></script>
     <script src="https://IseEkko.github.io//media/js/prism.min.js"></script>
@@ -93,9 +95,9 @@
       <main id="single" class="main grid-container fullcover no-sidebar aos-init aos-animate" data-aos="fade">
 
         <div class="center content">
-          <div class="featured-image cover" style="background-image: url('https://IseEkko.github.io//post-images/lu-jing-zong-he.jpg');">
+          <div class="featured-image cover" style="background-image: url('/media/images/gridea.jpg');">
             <div class="meta top"> 
-              <time class="meta-info" style="float:left;" datetime="2022-01-14"><i class="fa fa-calendar"></i><span class="lately">2 个月前</span></time>
+              <time class="meta-info" style="float:left;" datetime="2022-03-04"><i class="fa fa-calendar"></i><span class="lately">5 分钟前</span></time>
               
             </div>
             <div class="info">
@@ -104,7 +106,7 @@
                       <a href="https://IseEkko.github.io/tag/89sSoit-w/" class="ctag ctag-0 ctag-89sSoit-w" aria-label="">算法</a>
                     
               </div>
-              <h1 class="title ularge white bold">路径总和</h1>
+              <h1 class="title ularge white bold">链表内指定区域间反转</h1>
             </div>
           </div>
         </div>  
@@ -114,101 +116,22 @@
             <article class="main-article post">
               <section class="post-content">
                 <div class="text">
-                  <p>计算二叉树路径上的和，是不是等于目标值。</p>
+                  <h3 id="题目">题目</h3>
+<p>这个问题较之前的链表反转，存在很多不同的地方，这里我们将详细的进行说明</p>
 <!-- more -->
-<h1 id="题目">题目</h1>
-<p>给你二叉树的根节点 root 和一个表示目标和的整数 targetSum 。判断该树中是否存在 根节点到叶子节点 的路径，这条路径上所有节点值相加等于目标和 targetSum 。如果存在，返回 true ；否则，返回 false 。</p>
-<p>叶子节点 是指没有子节点的节点。<br>
-示例 1：</p>
-<p><img src="https://assets.leetcode.com/uploads/2021/01/18/pathsum1.jpg" alt="" loading="lazy"><br>
-输入：root = [5,4,8,11,null,13,4,7,2,null,null,null,1], targetSum = 22<br>
-输出：true<br>
-解释：等于目标和的根节点到叶节点路径如上图所示。<br>
-示例 2：<br>
-<img src="https://assets.leetcode.com/uploads/2021/01/18/pathsum2.jpg" alt="" loading="lazy"><br>
-输入：root = [1,2,3], targetSum = 5<br>
-输出：false<br>
-解释：树中存在两条根节点到叶子节点的路径：<br>
-(1 --&gt; 2): 和为 3<br>
-(1 --&gt; 3): 和为 4<br>
-不存在 sum = 5 的根节点到叶子节点的路径。<br>
-示例 3：</p>
-<p>输入：root = [], targetSum = 0<br>
-输出：false<br>
-解释：由于树是空的，所以不存在根节点到叶子节点的路径。</p>
-<p>来源：力扣（LeetCode）<br>
-链接：https://leetcode-cn.com/problems/path-sum<br>
-著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</p>
-<h1 id="思路">思路</h1>
-<p>这一个题目的思路不是很难，只是需要判断的东西会多一些，但是总体来说还是简单的。<br>
-这里我们还是使用递归来解答这个题目，使用的方法还是递归的三步骤</p>
-<h1 id="解题">解题</h1>
-<h3 id="首先确认须传入的参数和返回的参数值">首先确认须传入的参数和返回的参数值</h3>
-<pre><code>   这个题目最终是要判断是不是符合条件，所以我们的返回值我们用bool类型。因为我们还是对节点进行操作，所以我们传入的参数也就是节点，因为我们还要进行数值的判断，所以我们还要传入这个需要比对的值。
-</code></pre>
-<pre><code>trave(root *TreeNode,targetSum int)bool
-</code></pre>
-<h3 id="确定终止条件">确定终止条件</h3>
-<p>这里我们的终止条件就是看到最后叶子节点的时候，我们最后得到的值是是不是对应的值<br>
-也就是：</p>
-<pre><code>  if root.Left == nil&amp;&amp; root.Right == nil&amp;&amp; targetSum == 0{
-        return true
-    }
-    if root.Left == nil&amp;&amp; root.Right == nil{
-        return false
-    }
-</code></pre>
-<h3 id="确定单层逻辑">确定单层逻辑</h3>
-<p>这里我们确认一些单层的逻辑，也就是在这里我们用到了回溯的思想，如果我们没有找到相应的路径我们就回溯然后再次寻找，直到确认返回为止。</p>
-<pre><code>if root.Left != nil{
-        targetSum = targetSum - root.Left.Val
-        if trave(root.Left,targetSum){
-            return true
-            }
-        targetSum = targetSum + root.Left.Val
-        }
-    if root.Right != nil {
-        targetSum = targetSum-root.Right.Val
-        if trave(root.Right,targetSum){
-            return true
-            }
-        targetSum = targetSum+root.Right.Val
-    }
-    return false
-</code></pre>
-<h1 id="解题源码">解题源码</h1>
-<p>最后我们通过上面的步骤得到了最终的代码；</p>
-<pre><code>func hasPathSum(root *TreeNode, targetSum int) bool {
-if root == nil{
-    return false
-}
-return trave(root,targetSum-root.Val)
-}
-func trave(root *TreeNode,targetSum int)bool{
-    if root.Left == nil&amp;&amp; root.Right == nil&amp;&amp; targetSum == 0{
-        return true
-    }
-    if root.Left == nil&amp;&amp; root.Right == nil{
-        return false
-    }
-
-    if root.Left != nil{
-        targetSum = targetSum - root.Left.Val
-        if trave(root.Left,targetSum){
-            return true
-            }
-        targetSum = targetSum + root.Left.Val
-        }
-    if root.Right != nil {
-        targetSum = targetSum-root.Right.Val
-        if trave(root.Right,targetSum){
-            return true
-            }
-        targetSum = targetSum+root.Right.Val
-    }
-    return false
-}
-</code></pre>
+<h3 id="思路总结">思路总结</h3>
+<p>这个问题在面试中也是很容易考察的，我在书写的时候出现了思维上次的错误，查看了解析过后我发现了自己在这个问题上的不足。在这里一步一步的进行解析。<br>
+首先我们要明白我们做的这次反转，只是反转链表中的一部分，所以我们在交换位置位置的时候要格外的小心。<br>
+<img src="https://IseEkko.github.io//post-images/1646403991242.png" alt="" loading="lazy"><br>
+上面是我们准备的示意图，我们看到这里还没有发现与之前的链表反转有什么不同。<br>
+因为我们是需要交换其中的一部分，所以我们现在假设我们交换的是中间两个<br>
+在这里我们首先需要做的就是移动至相关位置。<br>
+<img src="https://IseEkko.github.io//post-images/1646403998343.png" alt="" loading="lazy"><br>
+现在我们移动到了想要的位置后，下一步就是进行交换，这里在交换的时候我们需要判断我们要交换多少次。答案是n右边界-m左边界次，这里我们要演示的是交换的核心过程<br>
+<img src="https://IseEkko.github.io//post-images/1646404004469.png" alt="" loading="lazy"><br>
+从图中我们看到我们首先做的是，将Next指针指向cur.Next,然后更具上面的步骤进行，我之前没有思考到位的就是pre指针的用法，最先我让他在交换的过程中也跟着交换，这是不对的。从图中我们知道他始终要指向交换后的对头上。<br>
+具体的实现代码如下：<br>
+<img src="https://IseEkko.github.io//post-images/1646404010538.png" alt="" loading="lazy"></p>
 
                 </div>
                 <div class="clear"></div>
@@ -218,26 +141,13 @@ func trave(root *TreeNode,targetSum int)bool{
 
             <section class="related section">
               
-              <article class="prev grid-50 tablet-grid-50 grid-parent">
-                <div class="thumb cover lazy loaded" style="background-image: url('https://avatars.githubusercontent.com/u/7894478?s=200&amp;v=4');"></div>
-                 <a href="https://IseEkko.github.io/post/gin-xue-xi/" class="full-link"></a>
-                 <div class="info">
-                  <time datetime="2022-01-14">2022-01-14</time>
-                  <h4 class="title white no-margin">GIN学习</h4>
-                </div>
-                 <span class="epcl-button red">
-                  <img src="https://IseEkko.github.io//media/images/left-arrow.svg" width="15" alt="Left Arrow">
-                </span>
-                <div class="overlay"></div>
-              </article>
-              
               
               <article class="next grid-50 tablet-grid-50 grid-parent">
-                <div class="thumb cover lazy loaded" style="background-image: url('https://pica.zhimg.com/80/v2-5f08c8f9581cb37ac5a437c1de9f984c_720w.jpg?source=1940ef5c');"></div>
-                 <a href="https://IseEkko.github.io/post/er-cha-shu-de-suo-you-lu-jing/" class="full-link"></a>
+                <div class="thumb cover lazy loaded" style="background-image: url('https://IseEkko.github.io//media/images/gridea.jpg');"></div>
+                 <a href="https://IseEkko.github.io/post/lian-biao-zhong-de-jie-dian-mei-k-ge-yi-zu-xuan-zhuan/" class="full-link"></a>
                  <div class="info">
-                  <time datetime="2022-01-14">2022-01-14</time>
-                  <h4 class="title white no-margin">二叉树的所有路径</h4>
+                  <time datetime="2022-03-04">2022-03-04</time>
+                  <h4 class="title white no-margin">链表中的节点每K个一组旋转</h4>
                 </div>
                  <span class="epcl-button red">
                   <img src="https://IseEkko.github.io//media/images/right-arrow.svg" width="15" alt="Left Arrow">
