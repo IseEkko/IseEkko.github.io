@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://IseEkko.github.io/</id>
     <title>isekko</title>
-    <updated>2022-03-04T14:30:34.314Z</updated>
+    <updated>2022-03-05T14:44:11.185Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://IseEkko.github.io/"/>
     <link rel="self" href="https://IseEkko.github.io/atom.xml"/>
@@ -10,6 +10,55 @@
     <logo>https://IseEkko.github.io/images/avatar.png</logo>
     <icon>https://IseEkko.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, isekko</rights>
+    <entry>
+        <title type="html"><![CDATA[链表中环的入口结点]]></title>
+        <id>https://IseEkko.github.io/post/lian-biao-zhong-huan-de-ru-kou-jie-dian/</id>
+        <link href="https://IseEkko.github.io/post/lian-biao-zhong-huan-de-ru-kou-jie-dian/">
+        </link>
+        <updated>2022-03-05T14:34:27.000Z</updated>
+        <content type="html"><![CDATA[<h3 id="简介">简介</h3>
+<p>原来遇见这个题目，被数学公式套路了，然后现在回过来学。并有了自己的思路。</p>
+<h3 id="解法一">解法一</h3>
+<p>今天想到了一个特别的想法，就是我们看这个题目其实想要考察我们的东西，很简单，就是去找到入口，那么我们如何找呢，我想的是首先我们要判断他是不是具有环，然后再去找他的入口，突然我的脑海里面出现了一个东西，map我突然恍然大悟，我们可以使用map去判断这个东西。<br>
+使用到了是map[*ListNode]int<br>
+当我们循环出现第二次的时候，那么这个节点就是入口，同时我们证明了这个是有环的。<br>
+<img src="https://IseEkko.github.io//post-images/1646490954143.png" alt="" loading="lazy"><br>
+就这样我们找了头节点。</p>
+<h3 id="解法二">解法二</h3>
+<p>解法二使用到的是快慢指针法。<br>
+<img src="https://IseEkko.github.io//post-images/1646490959475.png" alt="" loading="lazy"><br>
+这里我们需要好好的理解一下这个题目。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Nacos使用]]></title>
+        <id>https://IseEkko.github.io/post/nacos-shi-yong/</id>
+        <link href="https://IseEkko.github.io/post/nacos-shi-yong/">
+        </link>
+        <updated>2022-03-05T14:20:16.000Z</updated>
+        <summary type="html"><![CDATA[<h2 id="简介">简介</h2>
+<p>出现的问题就是，在我们大规模的集群过后，由于我们微服务的原因，我们的配置文件会修改起来比较麻烦，而且很容易改错，这个时候我们需要做的事情就是通过一个第三方的配置中心，进行配置，这里我们选择的nacos</p>
+]]></summary>
+        <content type="html"><![CDATA[<h2 id="简介">简介</h2>
+<p>出现的问题就是，在我们大规模的集群过后，由于我们微服务的原因，我们的配置文件会修改起来比较麻烦，而且很容易改错，这个时候我们需要做的事情就是通过一个第三方的配置中心，进行配置，这里我们选择的nacos</p>
+<!-- more -->
+<h2 id="使用">使用</h2>
+<p>在我们分布式应用中，我们为更好的完成项目的配置，减少错误我们使用到了nacos，我们需要知道的事，我们如何使用。</p>
+<h2 id="获取nacos配置文件">获取nacos配置文件</h2>
+<p>下面的代码我们就得到了nacos中的配置文件，在里面我们需要注意的几个点：<br>
+<img src="https://IseEkko.github.io//post-images/1646490164720.png" alt="" loading="lazy"></p>
+<p><img src="https://IseEkko.github.io//post-images/1646490170989.png" alt="" loading="lazy"><br>
+我们需要注意的事情，是在里面有缓存的配置，如果在断网，网络拥塞的时候我们，在这里的项目就会得到缓存中的配置文件，这个配置文件是在我们运行项目的时候，独自进行创建的。<br>
+<img src="https://IseEkko.github.io//post-images/1646490180362.png" alt="" loading="lazy"></p>
+<h2 id="将配置文件变成struct">将配置文件变成struct</h2>
+<p>在里面我们不是直接将yaml变成struct，这里我们需要注意的是，我们首先用通过yaml转换成json，然后将json放在nacos中进行配置。</p>
+<p><img src="https://IseEkko.github.io//post-images/1646490186797.png" alt="" loading="lazy"><br>
+在进行映射的时候，我们要创建对应的结构体，然后结构体要设置对应的json tag。<br>
+监听配置的改变<br>
+我们这里还需完成对配置文件改变的监听。</p>
+<p><a href="https://github.com/IseEkko/DEMO/tree/master/nacos_test">Demo地址</a></p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[链表内指定区域间反转]]></title>
         <id>https://IseEkko.github.io/post/lian-biao-nei-zhi-ding-qu-yu-jian-fan-zhuan/</id>
@@ -64,8 +113,12 @@
         <link href="https://IseEkko.github.io/post/mian-xiang-lian-jie-de-yun-shu-tcp/">
         </link>
         <updated>2022-03-04T09:29:53.000Z</updated>
+        <summary type="html"><![CDATA[<h3 id="tcp连接是什么">Tcp连接是什么？</h3>
+<p>Tcp连接是需要先进行相关的数据的交换的，也就双方先要进行握手，也就是双方必须发送某些预备报文段来建立确保数据传输的参数，Tcp连接是端到端的且是点到点的，也就是说是双发的，中间的路由器和其他的设施是不用管的，建立的是一条全双工的一个通道。</p>
+]]></summary>
         <content type="html"><![CDATA[<h3 id="tcp连接是什么">Tcp连接是什么？</h3>
 <p>Tcp连接是需要先进行相关的数据的交换的，也就双方先要进行握手，也就是双方必须发送某些预备报文段来建立确保数据传输的参数，Tcp连接是端到端的且是点到点的，也就是说是双发的，中间的路由器和其他的设施是不用管的，建立的是一条全双工的一个通道。</p>
+<!-- more -->
 <h3 id="tcp连接是如何建立的">Tcp连接是如何建立的？</h3>
 <p>在这里简单的说一下TCP连接的建立，首先客户端发送一个特殊的报文，等到服务端接收到报文后，服务端会返回一个特殊的报文给客户端，客户端此时接收到报文后，会返回一个特殊的报文给服务端，这里我们需要注意的问题在于，前两个报文是没有载荷的，最后一个报文是有载荷的。这里说的就是TCP连接的三次握手。</p>
 <h3 id="tcp报文段结构">TCP报文段结构</h3>
@@ -412,369 +465,6 @@ func InitTrans(locale string)(err error){
 			  &quot;msg&quot;:&quot;登录成功&quot;,
 		  })
    })
-</code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[GIN学习]]></title>
-        <id>https://IseEkko.github.io/post/gin-xue-xi/</id>
-        <link href="https://IseEkko.github.io/post/gin-xue-xi/">
-        </link>
-        <updated>2022-01-14T09:22:02.000Z</updated>
-        <summary type="html"><![CDATA[<p>详细的学习gin的知识点，不是第一次学习了，这次梳理一个学习的文档出来</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>详细的学习gin的知识点，不是第一次学习了，这次梳理一个学习的文档出来</p>
-<!-- more -->
-<h1 id="第一个gin程序">第一个gin程序</h1>
-<pre><code> 这里我们开始演示一下gin的开始程序，也就是快速入门。
- 我们来看一下代码：
-</code></pre>
-<pre><code>package main
-
-import &quot;github.com/gin-gonic/gin&quot;
-
-func main() {
-	r := gin.Default()
-	r.GET(&quot;/ping&quot;, func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			&quot;message&quot;: &quot;pong&quot;,
-		})
-	})
-	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
-}
-</code></pre>
-<p>这里我们详细的拆分一下这个代码，</p>
-<h2 id="导包">导包</h2>
-<p>这里我们可以使用go mod进行包的导入</p>
-<h2 id="代码细节">代码细节</h2>
-<p>第一行代码</p>
-<pre><code>	r := gin.Default()
-</code></pre>
-<p>这个一行代码，就是产生了一个gin的实例<br>
-然后后面进行操作，</p>
-<pre><code>r.GET(&quot;/ping&quot;, func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			&quot;message&quot;: &quot;pong&quot;,
-		})
-	})
-</code></pre>
-<p>这里面首先有一个GET方法，对于这个GET方法我们首先来看一下它的源码</p>
-<pre><code>// GET is a shortcut for router.Handle(&quot;GET&quot;, path, handle).
-func (group *RouterGroup) GET(relativePath string, handlers ...HandlerFunc) IRoutes {
-	return group.handle(http.MethodGet, relativePath, handlers)
-}
-</code></pre>
-<p>看到源码我们可以看到里面的参数，首先第一个参数就是注册的路径，然后第二个就是处理器的注册。<br>
-在这里我们注册的是一个匿名函数。当然我们也可以修改成：</p>
-<pre><code>
-func  pong(c *gin.Context)  {
-	c.JSON(200, gin.H{
-		&quot;message&quot;: &quot;pong&quot;,
-	})
-}
-func main() {
-	r := gin.Default()
-	r.GET(&quot;/ping&quot;, pong)
-	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
-}
-</code></pre>
-<p>在这里我们需要注意的就是这个函数的类型要是：func  (c *gin.Context)<br>
-然后我们可以发现在传递参数的里面，我们使用的是gin.H<br>
-我们点开它的源码：</p>
-<pre><code>// H is a shortcut for map[string]interface{}
-type H map[string]interface{}
-</code></pre>
-<p>我们看到了它就是一个map类型，因为在gin中经常使用的原因，所以开发者对它进行了封装。这样我们使用起来就更加的方便。</p>
-<h1 id="gin中new和default的不同">gin中new和Default的不同</h1>
-<p>在这里我们介绍两个方法，他们返回回来的都是一个*Engine<br>
-那么它们有什么不一样呢，在这里我们要知道的是不一样的点是使用Default后它会默认开启两个中间件，一个是recover一个是logger。</p>
-<h1 id="路由分组和url">路由分组和URL</h1>
-<p>在我们的开发中，我们为了程序的可读性，我们一般会把路由进行分组。<br>
-也是为了后期更好的寻找路由。<br>
-那么我们如何进行分组呢？<br>
-我们使用的是Group方法。</p>
-<pre><code>package main
-
-import &quot;github.com/gin-gonic/gin&quot;
-
-func  pong(c *gin.Context)  {
-	c.JSON(200, gin.H{
-		&quot;message&quot;: &quot;pong&quot;,
-	})
-}
-//演示分组
-func main() {
-	r := gin.Default()
-    group := r.Group(&quot;/v1&quot;)
-	{
-		group.GET(&quot;/ping&quot;, pong)
-	}
-
-	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
-}
-</code></pre>
-<h1 id="获取url参数">获取url参数</h1>
-<p>这里我们通过url传入参数，那么我们怎么操作呢?</p>
-<pre><code>package main
-
-import &quot;github.com/gin-gonic/gin&quot;
-
-func  pong(c *gin.Context)  {
-	id := c.Param(&quot;id&quot;)
-	c.JSON(200, gin.H{
-		&quot;message&quot;: id,
-	})
-}
-//演示分组
-func main() {
-	r := gin.Default()
-    group := r.Group(&quot;/v1&quot;)
-	{
-		group.GET(&quot;/:id&quot;, pong)
-	}
-
-	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
-}
-</code></pre>
-<p>但是呢我们可以发现这个东西是有问题的，我们这里设定的是id，按照我们常识这里，我们知道id一般来说是数字，但是这里不管是数值还是什么都可以传输。<br>
-那么我们怎么进行限制呢？<br>
-这里我们运用到了之后的表单验证的方式。</p>
-<pre><code>package main
-
-import (
-	&quot;github.com/gin-gonic/gin&quot;
-	&quot;net/http&quot;
-)
-
-type Person struct {
-	ID string `uri:&quot;id&quot; binding:&quot;required,uuid&quot;`
-	Name string `uri:&quot;name&quot; binding:&quot;required&quot;`
-}
-func main() {
-	r := gin.Default()
-    r.GET(&quot;/:name/:id&quot;, func(context *gin.Context) {
-		var person Person
-		if err := context.ShouldBindUri(&amp;person);err != nil{
-		context.Status(404)
-		return
-		}
-		context.JSON(http.StatusOK,gin.H{
-			&quot;name&quot;:person.Name,
-			&quot;id&quot;:person.ID,
-		})
-	})
-
-	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
-}
-</code></pre>
-<h1 id="获取get和post参数">获取GET和POST参数</h1>
-<p>这两种方式是我们比较常见的方式。那么下面我们详细的说明一下</p>
-<h2 id="get">GET</h2>
-<p>使用到的方法有两个一个是DefaultQuery和Query。这两个方法的区别在于，前者是可以有默认值的，后者不能设置默认值</p>
-<pre><code>package main
-
-import (
-	&quot;github.com/gin-gonic/gin&quot;
-	&quot;net/http&quot;
-)
-
-func main() {
-	r := gin.Default()
-    r.GET(&quot;/name&quot;,name)
-
-	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
-}
-
-func name(c *gin.Context){
-	name := c.DefaultQuery(&quot;name&quot;,&quot;lzz&quot;)
-	c.JSON(http.StatusOK,gin.H{
-		&quot;name&quot;:name,
-	})
-}
-</code></pre>
-<h2 id="post">POST</h2>
-<p>在post中我们要取出参数，我们也有两个方法，两个方法的区别和上面是一样的。<br>
-分别是DefaultPostForm和PostForm。</p>
-<pre><code>package main
-
-import (
-	&quot;github.com/gin-gonic/gin&quot;
-	&quot;net/http&quot;
-)
-
-func main() {
-	r := gin.Default()
-    r.POST(&quot;/postname&quot;,Postname)
-	r.Run() // 监听并在 0.0.0.0:8080 上启动服务
-}
-
-func Postname(c *gin.Context) {
-	posrname := c.DefaultPostForm(&quot;name&quot;,&quot;lzz&quot;)
-	c.JSON(http.StatusOK,gin.H{
-		&quot;name&quot;:posrname,
-	})
-}
-</code></pre>
-<h1 id="关于gin表单验证">关于gin表单验证</h1>
-<pre><code> 我们在做web开发的时候，肯定是会遇见表单验证的需求的，表单验证也是为了一定的安全性。
-</code></pre>
-<p>关于表单验证这里我们直接上代码，详情可以查看官方文档。</p>
-<pre><code>package main
-
-import (
-	&quot;fmt&quot;
-	&quot;github.com/gin-gonic/gin&quot;
-	&quot;net/http&quot;
-)
-
-type LoginForm struct {
-	User string `form:&quot;user1&quot; json:&quot;user&quot; binding:&quot;required,min=3,max=10&quot;`
-	Password string `form:&quot;password&quot; json:&quot;password&quot; binding:&quot;required&quot;`
-}
-
-type SignUpForm struct {
-	Age        uint8  `form:&quot;age&quot; json:&quot;age&quot; binding:&quot;gte=1,lte=130&quot;`
-	Name       string `form:&quot;name&quot; binding:&quot;required,min=3&quot;`
-	Email      string `form:&quot;email&quot; binding:&quot;required,email&quot;`
-	Password   string `form:&quot;password&quot; binding:&quot;required&quot;`
-	RePassword string `form:&quot;re_password&quot; binding:&quot;required,eqfield=Password&quot;`
-}
-func main() {
-   router := gin.Default()
-   router.POST(&quot;/login&quot;, func(c *gin.Context) {
-	   var login LoginForm
-	  if  err := c.ShouldBind(&amp;login);err != nil{
-		  fmt.Println(err.Error())
-		 c.JSON(http.StatusBadRequest,gin.H{
-			  &quot;err&quot;: err.Error(),
-		  })
-		  return
-	  }
-		  c.JSON(http.StatusOK,gin.H{
-			  &quot;msg&quot;:&quot;登录成功&quot;,
-		  })
-   })
-   router.POST(&quot;/sigin&quot;, func(context *gin.Context) {
-	var siginUpForm  SignUpForm
-	if err := context.ShouldBind(&amp;siginUpForm); err != nil{
-		fmt.Println(err.Error())
-		context.JSON(http.StatusBadRequest,gin.H{
-			&quot;err&quot;:err.Error(),
-		})
-		return
-	}
-	context.JSON(http.StatusOK,gin.H{
-		&quot;msg&quot;:&quot;成功&quot;,
-	})
-   })
-   router.Run()
-}
-
-</code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[路径总和]]></title>
-        <id>https://IseEkko.github.io/post/lu-jing-zong-he/</id>
-        <link href="https://IseEkko.github.io/post/lu-jing-zong-he/">
-        </link>
-        <updated>2022-01-14T07:16:36.000Z</updated>
-        <summary type="html"><![CDATA[<p>计算二叉树路径上的和，是不是等于目标值。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>计算二叉树路径上的和，是不是等于目标值。</p>
-<!-- more -->
-<h1 id="题目">题目</h1>
-<p>给你二叉树的根节点 root 和一个表示目标和的整数 targetSum 。判断该树中是否存在 根节点到叶子节点 的路径，这条路径上所有节点值相加等于目标和 targetSum 。如果存在，返回 true ；否则，返回 false 。</p>
-<p>叶子节点 是指没有子节点的节点。<br>
-示例 1：</p>
-<p><img src="https://assets.leetcode.com/uploads/2021/01/18/pathsum1.jpg" alt="" loading="lazy"><br>
-输入：root = [5,4,8,11,null,13,4,7,2,null,null,null,1], targetSum = 22<br>
-输出：true<br>
-解释：等于目标和的根节点到叶节点路径如上图所示。<br>
-示例 2：<br>
-<img src="https://assets.leetcode.com/uploads/2021/01/18/pathsum2.jpg" alt="" loading="lazy"><br>
-输入：root = [1,2,3], targetSum = 5<br>
-输出：false<br>
-解释：树中存在两条根节点到叶子节点的路径：<br>
-(1 --&gt; 2): 和为 3<br>
-(1 --&gt; 3): 和为 4<br>
-不存在 sum = 5 的根节点到叶子节点的路径。<br>
-示例 3：</p>
-<p>输入：root = [], targetSum = 0<br>
-输出：false<br>
-解释：由于树是空的，所以不存在根节点到叶子节点的路径。</p>
-<p>来源：力扣（LeetCode）<br>
-链接：https://leetcode-cn.com/problems/path-sum<br>
-著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</p>
-<h1 id="思路">思路</h1>
-<p>这一个题目的思路不是很难，只是需要判断的东西会多一些，但是总体来说还是简单的。<br>
-这里我们还是使用递归来解答这个题目，使用的方法还是递归的三步骤</p>
-<h1 id="解题">解题</h1>
-<h3 id="首先确认须传入的参数和返回的参数值">首先确认须传入的参数和返回的参数值</h3>
-<pre><code>   这个题目最终是要判断是不是符合条件，所以我们的返回值我们用bool类型。因为我们还是对节点进行操作，所以我们传入的参数也就是节点，因为我们还要进行数值的判断，所以我们还要传入这个需要比对的值。
-</code></pre>
-<pre><code>trave(root *TreeNode,targetSum int)bool
-</code></pre>
-<h3 id="确定终止条件">确定终止条件</h3>
-<p>这里我们的终止条件就是看到最后叶子节点的时候，我们最后得到的值是是不是对应的值<br>
-也就是：</p>
-<pre><code>  if root.Left == nil&amp;&amp; root.Right == nil&amp;&amp; targetSum == 0{
-        return true
-    }
-    if root.Left == nil&amp;&amp; root.Right == nil{
-        return false
-    }
-</code></pre>
-<h3 id="确定单层逻辑">确定单层逻辑</h3>
-<p>这里我们确认一些单层的逻辑，也就是在这里我们用到了回溯的思想，如果我们没有找到相应的路径我们就回溯然后再次寻找，直到确认返回为止。</p>
-<pre><code>if root.Left != nil{
-        targetSum = targetSum - root.Left.Val
-        if trave(root.Left,targetSum){
-            return true
-            }
-        targetSum = targetSum + root.Left.Val
-        }
-    if root.Right != nil {
-        targetSum = targetSum-root.Right.Val
-        if trave(root.Right,targetSum){
-            return true
-            }
-        targetSum = targetSum+root.Right.Val
-    }
-    return false
-</code></pre>
-<h1 id="解题源码">解题源码</h1>
-<p>最后我们通过上面的步骤得到了最终的代码；</p>
-<pre><code>func hasPathSum(root *TreeNode, targetSum int) bool {
-if root == nil{
-    return false
-}
-return trave(root,targetSum-root.Val)
-}
-func trave(root *TreeNode,targetSum int)bool{
-    if root.Left == nil&amp;&amp; root.Right == nil&amp;&amp; targetSum == 0{
-        return true
-    }
-    if root.Left == nil&amp;&amp; root.Right == nil{
-        return false
-    }
-
-    if root.Left != nil{
-        targetSum = targetSum - root.Left.Val
-        if trave(root.Left,targetSum){
-            return true
-            }
-        targetSum = targetSum + root.Left.Val
-        }
-    if root.Right != nil {
-        targetSum = targetSum-root.Right.Val
-        if trave(root.Right,targetSum){
-            return true
-            }
-        targetSum = targetSum+root.Right.Val
-    }
-    return false
-}
 </code></pre>
 ]]></content>
     </entry>
