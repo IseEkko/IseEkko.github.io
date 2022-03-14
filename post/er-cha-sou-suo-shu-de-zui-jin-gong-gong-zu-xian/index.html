@@ -3,7 +3,7 @@
         <head>
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
-        <title>链表中环的入口结点 | isekko</title>
+        <title>二叉搜索树的最近公共祖先 | isekko</title>
         <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
@@ -56,29 +56,24 @@
                 <div class="mdui-row">
                         <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
                                 <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="post-title  mdui-m-b-1">链表中环的入口结点</div>
-                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-03-05 22:34:27">2022-03-05 / 1 min read</div>
-                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><h3 id="简介">简介</h3>
-<p>原来遇见这个题目，被数学公式套路了，然后现在回过来学。并有了自己的思路。</p>
-<h3 id="解法一">解法一</h3>
-<p>今天想到了一个特别的想法，就是我们看这个题目其实想要考察我们的东西，很简单，就是去找到入口，那么我们如何找呢，我想的是首先我们要判断他是不是具有环，然后再去找他的入口，突然我的脑海里面出现了一个东西，map我突然恍然大悟，我们可以使用map去判断这个东西。<br>
-使用到了是map[*ListNode]int<br>
-当我们循环出现第二次的时候，那么这个节点就是入口，同时我们证明了这个是有环的。<br>
-<img src="https://IseEkko.github.io//post-images/1646490954143.png" alt="" loading="lazy"><br>
-就这样我们找了头节点。</p>
-<h3 id="解法二">解法二</h3>
-<p>解法二使用到的是快慢指针法。<br>
-<img src="https://IseEkko.github.io//post-images/1646490959475.png" alt="" loading="lazy"><br>
-这里我们需要好好的理解一下这个题目。</p>
+                                    <div class="post-title  mdui-m-b-1">二叉搜索树的最近公共祖先</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-03-14 22:43:49">2022-03-14 / 1 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>二叉搜索树的最近公共祖先，理解这个题目的本质</p>
+<!-- more -->
+<h2 id="题目解析">题目解析</h2>
+<p>对于这个题目，解题的步骤从根节点进行遍历，因为我们知道是，二叉搜索树的特性，通过比较大小进行遍历，这样回更加的快速并且保持正确性，然后把左右节点的路径都找到过后我们就开始进行比较，当发现相同的时候，并且是最后一个相同的时候这个就是最近的公共祖先。<br>
+这个理解起来不是很难，但是需要我们理解到位。</p>
+<h2 id="解题源码">解题源码</h2>
+<figure data-type="image" tabindex="1"><img src="https://IseEkko.github.io//post-images/1647270127652.png" alt="" loading="lazy"></figure>
 </div>
                                     <div class="mdui-divider mdui-m-b-2"></div>
                                     <div class="mdui-row-xs-2 post-fenye">
                                        
-                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://IseEkko.github.io/post/pan-duan-shi-fou-shi-wan-cheng-er-cha-shu/">判断是否是完成二叉树</a></div></div>
+                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://IseEkko.github.io/post/er-cha-shu-cha-zhao-zui-jin-gong-gong-zu-xian/">二叉树查找最近公共祖先</a></div></div>
                                         
 
                                         
-                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/nacos-shi-yong/">Nacos使用</a></div> </div>
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/pan-duan-shi-fou-shi-wan-cheng-er-cha-shu/">判断是否是完成二叉树</a></div> </div>
                                        
                                       </div>
                                    

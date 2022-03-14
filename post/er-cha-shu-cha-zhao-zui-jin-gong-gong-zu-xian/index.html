@@ -3,7 +3,7 @@
         <head>
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
-        <title>链表中环的入口结点 | isekko</title>
+        <title>二叉树查找最近公共祖先 | isekko</title>
         <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
@@ -56,29 +56,24 @@
                 <div class="mdui-row">
                         <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
                                 <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="post-title  mdui-m-b-1">链表中环的入口结点</div>
-                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-03-05 22:34:27">2022-03-05 / 1 min read</div>
-                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><h3 id="简介">简介</h3>
-<p>原来遇见这个题目，被数学公式套路了，然后现在回过来学。并有了自己的思路。</p>
-<h3 id="解法一">解法一</h3>
-<p>今天想到了一个特别的想法，就是我们看这个题目其实想要考察我们的东西，很简单，就是去找到入口，那么我们如何找呢，我想的是首先我们要判断他是不是具有环，然后再去找他的入口，突然我的脑海里面出现了一个东西，map我突然恍然大悟，我们可以使用map去判断这个东西。<br>
-使用到了是map[*ListNode]int<br>
-当我们循环出现第二次的时候，那么这个节点就是入口，同时我们证明了这个是有环的。<br>
-<img src="https://IseEkko.github.io//post-images/1646490954143.png" alt="" loading="lazy"><br>
-就这样我们找了头节点。</p>
-<h3 id="解法二">解法二</h3>
-<p>解法二使用到的是快慢指针法。<br>
-<img src="https://IseEkko.github.io//post-images/1646490959475.png" alt="" loading="lazy"><br>
-这里我们需要好好的理解一下这个题目。</p>
+                                    <div class="post-title  mdui-m-b-1">二叉树查找最近公共祖先</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-03-14 23:03:38">2022-03-14 / 1 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>这个题目的难度就是，我们不是搜索树了。</p>
+<!-- more -->
+<h2 id="解题思路">解题思路</h2>
+<p>这个题目我们需要想到的是，我们的思路还是差不多的，但是这里不能在用二叉搜索树的那个方法了，我们还是需要遍历，但是遍历的方式我们要进行改变。<br>
+我们还是从根开始遍历，我们遍历到叶子节点了这个时候我们需要做的就是返回并判断，最终找到我们需要找到了节点，还是左右节点分开。</p>
+<h2 id="解题源码">解题源码</h2>
+<figure data-type="image" tabindex="1"><img src="https://IseEkko.github.io//post-images/1647270531026.png" alt="" loading="lazy"></figure>
 </div>
                                     <div class="mdui-divider mdui-m-b-2"></div>
                                     <div class="mdui-row-xs-2 post-fenye">
                                        
-                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://IseEkko.github.io/post/pan-duan-shi-fou-shi-wan-cheng-er-cha-shu/">判断是否是完成二叉树</a></div></div>
+                                        <div class="mdui-col"> </div>
                                         
 
                                         
-                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/nacos-shi-yong/">Nacos使用</a></div> </div>
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/er-cha-sou-suo-shu-de-zui-jin-gong-gong-zu-xian/">二叉搜索树的最近公共祖先</a></div> </div>
                                        
                                       </div>
                                    

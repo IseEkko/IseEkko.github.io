@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://IseEkko.github.io/</id>
     <title>isekko</title>
-    <updated>2022-03-10T07:53:27.831Z</updated>
+    <updated>2022-03-14T15:09:09.413Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://IseEkko.github.io/"/>
     <link rel="self" href="https://IseEkko.github.io/atom.xml"/>
@@ -10,6 +10,63 @@
     <logo>https://IseEkko.github.io/images/avatar.png</logo>
     <icon>https://IseEkko.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, isekko</rights>
+    <entry>
+        <title type="html"><![CDATA[二叉树查找最近公共祖先]]></title>
+        <id>https://IseEkko.github.io/post/er-cha-shu-cha-zhao-zui-jin-gong-gong-zu-xian/</id>
+        <link href="https://IseEkko.github.io/post/er-cha-shu-cha-zhao-zui-jin-gong-gong-zu-xian/">
+        </link>
+        <updated>2022-03-14T15:03:38.000Z</updated>
+        <summary type="html"><![CDATA[<p>这个题目的难度就是，我们不是搜索树了。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>这个题目的难度就是，我们不是搜索树了。</p>
+<!-- more -->
+<h2 id="解题思路">解题思路</h2>
+<p>这个题目我们需要想到的是，我们的思路还是差不多的，但是这里不能在用二叉搜索树的那个方法了，我们还是需要遍历，但是遍历的方式我们要进行改变。<br>
+我们还是从根开始遍历，我们遍历到叶子节点了这个时候我们需要做的就是返回并判断，最终找到我们需要找到了节点，还是左右节点分开。</p>
+<h2 id="解题源码">解题源码</h2>
+<figure data-type="image" tabindex="1"><img src="https://IseEkko.github.io//post-images/1647270531026.png" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[二叉搜索树的最近公共祖先]]></title>
+        <id>https://IseEkko.github.io/post/er-cha-sou-suo-shu-de-zui-jin-gong-gong-zu-xian/</id>
+        <link href="https://IseEkko.github.io/post/er-cha-sou-suo-shu-de-zui-jin-gong-gong-zu-xian/">
+        </link>
+        <updated>2022-03-14T14:43:49.000Z</updated>
+        <summary type="html"><![CDATA[<p>二叉搜索树的最近公共祖先，理解这个题目的本质</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>二叉搜索树的最近公共祖先，理解这个题目的本质</p>
+<!-- more -->
+<h2 id="题目解析">题目解析</h2>
+<p>对于这个题目，解题的步骤从根节点进行遍历，因为我们知道是，二叉搜索树的特性，通过比较大小进行遍历，这样回更加的快速并且保持正确性，然后把左右节点的路径都找到过后我们就开始进行比较，当发现相同的时候，并且是最后一个相同的时候这个就是最近的公共祖先。<br>
+这个理解起来不是很难，但是需要我们理解到位。</p>
+<h2 id="解题源码">解题源码</h2>
+<figure data-type="image" tabindex="1"><img src="https://IseEkko.github.io//post-images/1647270127652.png" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[判断是否是完成二叉树]]></title>
+        <id>https://IseEkko.github.io/post/pan-duan-shi-fou-shi-wan-cheng-er-cha-shu/</id>
+        <link href="https://IseEkko.github.io/post/pan-duan-shi-fou-shi-wan-cheng-er-cha-shu/">
+        </link>
+        <updated>2022-03-13T02:36:08.000Z</updated>
+        <summary type="html"><![CDATA[<p>开始的时候，没有什么思路，想了很久，最后还是看了解析，理解了一下。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>开始的时候，没有什么思路，想了很久，最后还是看了解析，理解了一下。</p>
+<!-- more -->
+<h2 id="题目解读">题目解读</h2>
+<p><img src="https://IseEkko.github.io//post-images/1647139097672.png" alt="" loading="lazy"><br>
+这个题目就是判断是不是完成二叉树。</p>
+<h3 id="什么是完成二叉树">什么是完成二叉树</h3>
+<p>对于完全二叉树的定义就是除最后一层的节点外，也就是说除了叶子节点外，其他的节点都是有左右节点的，对于叶子节点还要保持，左边是满的，右边可以是空的，也就是如图所示：<br>
+<img src="https://IseEkko.github.io//post-images/1647139293818.png" alt="" loading="lazy"><br>
+上面的三种都是完成二叉树，那么如何来判断呢？</p>
+<h2 id="解题过程">解题过程</h2>
+<p>这个题目的解题思路使用的是，标号的方式，我们给每一个节点标号，然后有一个计数的变量，那么我们最后判断我们标号的最大值是不是和计数的相同，如果相同那么就是完成二叉树，不然就不是。</p>
+<h2 id="解题源码">解题源码</h2>
+<figure data-type="image" tabindex="1"><img src="https://IseEkko.github.io//post-images/1647139484768.png" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[链表中环的入口结点]]></title>
         <id>https://IseEkko.github.io/post/lian-biao-zhong-huan-de-ru-kou-jie-dian/</id>
@@ -216,256 +273,6 @@ func main() {
 <h2 id="思路图">思路图</h2>
 <p><img src="https://IseEkko.github.io//post-images/1644389891372.png" alt="" loading="lazy"><br>
 这里很清楚的看出我们解题的思路，也是解回溯的一般思路</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[用户密码加密]]></title>
-        <id>https://IseEkko.github.io/post/yong-hu-mi-ma-jia-mi/</id>
-        <link href="https://IseEkko.github.io/post/yong-hu-mi-ma-jia-mi/">
-        </link>
-        <updated>2022-02-07T13:43:51.000Z</updated>
-        <summary type="html"><![CDATA[<p>在我们写程序中会有密码，密码我们肯定是需要有加密的一个环节。那么我们这里介绍一下md5加密</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>在我们写程序中会有密码，密码我们肯定是需要有加密的一个环节。那么我们这里介绍一下md5加密</p>
-<!-- more -->
-<h2 id="加密算法的分类">加密算法的分类</h2>
-<p><img src="https://IseEkko.github.io//post-images/1644241541998.png" alt="" loading="lazy"><br>
-这里我们可以看到分为两类<br>
-那么两类的区别在于那里呢？</p>
-<h3 id="什么是对称加密">什么是对称加密</h3>
-<p>对于对称加密，最简单的理解就是，在加密和解密的时候使用的是同一把钥匙，这样对于用户来说是不安全的，因为我们一旦知道了加密算法的钥匙，那么所有的密码我都可以解密出来，这对于用户的账号安全是一个很大的威胁。<br>
-那么我们这里就引出了非对称加密。</p>
-<h3 id="什么是非对称加密">什么是非对称加密</h3>
-<p>非对称加密，也就是密码不能被反解出来。那么我们也会遇见一个问题，不能反解那么我们忘记了密码那么我们应该怎么办呢？<br>
-对于这个问题，我们使用的解决办法是使用一个链接发给用户进行修改，这样既保证了安全性，也解决了这个问题。<br>
-判断用户密码输入是否正确的问题，这里我们不能对数据库的密码进行解密，那么我们就转换一下思路，我们对用户输入的值进行加密，然后进行比对，这样这个问题就得到的解决。<br>
-这里我们详细的说明一下一个非对称加密，MD5</p>
-<h2 id="md5-信息摘要加密算法">MD5 信息摘要加密算法</h2>
-<p><img src="https://IseEkko.github.io//post-images/1644242773549.png" alt="" loading="lazy"><br>
-在go中，写md5加密算法是很容易的，因为有现成的包可以使用</p>
-<pre><code>func ginMd5(code string)string{
-	Md5 :=  md5.New()
-	_,_ = io.WriteString(Md5,code)
-	return hex.EncodeToString(Md5.Sum(nil))
-}
-</code></pre>
-<p>使用的包是：&quot;crypto/md5&quot;<br>
-对于这里我们不用太纠结这里的函数，这里我们需要做的就是直接使用就可以了。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[GIN中间件]]></title>
-        <id>https://IseEkko.github.io/post/gin-zhong-jian-jian/</id>
-        <link href="https://IseEkko.github.io/post/gin-zhong-jian-jian/">
-        </link>
-        <updated>2022-01-21T13:32:35.000Z</updated>
-        <summary type="html"><![CDATA[<p>关于中间件的使用，和原理</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>关于中间件的使用，和原理</p>
-<!-- more -->
-<h2 id="使用中间件">使用中间件</h2>
-<p>关于中间件的使用，让我想到了gin.Default()和gin.new(）的区别，区别在什么呢，使用Default，默认是使用了两个全局中间件，那么我们查看default的源码，我们可以知道中间件是怎么使用的，下面我看一下default的源码：</p>
-<pre><code>func Default() *Engine {
-	debugPrintWARNINGDefault()
-	engine := New()
-	engine.Use(Logger(), Recovery())
-	return engine
-}
-</code></pre>
-<p>这里我们直接把目光看到：engine.Use(Logger(), Recovery())，这里直接使用use就使用的中间件。所以我们知道了使用中间件使用的是，use这个方法。</p>
-<pre><code>package main
-
-import (
-	&quot;fmt&quot;
-	&quot;github.com/gin-gonic/gin&quot;
-	&quot;net/http&quot;
-	&quot;time&quot;
-)
-
-func main() {
-	//我们在前面的学习我们知道了，使用default。会默认的使用两个中间件。
-	//这我们为了演示使用中间件，这里我们就使用NEw创建
-//r := gin.Default()
-    r := gin.New()
-	//使用logger中间件
-	r.Use(mylogger())
-	//使用recovery
-	r.Use(gin.Recovery())
-	//上面的使用方法是为全局使用的。
-
-	/**
-	下面这个方式，是在这个组内的路由都会使用到这个中间件。
-	 */
-	auth := r.Group(&quot;/goods&quot;, func(c *gin.Context) {
-
-	})
-	auth.Use(authsre)
-	auth.GET(&quot;/ceshi&quot;)
-	auth.GET(&quot;/c&quot;)
-	r.Run()
-}
-
-func authsre(context *gin.Context) {
-	fmt.Println(&quot;goods中间件&quot;)
-}
-
-func mylogger() gin.HandlerFunc{
-	return func(c *gin.Context) {
-		t := time.Now()
-		c.Set(&quot;example&quot;,&quot;123456&quot;)
-		c.Next()
-		end := time.Since(t)
-		fmt.Printf(&quot;耗时：%v \n&quot;,end)
-		status := c.Writer.Status()
-		fmt.Println(&quot;状态：&quot;,status)
-	}
-}
-
-func  TokenReqiired()gin.HandlerFunc  {
-	return func(c *gin.Context){
-		var token string
-		for k,v := range c.Request.Header{
-			if k == &quot;x-token&quot;{
-				if k == &quot;x-token&quot;{
-					token = v[0]
-				}
-			}
-		}
-		if token != &quot;bobby&quot;{
-			c.JSON(http.StatusUnauthorized,gin.H{
-				&quot;msg&quot;:&quot;未登录&quot;,
-			})
-			return
-			//这里只能使用c.Abort()就会阻止后面的逻辑的运行。用return 是没有用的
-		}
-		c.Next()
-	}
-}
-</code></pre>
-<p>上面就是我们使用中间件的方式。</p>
-<h2 id="原理解析">原理解析</h2>
-<p>这里我们发现一个问题，在中间件中，我们使用了return处理逻辑的时候，发现我们不想让后面的逻辑运行，但是使用return还是使用了，那么这是为什么呢。<br>
-这里我们需要注意的就是这中间件执行的流程<br>
-这里我们知道我们使用中间件使用的是，use去注册调用的，这个时候我们查看一个他的源码：</p>
-<pre><code>func (group *RouterGroup) Use(middleware ...HandlerFunc) IRoutes {
-	group.Handlers = append(group.Handlers, middleware...)
-	return group.returnObj()
-}
-</code></pre>
-<p>点开过后，我们发现这里有一个：group.Handlers</p>
-<pre><code>// HandlersChain defines a HandlerFunc array.
-type HandlersChain []HandlerFunc
-</code></pre>
-<p>这里发现了一个切片，然后我们再去查看运行逻辑中，我们是怎么注册路由的，然后我们点开同样发现了这个切片，然后我们对比了一下，我们发现了一个问题，也就是中间件和运行的逻辑分别是不同的handler并不是一体的，他们会按照顺序被安排到这个切片中，所以我们return是无效的，这个时候我们应该怎么办呢。<br>
-这里原理也很简单，也就是我们不想去执行这些handler的时候，我们直接把后面的删除，或者把指针移到最后面就可以了。<br>
-使用到的方法是：<br>
-c.Abort()<br>
-在上面我们书写的使用中间件源码中也有。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[GIN中的错误翻译]]></title>
-        <id>https://IseEkko.github.io/post/gin-zhong-de-cuo-wu-fan-yi/</id>
-        <link href="https://IseEkko.github.io/post/gin-zhong-de-cuo-wu-fan-yi/">
-        </link>
-        <updated>2022-01-21T11:25:00.000Z</updated>
-        <summary type="html"><![CDATA[<p>我们在书写程序的时候，遇见报错对于一些程序员来说全英文的报错不是很友好，这里找到了一个错误翻译的方法</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>我们在书写程序的时候，遇见报错对于一些程序员来说全英文的报错不是很友好，这里找到了一个错误翻译的方法</p>
-<!-- more -->
-<h2 id="关于翻译器的导入">关于翻译器的导入</h2>
-<p>这里我们先要导入预备的资源，然后再创建翻译器<br>
-我们需要导入的包</p>
-<pre><code>&quot;github.com/gin-gonic/gin/binding&quot;
-	&quot;github.com/go-playground/locales/en&quot;
-	&quot;github.com/go-playground/locales/zh&quot;
-	ut &quot;github.com/go-playground/universal-translator&quot;
-	&quot;github.com/go-playground/validator/v10&quot;
-	en_translations &quot;github.com/go-playground/validator/v10/translations/en&quot;
-	zh_translations &quot;github.com/go-playground/validator/v10/translations/zh&quot;
-</code></pre>
-<p>导入这些包后我们就可以开始相关的书写了，这里大家需要注意的是，我们在书写的时候，导包可以是自动导入的，这里写出来是怕同学忘记有那些包，或者导包失败导致后序的代码无效。</p>
-<h2 id="初始化翻译器">初始化翻译器</h2>
-<pre><code>//翻译的更换
-func InitTrans(locale string)(err error){
-	if v,ok := binding.Validator.Engine().(*validator.Validate);ok{
-		//注册一个获取json的tag自定义方法
-		v.RegisterTagNameFunc(func(fld reflect.StructField) string {
-			name := strings.SplitN(fld.Tag.Get(&quot;json&quot;),&quot;,&quot;,2)[0]
-			if name == &quot;-&quot;{
-				return &quot;&quot;
-			}
-			return name
-		})
-		zhT := zh.New()//中文翻译器
-		enT := en.New()//英文翻译器
-		uni := ut.New(enT,zhT,enT)
-		trans,ok = uni.GetTranslator(locale)
-		if !ok {
-			return fmt.Errorf(&quot;uni.GetTranslator(%s)&quot;,locale)
-		}
-		switch locale{
-		case &quot;en&quot;:
-			en_translations.RegisterDefaultTranslations(v,trans)
-		case &quot;zh&quot;:
-			zh_translations.RegisterDefaultTranslations(v,trans)
-		default:
-			zh_translations.RegisterDefaultTranslations(v,trans)
-		}
-	}
-	return nil
-}
-</code></pre>
-<p>后面我们发现了一个问题，就是我们出现的效果是这样的有前缀的，结构体前缀，当然我们是不需要的所以后序我们添加上了：</p>
-<pre><code>func RemoveTopStruct(fileds map[string]string)map[string]string  {
-	rsp := map[string]string{}
-	for field ,err := range fileds{
-		rsp[field[strings.Index(field,&quot;.&quot;)+1:]] = err
-		}
-		return rsp
-}
-</code></pre>
-<p>这个方法我们可以得到tag。<br>
-然后我们在测试的时候，发现了一个问题，就是我们得到的错误，字段他没有按照tag来完成书写，这个时候我们加上了这一段代码实现功能。</p>
-<pre><code>//注册一个获取json的tag自定义方法
-		v.RegisterTagNameFunc(func(fld reflect.StructField) string {
-			name := strings.SplitN(fld.Tag.Get(&quot;json&quot;),&quot;,&quot;,2)[0]
-			if name == &quot;-&quot;{
-				return &quot;&quot;
-			}
-			return name
-		})
-</code></pre>
-<h2 id="最后使用">最后使用</h2>
-<p>在使用的时候，我们需要注意的事情，我们要注册一个全局的变量，这样才能在任何的地方使用。</p>
-<pre><code>var trans ut.Translator
-</code></pre>
-<p>创建完成后，使用</p>
-<pre><code>//初始化翻译
-	if err := InitTrans(&quot;zh&quot;);err != nil{
-	  fmt.Println(&quot;初始化翻译器错误&quot;)
-	  return
-	}
-   router := gin.Default()
-   router.POST(&quot;/login&quot;, func(c *gin.Context) {
-	   var login LoginForm
-	  if  err := c.ShouldBind(&amp;login);err != nil{
-		  errs ,ok := err.(validator.ValidationErrors)
-		  if !ok {
-			  c.JSON(http.StatusOK,gin.H{
-				  &quot;msg&quot;:err.Error(),
-			  })
-		  }
-		 c.JSON(http.StatusBadRequest,gin.H{
-			  &quot;err&quot;: RemoveTopStruct(errs.Translate(trans)),
-		  })
-		  return
-	  }
-		  c.JSON(http.StatusOK,gin.H{
-			  &quot;msg&quot;:&quot;登录成功&quot;,
-		  })
-   })
-</code></pre>
 ]]></content>
     </entry>
 </feed>
