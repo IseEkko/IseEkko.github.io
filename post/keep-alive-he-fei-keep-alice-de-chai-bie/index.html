@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
-       <head>
+        <head>
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
-        <title>算法 | isekko</title>
+        <title>Keep-Alive 和非 Keep-Alice的差别 | isekko</title>
         <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
@@ -14,7 +14,7 @@
 
     </head>
     <body>
-          <header class="header mdui-m-b-5">      
+              <header class="header mdui-m-b-5">      
             <div class="container  ">
                 <div class="index-title animated fadeInDown mdui-text-center mdui-text-color-white mdui-m-b-2" style="animation-delay: 0.2s"><a href="https://IseEkko.github.io/">isekko</a></div>
                 <div class="mdui-text-color-white animated fadeInDown mdui-text-center  mdui-m-b-3" style="animation-delay: 0.4s">对个人笔记的总结，这个网站的笔记将会是我经过提炼过后的笔记。</div>
@@ -54,44 +54,70 @@
         </header>
         <div class="mdui-container ">
                 <div class="mdui-row">
-                        <div class="mdui-col-md-8 mdui-col-offset-md-2 mdui-m-t-1">
-                                                         
-                               <article class="mdui-p-a-5 index-list mdui-m-b-3 animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="mdui-typo-body-2 mdui-m-b-1" datetime="2022-01-11 15:34:17">2022-01-11</div>
-                                    <div class="mdui-typo-headline mdui-m-b-3 index-list-title index-guo"><a href="https://IseEkko.github.io/post/ping-heng-er-cha-shu/">平衡二叉树</a></div>
-                                    <div class="mdui-typo-subheading mdui-m-b-2 index-neirong"><p>什么是平衡二叉树？<br>
-我们应该怎么去判断？</p>
+                        <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
+                                <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
+                                    <div class="post-title  mdui-m-b-1">Keep-Alive 和非 Keep-Alice的差别</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-03-15 22:41:05">2022-03-15 / 2 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>这里的意思就是保持连接，和不保持连接</p>
+<!-- more -->
+<h2 id="理解">理解</h2>
+<p>我们如何来理解这个问题呢，keep-alive 和非 keep- alive的区别。其实是很好理解的，我们在非keep-alive中我们请求一个资源我们就要建立一个连接，keep-alive就很好理解了，下面我们通过一个图片来看理解一下。<br>
+<img src="https://IseEkko.github.io//post-images/1647355356596.png" alt="" loading="lazy"></p>
+<h2 id="区别与缺点">区别与缺点</h2>
+<p>两者的区别和缺点，我们也很好的能通过上图看出来<br>
+非Keep-alive<br>
+我们每请求一个资源我们就要进行一个连接，然后我们创建一个连接是需要付出相应的成本的，建立一个连接，客户端和服务端都要分配一个TCP的缓冲区和变量这样会对服务器造成严重的负担。<br>
+Keep-alive<br>
+keep-alive很好的解决了上面的问题，也就是对于服务器严重的负担，但是他也不是完美的，因为保持连接，很可能造成资源的无效占用。这就是对资源的一种浪费。<br>
+当然我们也有相应的解决办法，也就是我们需要正确的设置keepalive-timeout的时间，超过这个时间过后我们就断开连接，这样我们就可以解决资源无效占用的问题。</p>
 </div>
-                                    <div class="index-list-rm index-guo"><a href="https://IseEkko.github.io/post/ping-heng-er-cha-shu/">Read More</a></div>
-                                </article>
-                                
-                               <article class="mdui-p-a-5 index-list mdui-m-b-3 animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="mdui-typo-body-2 mdui-m-b-1" datetime="2022-01-11 15:01:46">2022-01-11</div>
-                                    <div class="mdui-typo-headline mdui-m-b-3 index-list-title index-guo"><a href="https://IseEkko.github.io/post/er-cha-shu-de-zui-xiao-shen-du/">二叉树的最小深度</a></div>
-                                    <div class="mdui-typo-subheading mdui-m-b-2 index-neirong"><p>对于二叉树最小深度的解题相关，包含源码</p>
-</div>
-                                    <div class="index-list-rm index-guo"><a href="https://IseEkko.github.io/post/er-cha-shu-de-zui-xiao-shen-du/">Read More</a></div>
-                                </article>
-                                
-                               <article class="mdui-p-a-5 index-list mdui-m-b-3 animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="mdui-typo-body-2 mdui-m-b-1" datetime="2022-01-10 21:36:10">2022-01-10</div>
-                                    <div class="mdui-typo-headline mdui-m-b-3 index-list-title index-guo"><a href="https://IseEkko.github.io/post/er-cha-shu-de-zui-da-shen-du/">二叉树的最大深度</a></div>
-                                    <div class="mdui-typo-subheading mdui-m-b-2 index-neirong"><p>二叉树的最大深度。我们使用什么方法去破解？</p>
-</div>
-                                    <div class="index-list-rm index-guo"><a href="https://IseEkko.github.io/post/er-cha-shu-de-zui-da-shen-du/">Read More</a></div>
-                                </article>
-                                
-                                                            <nav class="mdui-m-t-5">
-                                
-                                <div class="index-yema mdui-float-left"><a href="https://IseEkko.github.io/tag/89sSoit-w">上一页</a></div>
-                                 
-                                
-                                </nav>     
+                                    <div class="mdui-divider mdui-m-b-2"></div>
+                                    <div class="mdui-row-xs-2 post-fenye">
+                                       
+                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://IseEkko.github.io/post/liang-ge-xie-cheng-jiao-ti-da-yin-qi-ou-shu/">两个协程交替打印奇偶数</a></div></div>
+                                        
 
+                                        
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/chang-jian-de-wu-da-ji-ben-lei-xing-1/">常见的五大基本类型（1）</a></div> </div>
+                                       
+                                      </div>
+                                   
+                                    <div class="mdui-divider mdui-m-t-2 mdui-m-b-2"></div>
+                                    
+                                     <script src="https://IseEkko.github.io//media/scripts/Valine.min.js"></script>
+ <div class="comment"></div>
+
+<script>
+      new Valine({
+            el: '.comment',
+
+
+
+            path: window.location.pathname,
+            pageSize: 30,
+            avatar:'mm', 
+       })
+    </script> 
+<script>
+    if(window.location.hash){
+        var checkExist = setInterval(function() {
+           if ($(window.location.hash).length) {
+              $('html, body').animate({scrollTop: $(window.location.hash).offset().top-90}, 1000);
+              clearInterval(checkExist);
+           }
+        }, 100);
+    }
+</script>
+                                </article>
+
+                                    
                         </div>
                       </div>
+    
+                
+
               </div>
-                <footer class="footer mdui-m-t-5 mdui-text-center">
+                    <footer class="footer mdui-m-t-5 mdui-text-center">
                <nav class="social-links">
                       <ul>
                       

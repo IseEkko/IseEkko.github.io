@@ -3,7 +3,7 @@
         <head>
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
-        <title>二叉树查找最近公共祖先 | isekko</title>
+        <title>常见的五大基本类型（1） | isekko</title>
         <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
@@ -56,24 +56,54 @@
                 <div class="mdui-row">
                         <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
                                 <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="post-title  mdui-m-b-1">二叉树查找最近公共祖先</div>
-                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-03-14 23:03:38">2022-03-14 / 1 min read</div>
-                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>这个题目的难度就是，我们不是搜索树了。</p>
+                                    <div class="post-title  mdui-m-b-1">常见的五大基本类型（1）</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-03-15 22:38:10">2022-03-15 / 3 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>这里讲解的是string的使用</p>
 <!-- more -->
-<h2 id="解题思路">解题思路</h2>
-<p>这个题目我们需要想到的是，我们的思路还是差不多的，但是这里不能在用二叉搜索树的那个方法了，我们还是需要遍历，但是遍历的方式我们要进行改变。<br>
-我们还是从根开始遍历，我们遍历到叶子节点了这个时候我们需要做的就是返回并判断，最终找到我们需要找到了节点，还是左右节点分开。</p>
-<h2 id="解题源码">解题源码</h2>
-<figure data-type="image" tabindex="1"><img src="https://IseEkko.github.io//post-images/1647270531026.png" alt="" loading="lazy"></figure>
+<h2 id="redis-key的基本操作">Redis Key的基本操作</h2>
+<pre><code>•    keys * 查看当前库中的所有key值
+•  exists  key 判断key是不是存在
+• type key 查看类型
+• del key删除对应的值
+• unlink key 也是删除对应的数据
+• expire key 10 设置过期时间  
+• Select index 就是切换库
+• Dbsize 查看key的数量
+• Flushdb 清空当前库
+• Flushall 清空所有的库
+</code></pre>
+<h4 id="del-key-和unlink-key的区别">del key 和unlink key的区别</h4>
+<p>del key是直接删除，到那时unlink key做的是异步的删除操作</p>
+<h2 id="redis字符串-string">Redis字符串 string</h2>
+<p>string是一个基本的类型，一个key对应一个value，string是二进制安全的，也就是说可以便是任意的数据，只要是可以转换为字符串，那么就可以存储，在redis中string最多可以存储512MB</p>
+<h4 id="基本的操作">基本的操作</h4>
+<p>set是添加的操作，set key value。<br>
+get是查询操作，get key 就可以取出来了。<br>
+这里需要注意的事情：如果我们set已经存在的值的时候，就会覆盖这个key的值<br>
+Append 是在后面添加，也就是go中的添加切片的操作<br>
+Strlen key 获取值的长度<br>
+Setnx key value 这个时候是如果没有这个key的时候才存储这个值，如果库中有这个key那么久不会存储这个值。<br>
+Incr key 这个操作是把数字类型进行一个加一操作<br>
+Decr key 这个操作就是把数字类型进行一个减1<br>
+Incrby key 步长 这个就是自定义加多少<br>
+Decrby key 步长 就是定义减多少的意思。<br>
+需要注意的事情：redis中的incr是原子操作<br>
+mset 同时设置一个或者多个key-value进行操作<br>
+Msetnx 如果包含库中有的key的时候就不会成功，这里需要知道有一个那么所有都会失败<br>
+Getrange key 开始结束的位置 获取范围的值<br>
+Setrange key 开始为位置 值 这样就会覆盖<br>
+Set key 过期时间 value  这样可以在设置值的时候同时设置过期时间<br>
+Ttl age 可以查看还有多久时间过期<br>
+Getset key value 取出旧值然后覆盖值</p>
 </div>
                                     <div class="mdui-divider mdui-m-b-2"></div>
                                     <div class="mdui-row-xs-2 post-fenye">
                                        
-                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://IseEkko.github.io/post/chong-jian-er-cha-shu/">重建二叉树</a></div></div>
+                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://IseEkko.github.io/post/keep-alive-he-fei-keep-alice-de-chai-bie/">Keep-Alive 和非 Keep-Alice的差别</a></div></div>
                                         
 
                                         
-                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/er-cha-sou-suo-shu-de-zui-jin-gong-gong-zu-xian/">二叉搜索树的最近公共祖先</a></div> </div>
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/chong-jian-er-cha-shu/">重建二叉树</a></div> </div>
                                        
                                       </div>
                                    

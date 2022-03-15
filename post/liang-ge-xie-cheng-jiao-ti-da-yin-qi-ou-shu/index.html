@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
-       <head>
+        <head>
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
-        <title>算法 | isekko</title>
+        <title>两个协程交替打印奇偶数 | isekko</title>
         <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
@@ -14,7 +14,7 @@
 
     </head>
     <body>
-          <header class="header mdui-m-b-5">      
+              <header class="header mdui-m-b-5">      
             <div class="container  ">
                 <div class="index-title animated fadeInDown mdui-text-center mdui-text-color-white mdui-m-b-2" style="animation-delay: 0.2s"><a href="https://IseEkko.github.io/">isekko</a></div>
                 <div class="mdui-text-color-white animated fadeInDown mdui-text-center  mdui-m-b-3" style="animation-delay: 0.4s">对个人笔记的总结，这个网站的笔记将会是我经过提炼过后的笔记。</div>
@@ -54,44 +54,66 @@
         </header>
         <div class="mdui-container ">
                 <div class="mdui-row">
-                        <div class="mdui-col-md-8 mdui-col-offset-md-2 mdui-m-t-1">
-                                                         
-                               <article class="mdui-p-a-5 index-list mdui-m-b-3 animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="mdui-typo-body-2 mdui-m-b-1" datetime="2022-01-11 15:34:17">2022-01-11</div>
-                                    <div class="mdui-typo-headline mdui-m-b-3 index-list-title index-guo"><a href="https://IseEkko.github.io/post/ping-heng-er-cha-shu/">平衡二叉树</a></div>
-                                    <div class="mdui-typo-subheading mdui-m-b-2 index-neirong"><p>什么是平衡二叉树？<br>
-我们应该怎么去判断？</p>
+                        <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
+                                <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
+                                    <div class="post-title  mdui-m-b-1">两个协程交替打印奇偶数</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-03-15 22:43:08">2022-03-15 / 1 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>常见的go工程问题</p>
+<!-- more -->
+<h2 id="解析">解析</h2>
+<p>在go语言中，开启一个协程是很容易的，直接使用的是go关键字，这里需要我们注意的时候，我们如何做到两个协程的同步，这个让我一下想到的就是channel，使用channel来完成这个功能，我们用一个使用go关键字开启两个协程，然后通过通信做到这个功能。<br>
+也可以不使用channel，使用纯go 开启协程来做这个事情，这里涉及到的就是调度的问题，我们使用调度的方式，也就是当奇数进行打印的时候答应完一个就让出cpu的使用权限，然后偶数同理，但是这里我们需要注意的事情就是我们一定要设置使用的cpu核心数是多少。这里因为是两个交替打印所以我们使用到的就是一个核心数量就可以了。</p>
+<h2 id="实现源码">实现源码</h2>
+<p><img src="https://IseEkko.github.io//post-images/1647355474623.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647355482241.png" alt="" loading="lazy"></p>
 </div>
-                                    <div class="index-list-rm index-guo"><a href="https://IseEkko.github.io/post/ping-heng-er-cha-shu/">Read More</a></div>
-                                </article>
-                                
-                               <article class="mdui-p-a-5 index-list mdui-m-b-3 animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="mdui-typo-body-2 mdui-m-b-1" datetime="2022-01-11 15:01:46">2022-01-11</div>
-                                    <div class="mdui-typo-headline mdui-m-b-3 index-list-title index-guo"><a href="https://IseEkko.github.io/post/er-cha-shu-de-zui-xiao-shen-du/">二叉树的最小深度</a></div>
-                                    <div class="mdui-typo-subheading mdui-m-b-2 index-neirong"><p>对于二叉树最小深度的解题相关，包含源码</p>
-</div>
-                                    <div class="index-list-rm index-guo"><a href="https://IseEkko.github.io/post/er-cha-shu-de-zui-xiao-shen-du/">Read More</a></div>
-                                </article>
-                                
-                               <article class="mdui-p-a-5 index-list mdui-m-b-3 animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="mdui-typo-body-2 mdui-m-b-1" datetime="2022-01-10 21:36:10">2022-01-10</div>
-                                    <div class="mdui-typo-headline mdui-m-b-3 index-list-title index-guo"><a href="https://IseEkko.github.io/post/er-cha-shu-de-zui-da-shen-du/">二叉树的最大深度</a></div>
-                                    <div class="mdui-typo-subheading mdui-m-b-2 index-neirong"><p>二叉树的最大深度。我们使用什么方法去破解？</p>
-</div>
-                                    <div class="index-list-rm index-guo"><a href="https://IseEkko.github.io/post/er-cha-shu-de-zui-da-shen-du/">Read More</a></div>
-                                </article>
-                                
-                                                            <nav class="mdui-m-t-5">
-                                
-                                <div class="index-yema mdui-float-left"><a href="https://IseEkko.github.io/tag/89sSoit-w">上一页</a></div>
-                                 
-                                
-                                </nav>     
+                                    <div class="mdui-divider mdui-m-b-2"></div>
+                                    <div class="mdui-row-xs-2 post-fenye">
+                                       
+                                        <div class="mdui-col"> </div>
+                                        
 
+                                        
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/keep-alive-he-fei-keep-alice-de-chai-bie/">Keep-Alive 和非 Keep-Alice的差别</a></div> </div>
+                                       
+                                      </div>
+                                   
+                                    <div class="mdui-divider mdui-m-t-2 mdui-m-b-2"></div>
+                                    
+                                     <script src="https://IseEkko.github.io//media/scripts/Valine.min.js"></script>
+ <div class="comment"></div>
+
+<script>
+      new Valine({
+            el: '.comment',
+
+
+
+            path: window.location.pathname,
+            pageSize: 30,
+            avatar:'mm', 
+       })
+    </script> 
+<script>
+    if(window.location.hash){
+        var checkExist = setInterval(function() {
+           if ($(window.location.hash).length) {
+              $('html, body').animate({scrollTop: $(window.location.hash).offset().top-90}, 1000);
+              clearInterval(checkExist);
+           }
+        }, 100);
+    }
+</script>
+                                </article>
+
+                                    
                         </div>
                       </div>
+    
+                
+
               </div>
-                <footer class="footer mdui-m-t-5 mdui-text-center">
+                    <footer class="footer mdui-m-t-5 mdui-text-center">
                <nav class="social-links">
                       <ul>
                       

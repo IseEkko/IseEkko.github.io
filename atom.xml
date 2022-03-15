@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://IseEkko.github.io/</id>
     <title>isekko</title>
-    <updated>2022-03-15T08:25:41.989Z</updated>
+    <updated>2022-03-15T14:45:35.335Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://IseEkko.github.io/"/>
     <link rel="self" href="https://IseEkko.github.io/atom.xml"/>
@@ -10,6 +10,110 @@
     <logo>https://IseEkko.github.io/images/avatar.png</logo>
     <icon>https://IseEkko.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, isekko</rights>
+    <entry>
+        <title type="html"><![CDATA[两个协程交替打印奇偶数]]></title>
+        <id>https://IseEkko.github.io/post/liang-ge-xie-cheng-jiao-ti-da-yin-qi-ou-shu/</id>
+        <link href="https://IseEkko.github.io/post/liang-ge-xie-cheng-jiao-ti-da-yin-qi-ou-shu/">
+        </link>
+        <updated>2022-03-15T14:43:08.000Z</updated>
+        <summary type="html"><![CDATA[<p>常见的go工程问题</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>常见的go工程问题</p>
+<!-- more -->
+<h2 id="解析">解析</h2>
+<p>在go语言中，开启一个协程是很容易的，直接使用的是go关键字，这里需要我们注意的时候，我们如何做到两个协程的同步，这个让我一下想到的就是channel，使用channel来完成这个功能，我们用一个使用go关键字开启两个协程，然后通过通信做到这个功能。<br>
+也可以不使用channel，使用纯go 开启协程来做这个事情，这里涉及到的就是调度的问题，我们使用调度的方式，也就是当奇数进行打印的时候答应完一个就让出cpu的使用权限，然后偶数同理，但是这里我们需要注意的事情就是我们一定要设置使用的cpu核心数是多少。这里因为是两个交替打印所以我们使用到的就是一个核心数量就可以了。</p>
+<h2 id="实现源码">实现源码</h2>
+<p><img src="https://IseEkko.github.io//post-images/1647355474623.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647355482241.png" alt="" loading="lazy"></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Keep-Alive 和非 Keep-Alice的差别]]></title>
+        <id>https://IseEkko.github.io/post/keep-alive-he-fei-keep-alice-de-chai-bie/</id>
+        <link href="https://IseEkko.github.io/post/keep-alive-he-fei-keep-alice-de-chai-bie/">
+        </link>
+        <updated>2022-03-15T14:41:05.000Z</updated>
+        <summary type="html"><![CDATA[<p>这里的意思就是保持连接，和不保持连接</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>这里的意思就是保持连接，和不保持连接</p>
+<!-- more -->
+<h2 id="理解">理解</h2>
+<p>我们如何来理解这个问题呢，keep-alive 和非 keep- alive的区别。其实是很好理解的，我们在非keep-alive中我们请求一个资源我们就要建立一个连接，keep-alive就很好理解了，下面我们通过一个图片来看理解一下。<br>
+<img src="https://IseEkko.github.io//post-images/1647355356596.png" alt="" loading="lazy"></p>
+<h2 id="区别与缺点">区别与缺点</h2>
+<p>两者的区别和缺点，我们也很好的能通过上图看出来<br>
+非Keep-alive<br>
+我们每请求一个资源我们就要进行一个连接，然后我们创建一个连接是需要付出相应的成本的，建立一个连接，客户端和服务端都要分配一个TCP的缓冲区和变量这样会对服务器造成严重的负担。<br>
+Keep-alive<br>
+keep-alive很好的解决了上面的问题，也就是对于服务器严重的负担，但是他也不是完美的，因为保持连接，很可能造成资源的无效占用。这就是对资源的一种浪费。<br>
+当然我们也有相应的解决办法，也就是我们需要正确的设置keepalive-timeout的时间，超过这个时间过后我们就断开连接，这样我们就可以解决资源无效占用的问题。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[常见的五大基本类型（1）]]></title>
+        <id>https://IseEkko.github.io/post/chang-jian-de-wu-da-ji-ben-lei-xing-1/</id>
+        <link href="https://IseEkko.github.io/post/chang-jian-de-wu-da-ji-ben-lei-xing-1/">
+        </link>
+        <updated>2022-03-15T14:38:10.000Z</updated>
+        <summary type="html"><![CDATA[<p>这里讲解的是string的使用</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>这里讲解的是string的使用</p>
+<!-- more -->
+<h2 id="redis-key的基本操作">Redis Key的基本操作</h2>
+<pre><code>•    keys * 查看当前库中的所有key值
+•  exists  key 判断key是不是存在
+• type key 查看类型
+• del key删除对应的值
+• unlink key 也是删除对应的数据
+• expire key 10 设置过期时间  
+• Select index 就是切换库
+• Dbsize 查看key的数量
+• Flushdb 清空当前库
+• Flushall 清空所有的库
+</code></pre>
+<h4 id="del-key-和unlink-key的区别">del key 和unlink key的区别</h4>
+<p>del key是直接删除，到那时unlink key做的是异步的删除操作</p>
+<h2 id="redis字符串-string">Redis字符串 string</h2>
+<p>string是一个基本的类型，一个key对应一个value，string是二进制安全的，也就是说可以便是任意的数据，只要是可以转换为字符串，那么就可以存储，在redis中string最多可以存储512MB</p>
+<h4 id="基本的操作">基本的操作</h4>
+<p>set是添加的操作，set key value。<br>
+get是查询操作，get key 就可以取出来了。<br>
+这里需要注意的事情：如果我们set已经存在的值的时候，就会覆盖这个key的值<br>
+Append 是在后面添加，也就是go中的添加切片的操作<br>
+Strlen key 获取值的长度<br>
+Setnx key value 这个时候是如果没有这个key的时候才存储这个值，如果库中有这个key那么久不会存储这个值。<br>
+Incr key 这个操作是把数字类型进行一个加一操作<br>
+Decr key 这个操作就是把数字类型进行一个减1<br>
+Incrby key 步长 这个就是自定义加多少<br>
+Decrby key 步长 就是定义减多少的意思。<br>
+需要注意的事情：redis中的incr是原子操作<br>
+mset 同时设置一个或者多个key-value进行操作<br>
+Msetnx 如果包含库中有的key的时候就不会成功，这里需要知道有一个那么所有都会失败<br>
+Getrange key 开始结束的位置 获取范围的值<br>
+Setrange key 开始为位置 值 这样就会覆盖<br>
+Set key 过期时间 value  这样可以在设置值的时候同时设置过期时间<br>
+Ttl age 可以查看还有多久时间过期<br>
+Getset key value 取出旧值然后覆盖值</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[重建二叉树]]></title>
+        <id>https://IseEkko.github.io/post/chong-jian-er-cha-shu/</id>
+        <link href="https://IseEkko.github.io/post/chong-jian-er-cha-shu/">
+        </link>
+        <updated>2022-03-15T14:29:57.000Z</updated>
+        <summary type="html"><![CDATA[<p>这里讲解的是利用前序和中序遍历的结果重建二叉树</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>这里讲解的是利用前序和中序遍历的结果重建二叉树</p>
+<!-- more -->
+<h2 id="题目解析">题目解析</h2>
+<p>我们首先要知道的是前序遍历和中序遍历是怎么遍历的。前序遍历是，首先处理中间节点，然后处理左右节点。中序遍历的遍历方式是首先遍历左节点然后遍历中左右节点。理解了这个过后我们就可以开始使用构造这个二叉树了。<br>
+我们首先可以明白的是，前序遍历的第一个节点就是头节点，然后通过头结点找到它在中序遍历的位置，然后通过这个位置，我们可以知道的是，在这个节点的左边是左子树，右边是右子树，然后我们就知道了左子树的结点个数和右子树的结点个数，这个时候我们就可以开始递归。然后我们就可以得到这个二叉树。</p>
+<h2 id="解题源码">解题源码</h2>
+<figure data-type="image" tabindex="1"><img src="https://IseEkko.github.io//post-images/1647355074803.png" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[二叉树查找最近公共祖先]]></title>
         <id>https://IseEkko.github.io/post/er-cha-shu-cha-zhao-zui-jin-gong-gong-zu-xian/</id>
@@ -141,138 +245,6 @@
 从图中我们看到我们首先做的是，将Next指针指向cur.Next,然后更具上面的步骤进行，我之前没有思考到位的就是pre指针的用法，最先我让他在交换的过程中也跟着交换，这是不对的。从图中我们知道他始终要指向交换后的对头上。<br>
 具体的实现代码如下：<br>
 <img src="https://IseEkko.github.io//post-images/1646404010538.png" alt="" loading="lazy"></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[链表中的节点每K个一组旋转]]></title>
-        <id>https://IseEkko.github.io/post/lian-biao-zhong-de-jie-dian-mei-k-ge-yi-zu-xuan-zhuan/</id>
-        <link href="https://IseEkko.github.io/post/lian-biao-zhong-de-jie-dian-mei-k-ge-yi-zu-xuan-zhuan/">
-        </link>
-        <updated>2022-03-04T14:22:44.000Z</updated>
-        <summary type="html"><![CDATA[<h3 id="简介">简介</h3>
-<p>这个题目的难点在于，我们交换的是每组，一组的数量是不确定的，然后不足的不用交换，这里我最想思考的是我们计数处理，但是我们没有想到好的办法进行计数。</p>
-]]></summary>
-        <content type="html"><![CDATA[<h3 id="简介">简介</h3>
-<p>这个题目的难点在于，我们交换的是每组，一组的数量是不确定的，然后不足的不用交换，这里我最想思考的是我们计数处理，但是我们没有想到好的办法进行计数。</p>
-<!-- more -->
-<h3 id="思路总结">思路总结</h3>
-<p>在这里其实交换已经不是什么大的问题了，我们需要做的是，计数的问题，我们可以将分好组的数据，放入一个专门进行交换的函数中，然后进行交换返回。<br>
-我来解析一下我们，最重要的工作，也就是计数，这里我们设置一个变量进行计数，首先我们要做的事情，我们在循环进行计数，当i等于K的时候，我们进行交换的逻辑，然后等待返回值，将i再次置为1，然后再次进行循环计数，这样我们也解决了不满足K的不进行交换，因为没有i等于K的时候，不进行交换。<br>
-这个是本题目最重要的一个步骤。<br>
-在我书写的时候，我总是忘记在交换循环的时候的判断的三个条件。这个需要特别的注意。<br>
-实现的代码：</p>
-<figure data-type="image" tabindex="1"><img src="https://IseEkko.github.io//post-images/1646403860490.png" alt="" loading="lazy"></figure>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[面向连接的运输：TCP]]></title>
-        <id>https://IseEkko.github.io/post/mian-xiang-lian-jie-de-yun-shu-tcp/</id>
-        <link href="https://IseEkko.github.io/post/mian-xiang-lian-jie-de-yun-shu-tcp/">
-        </link>
-        <updated>2022-03-04T09:29:53.000Z</updated>
-        <summary type="html"><![CDATA[<h3 id="tcp连接是什么">Tcp连接是什么？</h3>
-<p>Tcp连接是需要先进行相关的数据的交换的，也就双方先要进行握手，也就是双方必须发送某些预备报文段来建立确保数据传输的参数，Tcp连接是端到端的且是点到点的，也就是说是双发的，中间的路由器和其他的设施是不用管的，建立的是一条全双工的一个通道。</p>
-]]></summary>
-        <content type="html"><![CDATA[<h3 id="tcp连接是什么">Tcp连接是什么？</h3>
-<p>Tcp连接是需要先进行相关的数据的交换的，也就双方先要进行握手，也就是双方必须发送某些预备报文段来建立确保数据传输的参数，Tcp连接是端到端的且是点到点的，也就是说是双发的，中间的路由器和其他的设施是不用管的，建立的是一条全双工的一个通道。</p>
-<!-- more -->
-<h3 id="tcp连接是如何建立的">Tcp连接是如何建立的？</h3>
-<p>在这里简单的说一下TCP连接的建立，首先客户端发送一个特殊的报文，等到服务端接收到报文后，服务端会返回一个特殊的报文给客户端，客户端此时接收到报文后，会返回一个特殊的报文给服务端，这里我们需要注意的问题在于，前两个报文是没有载荷的，最后一个报文是有载荷的。这里说的就是TCP连接的三次握手。</p>
-<h3 id="tcp报文段结构">TCP报文段结构</h3>
-<p>这里我们将说明几个在TCP结构中比较重要的几个点<br>
-<img src="https://IseEkko.github.io//post-images/1646386594154.png" alt="" loading="lazy"></p>
-<h4 id="1-序号和确认号">1. 序号和确认号</h4>
-<p>序号：在TCP报文传输的过程中，需要注意的点，从应用层进程中我们拿到了数据包，然后将数据交给TCP进行传输，在运输层要将数据交给网络层的时候，由于mss的限制，我们需要将数据进行拆分，拆分的每一块我们需要给他添加上TCP的头部，然后进行传输。在这里我们会给每个mss数据包进行编号，我们标号的号码也就是序号，序号是由数据在数据段中的偏移量进行命名的。</p>
-<p>确认号：在服务端接收到数据的时候，会返回一个确认号，这个确认号的目的是为了告诉客户端，你发送的XXX-1号及之前的数据都已经接收到了，这个确认号是具有累加性的，也就是说在返回ACK=200 然后返回 ACK =300的时候，这里300就已经包含了前面的两百了，所以在确认数据传输的时候，只需要确认300就可以确认299及299以前的数据都已经接收到了</p>
-<h4 id="2-超时时间的设置">2. 超时时间的设置</h4>
-<p>在TCP中，为了传输效率的提升，我们需要设置一个超时的时间，在超过这个超时时间的时候，我们就会重新传输数据，以保证TCP传输的效率，但是呢不合理的超时时间会导致我们TCP传输效率的下降，那么我们应该如何来设置一个合适的时间呢。<br>
-我们可以看到在书上给我们说到，其实设置这个TCP的超时时间，我们需要先测量这个传输的时间来设置，对于这个时间是没有固定的，也就是说，TCP中的超时时间是动态时刻改变中的。具体的计算公式可以看书上。</p>
-<h4 id="可靠数据传输">可靠数据传输</h4>
-<p>TCP实现不可靠的IP协议上实现了rdt从而保证tcp传输的可靠性</p>
-<h4 id="1-有趣的事情">1. 有趣的事情</h4>
-<p>在传输中的超时计时器，在TCP中我们可以看到，使用的是单一的重传计时器，在准备发送的时候，也就是在第一个bit打出的时候，启动计时器，如果超时了，会把最早的数据段重新传输，在超时器超时前接收到服务端发送的ack，这个时候会将被确认的数据从缓存区中删除，然后重新计时。<br>
-在ack发送的过程中可能会出现下面这个情况<br>
-<img src="https://IseEkko.github.io//post-images/1646386665276.png" alt="" loading="lazy"><br>
-这个时候因为ack的丢失导致我们的计时器的超时，这个时候我们的客户端会重新传输该数据包，然后此时服务端返回给我们ACK，这个时候因为在之前服务端就已经确认了该数据包，所以后面传输过来的数据包，TCP会选择将其丢弃。<br>
-<img src="https://IseEkko.github.io//post-images/1646386767647.png" alt="" loading="lazy"><br>
-在上图中，我们看到客户端传输了两段数据过来，然后都被接收到了，但是在ack的传输中由于导致了超时机制，导致数据包的重新传输，这里我们需要注意的点是，我们看到在超时过后这里TCP只是把最早传输的数据包进行了传输，然后后面， 我们看到接收到了重新传输的数据，这个时候返回的ack是120，这个是因为累积确认机制。</p>
-<h4 id="2-超时间隔加倍">2. 超时间隔加倍</h4>
-<pre><code>   对于这里我们看得不是很懂但是知道在干嘛，这里就是在超时的时候对超时时间进行一个翻倍处理，我查了一下资料好像，这里最多进行两次翻倍处理。
-</code></pre>
-<h4 id="3-快速重传">3. 快速重传</h4>
-<p>快速重传机制，是在客户端重新传输了数据过后，如果服务端返回了三次一样的ack这个时候，就算没有超时，也会直接进行重传处理。</p>
-<h4 id="4-tcp选择的是gbn还是sr">4. TCP选择的是GBN还是SR</h4>
-<p>对于这个问题，首先给出答案，这个答案就是GBN和SR的结合，我们将简单的概述一下这个重传的机制，首先TCP发出报文，如果说接收到的报文，出现了失序，那么我们会先把这个数据包缓存下来，然后继续后面的上传，同时记忆没有成功的获取的数据报文。这里我们可以结合到我们的快速重传机制。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[使用zap日志]]></title>
-        <id>https://IseEkko.github.io/post/shi-yong-zap-ri-zhi/</id>
-        <link href="https://IseEkko.github.io/post/shi-yong-zap-ri-zhi/">
-        </link>
-        <updated>2022-02-12T05:34:31.000Z</updated>
-        <summary type="html"><![CDATA[<p>使用zap日志</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>使用zap日志</p>
-<!-- more -->
-<h2 id="将日志打印到文件里面">将日志打印到文件里面</h2>
-<pre><code>package main
-
-import (
-	&quot;go.uber.org/zap&quot;
-	&quot;time&quot;
-)
-
-func NewLogger() (*zap.Logger, error) {
-	ctg := zap.NewProductionConfig()
-	ctg.OutputPaths = []string{
-		&quot;./myproject.log&quot;,
-	}
-	return ctg.Build()
-}
-func main() {
-	looger, err := NewLogger()
-	if err != nil {
-		panic(err)
-	}
-	sugar := looger.Sugar()
-	defer sugar.Sync()
-	url := &quot;https://imooc.com&quot;
-	sugar.Info(&quot;failed to fetch URL&quot;,
-		// Structured context as loosely typed key-value pairs.
-		&quot;url&quot;, url,
-		&quot;attempt&quot;, 3,
-		&quot;backoff&quot;, time.Second,
-	)
-}
-</code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[子集问题（1）]]></title>
-        <id>https://IseEkko.github.io/post/zi-ji-wen-ti-1/</id>
-        <link href="https://IseEkko.github.io/post/zi-ji-wen-ti-1/">
-        </link>
-        <updated>2022-02-09T06:56:37.000Z</updated>
-        <summary type="html"><![CDATA[<p>使用回溯算法解决子集问题</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>使用回溯算法解决子集问题</p>
-<!-- more -->
-<h2 id="题目">题目</h2>
-<p>给你一个整数数组 nums ，数组中的元素 互不相同 。返回该数组所有可能的子集（幂集）。</p>
-<p>解集 不能 包含重复的子集。你可以按 任意顺序 返回解集。</p>
-<p>示例 1：</p>
-<p>输入：nums = [1,2,3]<br>
-输出：[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]<br>
-示例 2：</p>
-<p>输入：nums = [0]<br>
-输出：[[],[0]]</p>
-<p>来源：力扣（LeetCode）<br>
-链接：https://leetcode-cn.com/problems/subsets<br>
-著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。</p>
-<h2 id="思路图">思路图</h2>
-<p><img src="https://IseEkko.github.io//post-images/1644389891372.png" alt="" loading="lazy"><br>
-这里很清楚的看出我们解题的思路，也是解回溯的一般思路</p>
 ]]></content>
     </entry>
 </feed>
