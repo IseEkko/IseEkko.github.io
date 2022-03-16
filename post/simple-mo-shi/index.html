@@ -3,7 +3,7 @@
         <head>
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
-        <title>两个协程交替打印奇偶数 | isekko</title>
+        <title>Simple模式 | isekko</title>
         <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
@@ -56,25 +56,42 @@
                 <div class="mdui-row">
                         <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
                                 <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="post-title  mdui-m-b-1">两个协程交替打印奇偶数</div>
-                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-03-15 22:43:08">2022-03-15 / 1 min read</div>
-                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>常见的go工程问题</p>
-<!-- more -->
-<h2 id="解析">解析</h2>
-<p>在go语言中，开启一个协程是很容易的，直接使用的是go关键字，这里需要我们注意的时候，我们如何做到两个协程的同步，这个让我一下想到的就是channel，使用channel来完成这个功能，我们用一个使用go关键字开启两个协程，然后通过通信做到这个功能。<br>
-也可以不使用channel，使用纯go 开启协程来做这个事情，这里涉及到的就是调度的问题，我们使用调度的方式，也就是当奇数进行打印的时候答应完一个就让出cpu的使用权限，然后偶数同理，但是这里我们需要注意的事情就是我们一定要设置使用的cpu核心数是多少。这里因为是两个交替打印所以我们使用到的就是一个核心数量就可以了。</p>
-<h2 id="实现源码">实现源码</h2>
-<p><img src="https://IseEkko.github.io//post-images/1647355474623.png" alt="" loading="lazy"><br>
-<img src="https://IseEkko.github.io//post-images/1647355482241.png" alt="" loading="lazy"></p>
+                                    <div class="post-title  mdui-m-b-1">Simple模式</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-03-16 22:53:11">2022-03-16 / 2 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>最简单常用的模式<br>
+<img src="https://IseEkko.github.io//post-images/1647442422855.png" alt="" loading="lazy"><br>
+创建的过程<br>
+首先我们要有一个rabbitmq的结构体，用于创建rabbitmq实例。<br>
+<img src="https://IseEkko.github.io//post-images/1647442430003.png" alt="" loading="lazy"><br>
+然后我们需要一个全局的连接url：<br>
+<img src="https://IseEkko.github.io//post-images/1647442437427.png" alt="" loading="lazy"><br>
+在里面我们解释了每一个参数意思。然后我们开始创建这个rabbitmq的实例：这里我们看到上面的结构体，我们可以看到，我们需要传入的参数是三个，<br>
+<img src="https://IseEkko.github.io//post-images/1647442444041.png" alt="" loading="lazy"><br>
+创建了实例过后我们还要进行连接和获取通道，这样我们就算连接成功了这个rabbitmq。<br>
+这里段代码里面我们看到了还有处理错误的代码，这是我们在工程中应该注意的问题。<br>
+<img src="https://IseEkko.github.io//post-images/1647442459705.png" alt="" loading="lazy"><br>
+然后为了方便这里我们写了一个构造函数：<br>
+<img src="https://IseEkko.github.io//post-images/1647442476877.png" alt="" loading="lazy"><br>
+生产者逻辑代码<br>
+对于生产者代码中，我们首先需要申请队列，因为我们的消息是发送到队列中的。这里需要注意里面的参数意思。<br>
+<img src="https://IseEkko.github.io//post-images/1647442484650.png" alt="" loading="lazy"><br>
+然后我们请求到了队列，然后我们就要讲这些消息放进队列里面去<br>
+<img src="https://IseEkko.github.io//post-images/1647442491154.png" alt="" loading="lazy"><br>
+消费者逻辑代码<br>
+首先还是一样的，我们首先需要申请队列，这里申请的步骤和上面一样，这里就不再展示，然后这里我们直接展示消费者的核心代码。<br>
+我们首先接收到消息<br>
+<img src="https://IseEkko.github.io//post-images/1647442497793.png" alt="" loading="lazy"><br>
+然后对消息进行处理<br>
+<img src="https://IseEkko.github.io//post-images/1647442505223.png" alt="" loading="lazy"></p>
 </div>
                                     <div class="mdui-divider mdui-m-b-2"></div>
                                     <div class="mdui-row-xs-2 post-fenye">
                                        
-                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://IseEkko.github.io/post/ru-he-zhi-dao-http-de-bao-wen-chang-du/">如何知道http的报文长度</a></div></div>
+                                        <div class="mdui-col"> </div>
                                         
 
                                         
-                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/keep-alive-he-fei-keep-alice-de-chai-bie/">Keep-Alive 和非 Keep-Alice的差别</a></div> </div>
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/dns-de-zuo-yong-he-yuan-li/">DNS的作用和原理</a></div> </div>
                                        
                                       </div>
                                    

@@ -3,7 +3,7 @@
         <head>
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
-        <title>两个协程交替打印奇偶数 | isekko</title>
+        <title>http不同版本的区别 | isekko</title>
         <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
@@ -56,25 +56,35 @@
                 <div class="mdui-row">
                         <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
                                 <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="post-title  mdui-m-b-1">两个协程交替打印奇偶数</div>
-                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-03-15 22:43:08">2022-03-15 / 1 min read</div>
-                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>常见的go工程问题</p>
+                                    <div class="post-title  mdui-m-b-1">http不同版本的区别</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-03-16 22:45:33">2022-03-16 / 3 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>讲解与对于不同版本之间的区别</p>
 <!-- more -->
-<h2 id="解析">解析</h2>
-<p>在go语言中，开启一个协程是很容易的，直接使用的是go关键字，这里需要我们注意的时候，我们如何做到两个协程的同步，这个让我一下想到的就是channel，使用channel来完成这个功能，我们用一个使用go关键字开启两个协程，然后通过通信做到这个功能。<br>
-也可以不使用channel，使用纯go 开启协程来做这个事情，这里涉及到的就是调度的问题，我们使用调度的方式，也就是当奇数进行打印的时候答应完一个就让出cpu的使用权限，然后偶数同理，但是这里我们需要注意的事情就是我们一定要设置使用的cpu核心数是多少。这里因为是两个交替打印所以我们使用到的就是一个核心数量就可以了。</p>
-<h2 id="实现源码">实现源码</h2>
-<p><img src="https://IseEkko.github.io//post-images/1647355474623.png" alt="" loading="lazy"><br>
-<img src="https://IseEkko.github.io//post-images/1647355482241.png" alt="" loading="lazy"></p>
+<h2 id="http10和http11的区别">Http1.0和http1.1的区别</h2>
+<p>• 缓存处理：1.1较1.0相比缓存的策略更加的灵活<br>
+• 节约带宽：在1.1中添加了range字段，可以请求资源的部分内容，这使得开发者可以线程的请求某一资源。从而重新的利用带宽资源进行高效的并发<br>
+• 错误请求的管理：1.1较1.0新增了24个状态码<br>
+• Host 请求头：早期的服务器，都是一个机器处理单一的任务，所以可以直接用ip进行标识，但是后面有了虚拟机过后，一个主机可以有多个虚拟机，然后这个时候我们为了支持这个虚拟主机，1.1就增加了host请求头<br>
+• 长连接：<br>
+HTTP/1.0 默认浏览器和服务器之间保持短暂连接，浏览器的每次请求都需要与服务器建立一个 TCP 连接，服务器完成后立即断开 TCP 连接。HTTP/1.1 默认使用的是持久连接，其支持在同一个 TCP 请求中传送多个 HTTP 请求和响应。此之前的 HTTP 版本的默认连接都是使用非持久连接，如果想要在旧版本的 HTTP 协议上维持持久连接，则需要指定 Connection 的首部字段的值为 Keep-Alive。</p>
+<h2 id="http-1x和http-20的区别">Http 1.X和http 2.0的区别</h2>
+<p>• 二进制传送：<br>
+之前版本 数据都是用文本传输，因为文本有多种格式，所以不能很好地适应所有场景； 2.0传送的是二进制，相当于统一了格式<br>
+• 多路复用：<br>
+1.1虽然默认复用TCP连接，但是每个请求是串行执行的，如果前面的请求超时，后面的请求只能等着（也就是线头阻塞）； 2.0的时候每个请求有自己的ID，多个请求可以在同一个TCP连接上并行执行，不会互相影响<br>
+• header压缩：<br>
+每次进行HTTP请求响应的时候，头部里很多的字段都是重复的，在2.0中，将字段记录到一张表中，头部只需要存放字段对应的编号就行，用的时候只需要拿着编号去表里查找就行，减少了传输的数据量<br>
+• 服务端推送：<br>
+服务器会在客户端没发起请求的时候主动推送一些需要的资源，比如客户端请求一个html文件，服务器发送完之后会把和这个html页面相关的静态文件也发送给客户端，当客户端准备向服务器请求静态文件的时候，就可以直接从缓存中获取，就不需要再发起请求了</p>
 </div>
                                     <div class="mdui-divider mdui-m-b-2"></div>
                                     <div class="mdui-row-xs-2 post-fenye">
                                        
-                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://IseEkko.github.io/post/ru-he-zhi-dao-http-de-bao-wen-chang-du/">如何知道http的报文长度</a></div></div>
+                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://IseEkko.github.io/post/dns-de-zuo-yong-he-yuan-li/">DNS的作用和原理</a></div></div>
                                         
 
                                         
-                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/keep-alive-he-fei-keep-alice-de-chai-bie/">Keep-Alive 和非 Keep-Alice的差别</a></div> </div>
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/ru-he-zhi-dao-http-de-bao-wen-chang-du/">如何知道http的报文长度</a></div> </div>
                                        
                                       </div>
                                    

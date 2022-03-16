@@ -3,7 +3,7 @@
         <head>
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
-        <title>两个协程交替打印奇偶数 | isekko</title>
+        <title>如何知道http的报文长度 | isekko</title>
         <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
@@ -56,25 +56,53 @@
                 <div class="mdui-row">
                         <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
                                 <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="post-title  mdui-m-b-1">两个协程交替打印奇偶数</div>
-                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-03-15 22:43:08">2022-03-15 / 1 min read</div>
-                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>常见的go工程问题</p>
+                                    <div class="post-title  mdui-m-b-1">如何知道http的报文长度</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-03-16 22:41:05">2022-03-16 / 5 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>http的报文长度，分为两种情况</p>
 <!-- more -->
-<h2 id="解析">解析</h2>
-<p>在go语言中，开启一个协程是很容易的，直接使用的是go关键字，这里需要我们注意的时候，我们如何做到两个协程的同步，这个让我一下想到的就是channel，使用channel来完成这个功能，我们用一个使用go关键字开启两个协程，然后通过通信做到这个功能。<br>
-也可以不使用channel，使用纯go 开启协程来做这个事情，这里涉及到的就是调度的问题，我们使用调度的方式，也就是当奇数进行打印的时候答应完一个就让出cpu的使用权限，然后偶数同理，但是这里我们需要注意的事情就是我们一定要设置使用的cpu核心数是多少。这里因为是两个交替打印所以我们使用到的就是一个核心数量就可以了。</p>
-<h2 id="实现源码">实现源码</h2>
-<p><img src="https://IseEkko.github.io//post-images/1647355474623.png" alt="" loading="lazy"><br>
-<img src="https://IseEkko.github.io//post-images/1647355482241.png" alt="" loading="lazy"></p>
+<h2 id="对于小文件">对于小文件</h2>
+<p>其实对于小文件来说，服务器会直接在响应报文的Content-Lenth字段写上</p>
+<h2 id="对于大文件">对于大文件</h2>
+<p>对于大文件来说，http1.1过后才用的方式是，分块传输，这个时候客户端只知道要进行分块传输，是通过Transfer-Encoding：chunked字段，不会传输数据的长度，每一块包会包含十六进制的长度值和数据，最后一个分块的长度值为0，表示的是实体的结束，客户端可以根据这个确认数据接受完成。</p>
+<h2 id="补充知识">补充知识</h2>
+<p>这里我们讲解一下http是如何进行大文件传输的</p>
+<h3 id="1-数据压缩">1. 数据压缩</h3>
+<pre><code> 数据压缩手段，通常是浏览器在发送请求的时候会带着Laccept-encoding头字段，这个字段里写的是浏览器支持的压缩格式，这样服务器就可以选择一种方式进行压缩，放在Content-Encoding响应头中，然后把压缩后的原数据发送给浏览器。
+ 这个方法的缺点也很明显，因为图片和视频已经是高度压缩后的了，所有这里的压缩对于这些文件是无效的。但是这个方法对于文本的数据效果还是很好的所以还是在使用这个方法。
+</code></pre>
+<h3 id="2-分块传输">2. 分块传输</h3>
+<pre><code> 除了压缩外我们还有的方法就是分块传输，也就是我们将一个大文件进行拆分，然 后把一个一个的小文件进行传输，这样我们的网络就不会被大文件占用过多的时间可以节省服务的资源。
+ 这种化整为零的思路在HTTP协议里就是chunked分块传输编码，在响应报文里用头字段Transfer-Encoding:chunked来表示，意思是报文里的div部分不是一次性发过来的，而是分成了许多的块(chunk)逐个发送。
+ 分块传输也可以用于流式数据，例如有数据库动态生成的表单页面，这种情况下div数据的长度是未知的，无法在头字段Content-Length给出确切的长度，所以也只能用chunked方式分块发送。
+ Transfer-Encoding:chunked和Content-Length这两个字段是互斥的，也就是说响应报文里这两个字段不能同时出现，一个响应报文里的传输要么是长度已知，要么是长度未知。
+    下面是分块传输的编码规则:
+    1.每个分块包含两个部分，长度头和数据块
+    2.长度头是以CRLF结尾的一行明文，用16进制数字表示长度
+    3.数据块紧跟在长度头后，最后也用CRLF结尾，但数据不包含CRLF
+    4.最后用一个长度为0的块表示结束
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://IseEkko.github.io//post-images/1647441798333.png" alt="" loading="lazy"></figure>
+<h2 id="范围请求">范围请求</h2>
+<pre><code> 我们进行了分块过后，我们会发现一个新的问题，也是常见的一个问题，我们比如在看电视的时候，我们想快进，然后我们选择快进的位置，其实我们就是请求了这个资源的某个范围，这样我们如何进行传输呢。
+ 这里需要知道一个告知用户，我们支持范围请求的一个字段，范围请求不是web服务器必备的功能，可以实现也可以不实现，所以服务器必须在响应头里使用字段Accept-Ranges:bytes明确告知客户端：我是支持范围请求的。
+ 请求头Range是HTTP范围请求的专用字段，格式是&quot;bytes=x-y&quot;，其中的x和y是以字节为单位的数据范围。
+</code></pre>
+<p>服务器收到Range字段后，需要做四件事<br>
+第一，它必须检查范围是否合法，比如文件只有100个字节，但是请求&quot;200-300&quot;，这就是范围越界了，服务器就会返回状态码416，意思是你的范围请求有误，我无法处理，请在检查一下<br>
+第二，如果范围正确，服务器就可以根据Range头计算偏移量，读取文件的片段了，返回状态码206 partial content，和200的意思差不多，但表示div只是原数据的一部分<br>
+第三，服务器要添加一个响应头字段Content-Range，告诉片段的实际偏移量和资源的总大小，格式是bytes x-y/length，与Range头区别在没有“=”，范围后多了总长度<br>
+多端段据<br>
+上文解释的是如何进行的范围传输，是一个范围的，现在我们需要多个范围的传输，我们应该如何实现。<br>
+这种情况需要使用一种特殊的MIME类型:multipart/byteranges，表示报文的div是由多段字节序列组成的，并且还要用一个参数boundary=xxx给出段之间的分隔标记。</p>
 </div>
                                     <div class="mdui-divider mdui-m-b-2"></div>
                                     <div class="mdui-row-xs-2 post-fenye">
                                        
-                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://IseEkko.github.io/post/ru-he-zhi-dao-http-de-bao-wen-chang-du/">如何知道http的报文长度</a></div></div>
+                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://IseEkko.github.io/post/http-bu-tong-ban-ben-de-qu-bie/">http不同版本的区别</a></div></div>
                                         
 
                                         
-                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/keep-alive-he-fei-keep-alice-de-chai-bie/">Keep-Alive 和非 Keep-Alice的差别</a></div> </div>
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/liang-ge-xie-cheng-jiao-ti-da-yin-qi-ou-shu/">两个协程交替打印奇偶数</a></div> </div>
                                        
                                       </div>
                                    

@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://IseEkko.github.io/</id>
     <title>isekko</title>
-    <updated>2022-03-15T14:45:35.335Z</updated>
+    <updated>2022-03-16T14:56:19.164Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://IseEkko.github.io/"/>
     <link rel="self" href="https://IseEkko.github.io/atom.xml"/>
@@ -10,6 +10,134 @@
     <logo>https://IseEkko.github.io/images/avatar.png</logo>
     <icon>https://IseEkko.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, isekko</rights>
+    <entry>
+        <title type="html"><![CDATA[Simple模式]]></title>
+        <id>https://IseEkko.github.io/post/simple-mo-shi/</id>
+        <link href="https://IseEkko.github.io/post/simple-mo-shi/">
+        </link>
+        <updated>2022-03-16T14:53:11.000Z</updated>
+        <content type="html"><![CDATA[<p>最简单常用的模式<br>
+<img src="https://IseEkko.github.io//post-images/1647442422855.png" alt="" loading="lazy"><br>
+创建的过程<br>
+首先我们要有一个rabbitmq的结构体，用于创建rabbitmq实例。<br>
+<img src="https://IseEkko.github.io//post-images/1647442430003.png" alt="" loading="lazy"><br>
+然后我们需要一个全局的连接url：<br>
+<img src="https://IseEkko.github.io//post-images/1647442437427.png" alt="" loading="lazy"><br>
+在里面我们解释了每一个参数意思。然后我们开始创建这个rabbitmq的实例：这里我们看到上面的结构体，我们可以看到，我们需要传入的参数是三个，<br>
+<img src="https://IseEkko.github.io//post-images/1647442444041.png" alt="" loading="lazy"><br>
+创建了实例过后我们还要进行连接和获取通道，这样我们就算连接成功了这个rabbitmq。<br>
+这里段代码里面我们看到了还有处理错误的代码，这是我们在工程中应该注意的问题。<br>
+<img src="https://IseEkko.github.io//post-images/1647442459705.png" alt="" loading="lazy"><br>
+然后为了方便这里我们写了一个构造函数：<br>
+<img src="https://IseEkko.github.io//post-images/1647442476877.png" alt="" loading="lazy"><br>
+生产者逻辑代码<br>
+对于生产者代码中，我们首先需要申请队列，因为我们的消息是发送到队列中的。这里需要注意里面的参数意思。<br>
+<img src="https://IseEkko.github.io//post-images/1647442484650.png" alt="" loading="lazy"><br>
+然后我们请求到了队列，然后我们就要讲这些消息放进队列里面去<br>
+<img src="https://IseEkko.github.io//post-images/1647442491154.png" alt="" loading="lazy"><br>
+消费者逻辑代码<br>
+首先还是一样的，我们首先需要申请队列，这里申请的步骤和上面一样，这里就不再展示，然后这里我们直接展示消费者的核心代码。<br>
+我们首先接收到消息<br>
+<img src="https://IseEkko.github.io//post-images/1647442497793.png" alt="" loading="lazy"><br>
+然后对消息进行处理<br>
+<img src="https://IseEkko.github.io//post-images/1647442505223.png" alt="" loading="lazy"></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[DNS的作用和原理]]></title>
+        <id>https://IseEkko.github.io/post/dns-de-zuo-yong-he-yuan-li/</id>
+        <link href="https://IseEkko.github.io/post/dns-de-zuo-yong-he-yuan-li/">
+        </link>
+        <updated>2022-03-16T14:48:19.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="dns">DNS</h2>
+<p>DNS（Domain Name System）是域名系统的英文缩写，是一种组织成域层次结构的计算机和网络服务命名系统，用于 TCP/IP 网络。</p>
+<h2 id="作用">作用</h2>
+<p>在人类的世界里面我们最容易知道的也是最好记的就是名称，那么我们给每个主机一个名字我们就知道了是哪个，但是对于计算机来说，最容易记的是编号，有着层级结构的ip地址。为了满足两者的需求我们就有了DNS，也就是说我们可以更具主机名称查询到对应的ip，DNS就是一个分布式的数据库。</p>
+<h2 id="dns域名解析的原理">DNS域名解析的原理</h2>
+<p>DNS采用的是分布式的设计方案，它的域名空间使用的是树形的层次结构。<br>
+<img src="https://IseEkko.github.io//post-images/1647442173978.png" alt="" loading="lazy"><br>
+上图展示了 DNS 服务器的部分层次结构，从上到下依次为根域名服务器、顶级域名服务器和权威域名服务器。<br>
+除了上面的这些服务器外，还有一个不在这个结构里面但是很重要的本地服务器，一般来说，每一个ips都会有至少一个本地服务器，这个服务器的作用就是起到代理的作用，将dns请求发送到上面的三层机构中去寻找对应主机。</p>
+<h2 id="dns查询过程">DNS查询过程</h2>
+<p>假设主机 A（IP 地址为 abc.xyz.edu） 想知道主机 B 的 IP 地址 （def.mn.edu），如下图所示，主机 A 首先向它的本地 DNS 服务器发送一个 DNS 查询报文。该查询报文含有被转换的主机名 def.mn.edu。本地 DNS 服务器将该报文转发到根 DNS 服务器，根 DNS 服务器注意到查询的 IP 地址前缀为 edu 后向本地 DNS 服务器返回负责 edu 的顶级域名服务器的 IP 地址列表。该本地 DNS 服务器则再次向这些 顶级域名服务器发送查询报文。该顶级域名服务器注意到 mn.edu 的前缀，并用权威域名服务器的 IP 地址进行响应。通常情况下，顶级域名服务器并不总是知道每台主机的权威 DNS 服务器的 IP 地址，<br>
+而只知道中间的某个服务器，该中间 DNS 服务器依次能找到用于相应主机的 IP 地址，我们假设中间经历了权威服务器 ① 和 ②，最后找到了负责 def.mn.edu 的权威 DNS 服务器 ③，之后，本地 DNS 服务器直接向该服务器发送查询报文从而获得主机 B 的IP 地址。<br>
+<img src="https://IseEkko.github.io//post-images/1647442239749.png" alt="" loading="lazy"></p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[http不同版本的区别]]></title>
+        <id>https://IseEkko.github.io/post/http-bu-tong-ban-ben-de-qu-bie/</id>
+        <link href="https://IseEkko.github.io/post/http-bu-tong-ban-ben-de-qu-bie/">
+        </link>
+        <updated>2022-03-16T14:45:33.000Z</updated>
+        <summary type="html"><![CDATA[<p>讲解与对于不同版本之间的区别</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>讲解与对于不同版本之间的区别</p>
+<!-- more -->
+<h2 id="http10和http11的区别">Http1.0和http1.1的区别</h2>
+<p>• 缓存处理：1.1较1.0相比缓存的策略更加的灵活<br>
+• 节约带宽：在1.1中添加了range字段，可以请求资源的部分内容，这使得开发者可以线程的请求某一资源。从而重新的利用带宽资源进行高效的并发<br>
+• 错误请求的管理：1.1较1.0新增了24个状态码<br>
+• Host 请求头：早期的服务器，都是一个机器处理单一的任务，所以可以直接用ip进行标识，但是后面有了虚拟机过后，一个主机可以有多个虚拟机，然后这个时候我们为了支持这个虚拟主机，1.1就增加了host请求头<br>
+• 长连接：<br>
+HTTP/1.0 默认浏览器和服务器之间保持短暂连接，浏览器的每次请求都需要与服务器建立一个 TCP 连接，服务器完成后立即断开 TCP 连接。HTTP/1.1 默认使用的是持久连接，其支持在同一个 TCP 请求中传送多个 HTTP 请求和响应。此之前的 HTTP 版本的默认连接都是使用非持久连接，如果想要在旧版本的 HTTP 协议上维持持久连接，则需要指定 Connection 的首部字段的值为 Keep-Alive。</p>
+<h2 id="http-1x和http-20的区别">Http 1.X和http 2.0的区别</h2>
+<p>• 二进制传送：<br>
+之前版本 数据都是用文本传输，因为文本有多种格式，所以不能很好地适应所有场景； 2.0传送的是二进制，相当于统一了格式<br>
+• 多路复用：<br>
+1.1虽然默认复用TCP连接，但是每个请求是串行执行的，如果前面的请求超时，后面的请求只能等着（也就是线头阻塞）； 2.0的时候每个请求有自己的ID，多个请求可以在同一个TCP连接上并行执行，不会互相影响<br>
+• header压缩：<br>
+每次进行HTTP请求响应的时候，头部里很多的字段都是重复的，在2.0中，将字段记录到一张表中，头部只需要存放字段对应的编号就行，用的时候只需要拿着编号去表里查找就行，减少了传输的数据量<br>
+• 服务端推送：<br>
+服务器会在客户端没发起请求的时候主动推送一些需要的资源，比如客户端请求一个html文件，服务器发送完之后会把和这个html页面相关的静态文件也发送给客户端，当客户端准备向服务器请求静态文件的时候，就可以直接从缓存中获取，就不需要再发起请求了</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[如何知道http的报文长度]]></title>
+        <id>https://IseEkko.github.io/post/ru-he-zhi-dao-http-de-bao-wen-chang-du/</id>
+        <link href="https://IseEkko.github.io/post/ru-he-zhi-dao-http-de-bao-wen-chang-du/">
+        </link>
+        <updated>2022-03-16T14:41:05.000Z</updated>
+        <summary type="html"><![CDATA[<p>http的报文长度，分为两种情况</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>http的报文长度，分为两种情况</p>
+<!-- more -->
+<h2 id="对于小文件">对于小文件</h2>
+<p>其实对于小文件来说，服务器会直接在响应报文的Content-Lenth字段写上</p>
+<h2 id="对于大文件">对于大文件</h2>
+<p>对于大文件来说，http1.1过后才用的方式是，分块传输，这个时候客户端只知道要进行分块传输，是通过Transfer-Encoding：chunked字段，不会传输数据的长度，每一块包会包含十六进制的长度值和数据，最后一个分块的长度值为0，表示的是实体的结束，客户端可以根据这个确认数据接受完成。</p>
+<h2 id="补充知识">补充知识</h2>
+<p>这里我们讲解一下http是如何进行大文件传输的</p>
+<h3 id="1-数据压缩">1. 数据压缩</h3>
+<pre><code> 数据压缩手段，通常是浏览器在发送请求的时候会带着Laccept-encoding头字段，这个字段里写的是浏览器支持的压缩格式，这样服务器就可以选择一种方式进行压缩，放在Content-Encoding响应头中，然后把压缩后的原数据发送给浏览器。
+ 这个方法的缺点也很明显，因为图片和视频已经是高度压缩后的了，所有这里的压缩对于这些文件是无效的。但是这个方法对于文本的数据效果还是很好的所以还是在使用这个方法。
+</code></pre>
+<h3 id="2-分块传输">2. 分块传输</h3>
+<pre><code> 除了压缩外我们还有的方法就是分块传输，也就是我们将一个大文件进行拆分，然 后把一个一个的小文件进行传输，这样我们的网络就不会被大文件占用过多的时间可以节省服务的资源。
+ 这种化整为零的思路在HTTP协议里就是chunked分块传输编码，在响应报文里用头字段Transfer-Encoding:chunked来表示，意思是报文里的div部分不是一次性发过来的，而是分成了许多的块(chunk)逐个发送。
+ 分块传输也可以用于流式数据，例如有数据库动态生成的表单页面，这种情况下div数据的长度是未知的，无法在头字段Content-Length给出确切的长度，所以也只能用chunked方式分块发送。
+ Transfer-Encoding:chunked和Content-Length这两个字段是互斥的，也就是说响应报文里这两个字段不能同时出现，一个响应报文里的传输要么是长度已知，要么是长度未知。
+    下面是分块传输的编码规则:
+    1.每个分块包含两个部分，长度头和数据块
+    2.长度头是以CRLF结尾的一行明文，用16进制数字表示长度
+    3.数据块紧跟在长度头后，最后也用CRLF结尾，但数据不包含CRLF
+    4.最后用一个长度为0的块表示结束
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://IseEkko.github.io//post-images/1647441798333.png" alt="" loading="lazy"></figure>
+<h2 id="范围请求">范围请求</h2>
+<pre><code> 我们进行了分块过后，我们会发现一个新的问题，也是常见的一个问题，我们比如在看电视的时候，我们想快进，然后我们选择快进的位置，其实我们就是请求了这个资源的某个范围，这样我们如何进行传输呢。
+ 这里需要知道一个告知用户，我们支持范围请求的一个字段，范围请求不是web服务器必备的功能，可以实现也可以不实现，所以服务器必须在响应头里使用字段Accept-Ranges:bytes明确告知客户端：我是支持范围请求的。
+ 请求头Range是HTTP范围请求的专用字段，格式是&quot;bytes=x-y&quot;，其中的x和y是以字节为单位的数据范围。
+</code></pre>
+<p>服务器收到Range字段后，需要做四件事<br>
+第一，它必须检查范围是否合法，比如文件只有100个字节，但是请求&quot;200-300&quot;，这就是范围越界了，服务器就会返回状态码416，意思是你的范围请求有误，我无法处理，请在检查一下<br>
+第二，如果范围正确，服务器就可以根据Range头计算偏移量，读取文件的片段了，返回状态码206 partial content，和200的意思差不多，但表示div只是原数据的一部分<br>
+第三，服务器要添加一个响应头字段Content-Range，告诉片段的实际偏移量和资源的总大小，格式是bytes x-y/length，与Range头区别在没有“=”，范围后多了总长度<br>
+多端段据<br>
+上文解释的是如何进行的范围传输，是一个范围的，现在我们需要多个范围的传输，我们应该如何实现。<br>
+这种情况需要使用一种特殊的MIME类型:multipart/byteranges，表示报文的div是由多段字节序列组成的，并且还要用一个参数boundary=xxx给出段之间的分隔标记。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[两个协程交替打印奇偶数]]></title>
         <id>https://IseEkko.github.io/post/liang-ge-xie-cheng-jiao-ti-da-yin-qi-ou-shu/</id>
@@ -146,105 +274,6 @@ Getset key value 取出旧值然后覆盖值</p>
 这个理解起来不是很难，但是需要我们理解到位。</p>
 <h2 id="解题源码">解题源码</h2>
 <figure data-type="image" tabindex="1"><img src="https://IseEkko.github.io//post-images/1647270127652.png" alt="" loading="lazy"></figure>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[判断是否是完成二叉树]]></title>
-        <id>https://IseEkko.github.io/post/pan-duan-shi-fou-shi-wan-cheng-er-cha-shu/</id>
-        <link href="https://IseEkko.github.io/post/pan-duan-shi-fou-shi-wan-cheng-er-cha-shu/">
-        </link>
-        <updated>2022-03-13T02:36:08.000Z</updated>
-        <summary type="html"><![CDATA[<p>开始的时候，没有什么思路，想了很久，最后还是看了解析，理解了一下。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>开始的时候，没有什么思路，想了很久，最后还是看了解析，理解了一下。</p>
-<!-- more -->
-<h2 id="题目解读">题目解读</h2>
-<p><img src="https://IseEkko.github.io//post-images/1647139097672.png" alt="" loading="lazy"><br>
-这个题目就是判断是不是完成二叉树。</p>
-<h3 id="什么是完成二叉树">什么是完成二叉树</h3>
-<p>对于完全二叉树的定义就是除最后一层的节点外，也就是说除了叶子节点外，其他的节点都是有左右节点的，对于叶子节点还要保持，左边是满的，右边可以是空的，也就是如图所示：<br>
-<img src="https://IseEkko.github.io//post-images/1647139293818.png" alt="" loading="lazy"><br>
-上面的三种都是完成二叉树，那么如何来判断呢？</p>
-<h2 id="解题过程">解题过程</h2>
-<p>这个题目的解题思路使用的是，标号的方式，我们给每一个节点标号，然后有一个计数的变量，那么我们最后判断我们标号的最大值是不是和计数的相同，如果相同那么就是完成二叉树，不然就不是。</p>
-<h2 id="解题源码">解题源码</h2>
-<figure data-type="image" tabindex="1"><img src="https://IseEkko.github.io//post-images/1647139484768.png" alt="" loading="lazy"></figure>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[链表中环的入口结点]]></title>
-        <id>https://IseEkko.github.io/post/lian-biao-zhong-huan-de-ru-kou-jie-dian/</id>
-        <link href="https://IseEkko.github.io/post/lian-biao-zhong-huan-de-ru-kou-jie-dian/">
-        </link>
-        <updated>2022-03-05T14:34:27.000Z</updated>
-        <content type="html"><![CDATA[<h3 id="简介">简介</h3>
-<p>原来遇见这个题目，被数学公式套路了，然后现在回过来学。并有了自己的思路。</p>
-<h3 id="解法一">解法一</h3>
-<p>今天想到了一个特别的想法，就是我们看这个题目其实想要考察我们的东西，很简单，就是去找到入口，那么我们如何找呢，我想的是首先我们要判断他是不是具有环，然后再去找他的入口，突然我的脑海里面出现了一个东西，map我突然恍然大悟，我们可以使用map去判断这个东西。<br>
-使用到了是map[*ListNode]int<br>
-当我们循环出现第二次的时候，那么这个节点就是入口，同时我们证明了这个是有环的。<br>
-<img src="https://IseEkko.github.io//post-images/1646490954143.png" alt="" loading="lazy"><br>
-就这样我们找了头节点。</p>
-<h3 id="解法二">解法二</h3>
-<p>解法二使用到的是快慢指针法。<br>
-<img src="https://IseEkko.github.io//post-images/1646490959475.png" alt="" loading="lazy"><br>
-这里我们需要好好的理解一下这个题目。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Nacos使用]]></title>
-        <id>https://IseEkko.github.io/post/nacos-shi-yong/</id>
-        <link href="https://IseEkko.github.io/post/nacos-shi-yong/">
-        </link>
-        <updated>2022-03-05T14:20:16.000Z</updated>
-        <summary type="html"><![CDATA[<h2 id="简介">简介</h2>
-<p>出现的问题就是，在我们大规模的集群过后，由于我们微服务的原因，我们的配置文件会修改起来比较麻烦，而且很容易改错，这个时候我们需要做的事情就是通过一个第三方的配置中心，进行配置，这里我们选择的nacos</p>
-]]></summary>
-        <content type="html"><![CDATA[<h2 id="简介">简介</h2>
-<p>出现的问题就是，在我们大规模的集群过后，由于我们微服务的原因，我们的配置文件会修改起来比较麻烦，而且很容易改错，这个时候我们需要做的事情就是通过一个第三方的配置中心，进行配置，这里我们选择的nacos</p>
-<!-- more -->
-<h2 id="使用">使用</h2>
-<p>在我们分布式应用中，我们为更好的完成项目的配置，减少错误我们使用到了nacos，我们需要知道的事，我们如何使用。</p>
-<h2 id="获取nacos配置文件">获取nacos配置文件</h2>
-<p>下面的代码我们就得到了nacos中的配置文件，在里面我们需要注意的几个点：<br>
-<img src="https://IseEkko.github.io//post-images/1646490164720.png" alt="" loading="lazy"></p>
-<p><img src="https://IseEkko.github.io//post-images/1646490170989.png" alt="" loading="lazy"><br>
-我们需要注意的事情，是在里面有缓存的配置，如果在断网，网络拥塞的时候我们，在这里的项目就会得到缓存中的配置文件，这个配置文件是在我们运行项目的时候，独自进行创建的。<br>
-<img src="https://IseEkko.github.io//post-images/1646490180362.png" alt="" loading="lazy"></p>
-<h2 id="将配置文件变成struct">将配置文件变成struct</h2>
-<p>在里面我们不是直接将yaml变成struct，这里我们需要注意的是，我们首先用通过yaml转换成json，然后将json放在nacos中进行配置。</p>
-<p><img src="https://IseEkko.github.io//post-images/1646490186797.png" alt="" loading="lazy"><br>
-在进行映射的时候，我们要创建对应的结构体，然后结构体要设置对应的json tag。<br>
-监听配置的改变<br>
-我们这里还需完成对配置文件改变的监听。</p>
-<p><a href="https://github.com/IseEkko/DEMO/tree/master/nacos_test">Demo地址</a></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[链表内指定区域间反转]]></title>
-        <id>https://IseEkko.github.io/post/lian-biao-nei-zhi-ding-qu-yu-jian-fan-zhuan/</id>
-        <link href="https://IseEkko.github.io/post/lian-biao-nei-zhi-ding-qu-yu-jian-fan-zhuan/">
-        </link>
-        <updated>2022-03-04T14:25:06.000Z</updated>
-        <summary type="html"><![CDATA[<h3 id="题目">题目</h3>
-<p>这个问题较之前的链表反转，存在很多不同的地方，这里我们将详细的进行说明</p>
-]]></summary>
-        <content type="html"><![CDATA[<h3 id="题目">题目</h3>
-<p>这个问题较之前的链表反转，存在很多不同的地方，这里我们将详细的进行说明</p>
-<!-- more -->
-<h3 id="思路总结">思路总结</h3>
-<p>这个问题在面试中也是很容易考察的，我在书写的时候出现了思维上次的错误，查看了解析过后我发现了自己在这个问题上的不足。在这里一步一步的进行解析。<br>
-首先我们要明白我们做的这次反转，只是反转链表中的一部分，所以我们在交换位置位置的时候要格外的小心。<br>
-<img src="https://IseEkko.github.io//post-images/1646403991242.png" alt="" loading="lazy"><br>
-上面是我们准备的示意图，我们看到这里还没有发现与之前的链表反转有什么不同。<br>
-因为我们是需要交换其中的一部分，所以我们现在假设我们交换的是中间两个<br>
-在这里我们首先需要做的就是移动至相关位置。<br>
-<img src="https://IseEkko.github.io//post-images/1646403998343.png" alt="" loading="lazy"><br>
-现在我们移动到了想要的位置后，下一步就是进行交换，这里在交换的时候我们需要判断我们要交换多少次。答案是n右边界-m左边界次，这里我们要演示的是交换的核心过程<br>
-<img src="https://IseEkko.github.io//post-images/1646404004469.png" alt="" loading="lazy"><br>
-从图中我们看到我们首先做的是，将Next指针指向cur.Next,然后更具上面的步骤进行，我之前没有思考到位的就是pre指针的用法，最先我让他在交换的过程中也跟着交换，这是不对的。从图中我们知道他始终要指向交换后的对头上。<br>
-具体的实现代码如下：<br>
-<img src="https://IseEkko.github.io//post-images/1646404010538.png" alt="" loading="lazy"></p>
 ]]></content>
     </entry>
 </feed>
