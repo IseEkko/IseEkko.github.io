@@ -4,7 +4,7 @@
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
         <title>DNS的作用和原理 | isekko</title>
-        <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
+        <link rel="stylesheet" href="http://localhost:4000/styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
@@ -16,7 +16,7 @@
     <body>
               <header class="header mdui-m-b-5">      
             <div class="container  ">
-                <div class="index-title animated fadeInDown mdui-text-center mdui-text-color-white mdui-m-b-2" style="animation-delay: 0.2s"><a href="https://IseEkko.github.io/">isekko</a></div>
+                <div class="index-title animated fadeInDown mdui-text-center mdui-text-color-white mdui-m-b-2" style="animation-delay: 0.2s"><a href="http://localhost:4000">isekko</a></div>
                 <div class="mdui-text-color-white animated fadeInDown mdui-text-center  mdui-m-b-3" style="animation-delay: 0.4s">做好每一件事，读好每一本书，天道酬勤</div>
            
             <nav id="nav" class="mdui-text-center animated fadeInDown" style="animation-delay: 0.6s">
@@ -64,28 +64,28 @@
 <p>在人类的世界里面我们最容易知道的也是最好记的就是名称，那么我们给每个主机一个名字我们就知道了是哪个，但是对于计算机来说，最容易记的是编号，有着层级结构的ip地址。为了满足两者的需求我们就有了DNS，也就是说我们可以更具主机名称查询到对应的ip，DNS就是一个分布式的数据库。</p>
 <h2 id="dns域名解析的原理">DNS域名解析的原理</h2>
 <p>DNS采用的是分布式的设计方案，它的域名空间使用的是树形的层次结构。<br>
-<img src="https://IseEkko.github.io//post-images/1647442173978.png" alt="" loading="lazy"><br>
+<img src="http://localhost:4000/post-images/1647442173978.png" alt="" loading="lazy"><br>
 上图展示了 DNS 服务器的部分层次结构，从上到下依次为根域名服务器、顶级域名服务器和权威域名服务器。<br>
 除了上面的这些服务器外，还有一个不在这个结构里面但是很重要的本地服务器，一般来说，每一个ips都会有至少一个本地服务器，这个服务器的作用就是起到代理的作用，将dns请求发送到上面的三层机构中去寻找对应主机。</p>
 <h2 id="dns查询过程">DNS查询过程</h2>
 <p>假设主机 A（IP 地址为 abc.xyz.edu） 想知道主机 B 的 IP 地址 （def.mn.edu），如下图所示，主机 A 首先向它的本地 DNS 服务器发送一个 DNS 查询报文。该查询报文含有被转换的主机名 def.mn.edu。本地 DNS 服务器将该报文转发到根 DNS 服务器，根 DNS 服务器注意到查询的 IP 地址前缀为 edu 后向本地 DNS 服务器返回负责 edu 的顶级域名服务器的 IP 地址列表。该本地 DNS 服务器则再次向这些 顶级域名服务器发送查询报文。该顶级域名服务器注意到 mn.edu 的前缀，并用权威域名服务器的 IP 地址进行响应。通常情况下，顶级域名服务器并不总是知道每台主机的权威 DNS 服务器的 IP 地址，<br>
 而只知道中间的某个服务器，该中间 DNS 服务器依次能找到用于相应主机的 IP 地址，我们假设中间经历了权威服务器 ① 和 ②，最后找到了负责 def.mn.edu 的权威 DNS 服务器 ③，之后，本地 DNS 服务器直接向该服务器发送查询报文从而获得主机 B 的IP 地址。<br>
-<img src="https://IseEkko.github.io//post-images/1647442239749.png" alt="" loading="lazy"></p>
+<img src="http://localhost:4000/post-images/1647442239749.png" alt="" loading="lazy"></p>
 </div>
                                     <div class="mdui-divider mdui-m-b-2"></div>
                                     <div class="mdui-row-xs-2 post-fenye">
                                        
-                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://IseEkko.github.io/post/simple-mo-shi/">Simple模式</a></div></div>
+                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="http://localhost:4000/post/simple-mo-shi/">Simple模式</a></div></div>
                                         
 
                                         
-                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/http-bu-tong-ban-ben-de-qu-bie/">http不同版本的区别</a></div> </div>
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="http://localhost:4000/post/http-bu-tong-ban-ben-de-qu-bie/">http不同版本的区别</a></div> </div>
                                        
                                       </div>
                                    
                                     <div class="mdui-divider mdui-m-t-2 mdui-m-b-2"></div>
                                     
-                                     <script src="https://IseEkko.github.io//media/scripts/Valine.min.js"></script>
+                                     <script src="http://localhost:4000/media/scripts/Valine.min.js"></script>
  <div class="comment"></div>
 
 <script>

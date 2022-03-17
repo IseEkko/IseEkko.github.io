@@ -4,7 +4,7 @@
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
         <title>Simple模式 | isekko</title>
-        <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
+        <link rel="stylesheet" href="http://localhost:4000/styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
@@ -16,7 +16,7 @@
     <body>
               <header class="header mdui-m-b-5">      
             <div class="container  ">
-                <div class="index-title animated fadeInDown mdui-text-center mdui-text-color-white mdui-m-b-2" style="animation-delay: 0.2s"><a href="https://IseEkko.github.io/">isekko</a></div>
+                <div class="index-title animated fadeInDown mdui-text-center mdui-text-color-white mdui-m-b-2" style="animation-delay: 0.2s"><a href="http://localhost:4000">isekko</a></div>
                 <div class="mdui-text-color-white animated fadeInDown mdui-text-center  mdui-m-b-3" style="animation-delay: 0.4s">做好每一件事，读好每一本书，天道酬勤</div>
            
             <nav id="nav" class="mdui-text-center animated fadeInDown" style="animation-delay: 0.6s">
@@ -59,45 +59,45 @@
                                     <div class="post-title  mdui-m-b-1">Simple模式</div>
                                     <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-03-16 22:53:11">2022-03-16 / 2 min read</div>
                                     <div class="mdui-m-b-2 mdui-typo post-neirong"><p>最简单常用的模式<br>
-<img src="https://IseEkko.github.io//post-images/1647442422855.png" alt="" loading="lazy"><br>
+<img src="http://localhost:4000/post-images/1647442422855.png" alt="" loading="lazy"><br>
 创建的过程<br>
 首先我们要有一个rabbitmq的结构体，用于创建rabbitmq实例。<br>
-<img src="https://IseEkko.github.io//post-images/1647442430003.png" alt="" loading="lazy"><br>
+<img src="http://localhost:4000/post-images/1647442430003.png" alt="" loading="lazy"><br>
 然后我们需要一个全局的连接url：<br>
-<img src="https://IseEkko.github.io//post-images/1647442437427.png" alt="" loading="lazy"><br>
+<img src="http://localhost:4000/post-images/1647442437427.png" alt="" loading="lazy"><br>
 在里面我们解释了每一个参数意思。然后我们开始创建这个rabbitmq的实例：这里我们看到上面的结构体，我们可以看到，我们需要传入的参数是三个，<br>
-<img src="https://IseEkko.github.io//post-images/1647442444041.png" alt="" loading="lazy"><br>
+<img src="http://localhost:4000/post-images/1647442444041.png" alt="" loading="lazy"><br>
 创建了实例过后我们还要进行连接和获取通道，这样我们就算连接成功了这个rabbitmq。<br>
 这里段代码里面我们看到了还有处理错误的代码，这是我们在工程中应该注意的问题。<br>
-<img src="https://IseEkko.github.io//post-images/1647442459705.png" alt="" loading="lazy"><br>
+<img src="http://localhost:4000/post-images/1647442459705.png" alt="" loading="lazy"><br>
 然后为了方便这里我们写了一个构造函数：<br>
-<img src="https://IseEkko.github.io//post-images/1647442476877.png" alt="" loading="lazy"><br>
+<img src="http://localhost:4000/post-images/1647442476877.png" alt="" loading="lazy"><br>
 生产者逻辑代码<br>
 对于生产者代码中，我们首先需要申请队列，因为我们的消息是发送到队列中的。这里需要注意里面的参数意思。<br>
-<img src="https://IseEkko.github.io//post-images/1647442484650.png" alt="" loading="lazy"><br>
+<img src="http://localhost:4000/post-images/1647442484650.png" alt="" loading="lazy"><br>
 然后我们请求到了队列，然后我们就要讲这些消息放进队列里面去<br>
-<img src="https://IseEkko.github.io//post-images/1647442491154.png" alt="" loading="lazy"><br>
+<img src="http://localhost:4000/post-images/1647442491154.png" alt="" loading="lazy"><br>
 消费者逻辑代码<br>
 首先还是一样的，我们首先需要申请队列，这里申请的步骤和上面一样，这里就不再展示，然后这里我们直接展示消费者的核心代码。<br>
 我们首先接收到消息<br>
-<img src="https://IseEkko.github.io//post-images/1647442497793.png" alt="" loading="lazy"><br>
+<img src="http://localhost:4000/post-images/1647442497793.png" alt="" loading="lazy"><br>
 然后对消息进行处理<br>
-<img src="https://IseEkko.github.io//post-images/1647442505223.png" alt="" loading="lazy"></p>
+<img src="http://localhost:4000/post-images/1647442505223.png" alt="" loading="lazy"></p>
 </div>
                                     <div class="mdui-divider mdui-m-b-2"></div>
                                     <div class="mdui-row-xs-2 post-fenye">
                                        
-                                        <div class="mdui-col"> </div>
+                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="http://localhost:4000/post/tcp-san-ci-wo-shou/">TCP三次握手</a></div></div>
                                         
 
                                         
-                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/dns-de-zuo-yong-he-yuan-li/">DNS的作用和原理</a></div> </div>
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="http://localhost:4000/post/dns-de-zuo-yong-he-yuan-li/">DNS的作用和原理</a></div> </div>
                                        
                                       </div>
                                    
                                     <div class="mdui-divider mdui-m-t-2 mdui-m-b-2"></div>
                                     
-                                     <script src="https://IseEkko.github.io//media/scripts/Valine.min.js"></script>
+                                     <script src="http://localhost:4000/media/scripts/Valine.min.js"></script>
  <div class="comment"></div>
 
 <script>

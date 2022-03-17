@@ -4,7 +4,7 @@
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
         <title>链表内指定区域间反转 | isekko</title>
-        <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
+        <link rel="stylesheet" href="http://localhost:4000/styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
@@ -16,7 +16,7 @@
     <body>
               <header class="header mdui-m-b-5">      
             <div class="container  ">
-                <div class="index-title animated fadeInDown mdui-text-center mdui-text-color-white mdui-m-b-2" style="animation-delay: 0.2s"><a href="https://IseEkko.github.io/">isekko</a></div>
+                <div class="index-title animated fadeInDown mdui-text-center mdui-text-color-white mdui-m-b-2" style="animation-delay: 0.2s"><a href="http://localhost:4000">isekko</a></div>
                 <div class="mdui-text-color-white animated fadeInDown mdui-text-center  mdui-m-b-3" style="animation-delay: 0.4s">做好每一件事，读好每一本书，天道酬勤</div>
            
             <nav id="nav" class="mdui-text-center animated fadeInDown" style="animation-delay: 0.6s">
@@ -64,31 +64,31 @@
 <h3 id="思路总结">思路总结</h3>
 <p>这个问题在面试中也是很容易考察的，我在书写的时候出现了思维上次的错误，查看了解析过后我发现了自己在这个问题上的不足。在这里一步一步的进行解析。<br>
 首先我们要明白我们做的这次反转，只是反转链表中的一部分，所以我们在交换位置位置的时候要格外的小心。<br>
-<img src="https://IseEkko.github.io//post-images/1646403991242.png" alt="" loading="lazy"><br>
+<img src="http://localhost:4000/post-images/1646403991242.png" alt="" loading="lazy"><br>
 上面是我们准备的示意图，我们看到这里还没有发现与之前的链表反转有什么不同。<br>
 因为我们是需要交换其中的一部分，所以我们现在假设我们交换的是中间两个<br>
 在这里我们首先需要做的就是移动至相关位置。<br>
-<img src="https://IseEkko.github.io//post-images/1646403998343.png" alt="" loading="lazy"><br>
+<img src="http://localhost:4000/post-images/1646403998343.png" alt="" loading="lazy"><br>
 现在我们移动到了想要的位置后，下一步就是进行交换，这里在交换的时候我们需要判断我们要交换多少次。答案是n右边界-m左边界次，这里我们要演示的是交换的核心过程<br>
-<img src="https://IseEkko.github.io//post-images/1646404004469.png" alt="" loading="lazy"><br>
+<img src="http://localhost:4000/post-images/1646404004469.png" alt="" loading="lazy"><br>
 从图中我们看到我们首先做的是，将Next指针指向cur.Next,然后更具上面的步骤进行，我之前没有思考到位的就是pre指针的用法，最先我让他在交换的过程中也跟着交换，这是不对的。从图中我们知道他始终要指向交换后的对头上。<br>
 具体的实现代码如下：<br>
-<img src="https://IseEkko.github.io//post-images/1646404010538.png" alt="" loading="lazy"></p>
+<img src="http://localhost:4000/post-images/1646404010538.png" alt="" loading="lazy"></p>
 </div>
                                     <div class="mdui-divider mdui-m-b-2"></div>
                                     <div class="mdui-row-xs-2 post-fenye">
                                        
-                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://IseEkko.github.io/post/nacos-shi-yong/">Nacos使用</a></div></div>
+                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="http://localhost:4000/post/nacos-shi-yong/">Nacos使用</a></div></div>
                                         
 
                                         
-                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/lian-biao-zhong-de-jie-dian-mei-k-ge-yi-zu-xuan-zhuan/">链表中的节点每K个一组旋转</a></div> </div>
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="http://localhost:4000/post/lian-biao-zhong-de-jie-dian-mei-k-ge-yi-zu-xuan-zhuan/">链表中的节点每K个一组旋转</a></div> </div>
                                        
                                       </div>
                                    
                                     <div class="mdui-divider mdui-m-t-2 mdui-m-b-2"></div>
                                     
-                                     <script src="https://IseEkko.github.io//media/scripts/Valine.min.js"></script>
+                                     <script src="http://localhost:4000/media/scripts/Valine.min.js"></script>
  <div class="comment"></div>
 
 <script>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+        <head>
+        <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
+        <meta charset="utf-8">
+        <title>TCP三次握手 | isekko</title>
+        <link rel="stylesheet" href="http://localhost:4000/styles/main.css">
+        <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
+        <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+        <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+         <script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+         <script >hljs.initHighlightingOnLoad();</script>
+
+    </head>
+    <body>
+              <header class="header mdui-m-b-5">      
+            <div class="container  ">
+                <div class="index-title animated fadeInDown mdui-text-center mdui-text-color-white mdui-m-b-2" style="animation-delay: 0.2s"><a href="http://localhost:4000">isekko</a></div>
+                <div class="mdui-text-color-white animated fadeInDown mdui-text-center  mdui-m-b-3" style="animation-delay: 0.4s">做好每一件事，读好每一本书，天道酬勤</div>
+           
+            <nav id="nav" class="mdui-text-center animated fadeInDown" style="animation-delay: 0.6s">
+                   
+                            <li><a href="/">首页</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                            <li><a href="/archives">归档</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                            <li><a href="/tags">标签</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                            <li><a href="/post/about">关于</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                  </nav>
+                </div>
+        </header>
+        <div class="mdui-container ">
+                <div class="mdui-row">
+                        <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
+                                <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
+                                    <div class="post-title  mdui-m-b-1">TCP三次握手</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-03-17 22:16:20">2022-03-17 / 4 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>TCP的三次握手建立好了连接开始数据的传输，那么我们要知道是怎么建立连接的。</p>
+<!-- more -->
+<h2 id="建立连接的过程">建立连接的过程</h2>
+<p>最开始的时候，客户端和服务器都是处于CLOSED状态，然后主动连接的是客户端，被动打开的是服务器。</p>
+<ol>
+<li>TCP服务器进程先创建TCB传输控制块，时刻准备接受连接客户端的请求，这个时候服务器进入监听状态。</li>
+<li>TCP客户进程也是需要先创建TCB传输控制块，然后想服务器发出连接请求报文，报文的里面的同部位SYN=1，同时选择初始序列号seq=x，此时，TCP客户端进入SYN-SENT（同步发送状态）。<br>
+TCP规定SYN不能携带数据，但是需要消耗掉一个序号</li>
+<li>TCP服务器收到请求报文后，如果同意连接，则发出确认报文。<br>
+确认报文中应该ACK=1，SYN=1，确认号是ack = x+1，同时会给自己初始化一个序列号seq=y，此时TCP服务器进程进入SYN-RCVD（同步收到）状态，这个报文不能携带数据，同样要消耗一个序号。</li>
+<li>TCP客户进程收到确认后，还要向服务器给出确认。确认的报文ACK=1，ack=y+1，自己的序列号seq = x+1，此时，TCP连接建立，然后客户端进入ESTABLISHEN（已建立连接）状态。TCP规定，ACK报文段可以携带数据，但是如果不携带数据则部消耗序号。<br>
+<img src="http://localhost:4000/post-images/1647526744143.png" alt="" loading="lazy"></li>
+</ol>
+<h2 id="简单的流程">简单的流程</h2>
+<p>在TCP中，我们三次握手的首先就是客户端发送一个SYN包，然后服务端接收到这个SYN包后，进行初始化建立缓存区，然后发送一个SYN+ACK包进行确认，最后客户端接收到后，发送ACK包进行最后的确认。<br>
+在这里需要注意的事情，在第一次和第二次握手的时候我们是不能进行数据的传输的，也就是不能带其他的数据进行传输，然后第三次可以，前两次没有带数据包，然后都要占用一个序号位，第三握手的时候如果带了数据包就会占用序号位，但是如果没有那么久不会占用序号位。</p>
+<h2 id="为什么是三次握手">为什么是三次握手</h2>
+<p>简单的说就是解决传输不可靠的手段，比如说客户端发出请求，得到了SYN+ACK包后就建立的连接，但是因为某种原因，客户端没有建立起第一个连接，然后重发了SYN包，这个时候服务器又发送了一个SYN+ACK包，这个时候就出现了问题，对于客户端来说这个时候建立了一个连接，但是对于服务器来说就建立了两个，这个时候就产生了错误，导致了数据传输的不可靠并且占用了过多的资源。综上所诉需要三次握手来避免这个问题的产生。</p>
+<h2 id="tcp传输过程中保证数据传输的可靠性">TCP传输过程中保证数据传输的可靠性</h2>
+<p>因为TCP是全双工的信道，所以下面的结论对于客户端和服务端都是可行的。<br>
+在TCP传输中，我们需要处理丢包和乱序问题。<br>
+在TCP的传输中，会创建一个发送缓冲区，然后把数据截取一部分，然后加上序列号、长度、数据内容，然后进行传输，当接收方接收到数据后，会回复一个报文，这个报文里面包含ACK确认信息，ACK = 序列号+长度 = 下一个起始序列号。这要一来一会的问答方式保证了数据传输的可靠性。<br>
+当丢失了报文，接收端可以要求发送端进行重新发送。<br>
+<img src="http://localhost:4000/post-images/1647526753768.png" alt="" loading="lazy"></p>
+</div>
+                                    <div class="mdui-divider mdui-m-b-2"></div>
+                                    <div class="mdui-row-xs-2 post-fenye">
+                                       
+                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="http://localhost:4000/post/tcp-si-ci-hui-shou/">TCP四次挥手</a></div></div>
+                                        
+
+                                        
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="http://localhost:4000/post/simple-mo-shi/">Simple模式</a></div> </div>
+                                       
+                                      </div>
+                                   
+                                    <div class="mdui-divider mdui-m-t-2 mdui-m-b-2"></div>
+                                    
+                                     <script src="http://localhost:4000/media/scripts/Valine.min.js"></script>
+ <div class="comment"></div>
+
+<script>
+      new Valine({
+            el: '.comment',
+
+
+
+            path: window.location.pathname,
+            pageSize: 30,
+            avatar:'mm', 
+       })
+    </script> 
+<script>
+    if(window.location.hash){
+        var checkExist = setInterval(function() {
+           if ($(window.location.hash).length) {
+              $('html, body').animate({scrollTop: $(window.location.hash).offset().top-90}, 1000);
+              clearInterval(checkExist);
+           }
+        }, 100);
+    }
+</script>
+                                </article>
+
+                                    
+                        </div>
+                      </div>
+    
+                
+
+              </div>
+                    <footer class="footer mdui-m-t-5 mdui-text-center">
+               <nav class="social-links">
+                      <ul>
+                      
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      </ul>
+                    </nav>
+                    <div class="copyright">
+                      <p>Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> <br/> Theme <a href="https://github.com/alterfang/gridea-theme-song/" target="_blank"  title="宋"  >Song</a> by <a href="https://shanbu.fun/" target="_blank"  title="山卜方" >shanbufun</a> </p>
+                  </div>
+                  
+              </footer>
+    </body>
+</html>
