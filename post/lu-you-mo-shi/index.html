@@ -3,7 +3,7 @@
         <head>
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
-        <title>GIN中的错误翻译 | isekko</title>
+        <title>Routing路由模式 | isekko</title>
         <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
@@ -56,112 +56,32 @@
                 <div class="mdui-row">
                         <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
                                 <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="post-title  mdui-m-b-1">GIN中的错误翻译</div>
-                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-01-21 19:25:00">2022-01-21 / 4 min read</div>
-                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>我们在书写程序的时候，遇见报错对于一些程序员来说全英文的报错不是很友好，这里找到了一个错误翻译的方法</p>
+                                    <div class="post-title  mdui-m-b-1">Routing路由模式</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-03-17 23:22:24">2022-03-17 / 1 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>路由模式，和订阅者模式的区别在于，他可以进行消息指定给哪个消费者。</p>
 <!-- more -->
-<h2 id="关于翻译器的导入">关于翻译器的导入</h2>
-<p>这里我们先要导入预备的资源，然后再创建翻译器<br>
-我们需要导入的包</p>
-<pre><code>&quot;github.com/gin-gonic/gin/binding&quot;
-	&quot;github.com/go-playground/locales/en&quot;
-	&quot;github.com/go-playground/locales/zh&quot;
-	ut &quot;github.com/go-playground/universal-translator&quot;
-	&quot;github.com/go-playground/validator/v10&quot;
-	en_translations &quot;github.com/go-playground/validator/v10/translations/en&quot;
-	zh_translations &quot;github.com/go-playground/validator/v10/translations/zh&quot;
-</code></pre>
-<p>导入这些包后我们就可以开始相关的书写了，这里大家需要注意的是，我们在书写的时候，导包可以是自动导入的，这里写出来是怕同学忘记有那些包，或者导包失败导致后序的代码无效。</p>
-<h2 id="初始化翻译器">初始化翻译器</h2>
-<pre><code>//翻译的更换
-func InitTrans(locale string)(err error){
-	if v,ok := binding.Validator.Engine().(*validator.Validate);ok{
-		//注册一个获取json的tag自定义方法
-		v.RegisterTagNameFunc(func(fld reflect.StructField) string {
-			name := strings.SplitN(fld.Tag.Get(&quot;json&quot;),&quot;,&quot;,2)[0]
-			if name == &quot;-&quot;{
-				return &quot;&quot;
-			}
-			return name
-		})
-		zhT := zh.New()//中文翻译器
-		enT := en.New()//英文翻译器
-		uni := ut.New(enT,zhT,enT)
-		trans,ok = uni.GetTranslator(locale)
-		if !ok {
-			return fmt.Errorf(&quot;uni.GetTranslator(%s)&quot;,locale)
-		}
-		switch locale{
-		case &quot;en&quot;:
-			en_translations.RegisterDefaultTranslations(v,trans)
-		case &quot;zh&quot;:
-			zh_translations.RegisterDefaultTranslations(v,trans)
-		default:
-			zh_translations.RegisterDefaultTranslations(v,trans)
-		}
-	}
-	return nil
-}
-</code></pre>
-<p>后面我们发现了一个问题，就是我们出现的效果是这样的有前缀的，结构体前缀，当然我们是不需要的所以后序我们添加上了：</p>
-<pre><code>func RemoveTopStruct(fileds map[string]string)map[string]string  {
-	rsp := map[string]string{}
-	for field ,err := range fileds{
-		rsp[field[strings.Index(field,&quot;.&quot;)+1:]] = err
-		}
-		return rsp
-}
-</code></pre>
-<p>这个方法我们可以得到tag。<br>
-然后我们在测试的时候，发现了一个问题，就是我们得到的错误，字段他没有按照tag来完成书写，这个时候我们加上了这一段代码实现功能。</p>
-<pre><code>//注册一个获取json的tag自定义方法
-		v.RegisterTagNameFunc(func(fld reflect.StructField) string {
-			name := strings.SplitN(fld.Tag.Get(&quot;json&quot;),&quot;,&quot;,2)[0]
-			if name == &quot;-&quot;{
-				return &quot;&quot;
-			}
-			return name
-		})
-</code></pre>
-<h2 id="最后使用">最后使用</h2>
-<p>在使用的时候，我们需要注意的事情，我们要注册一个全局的变量，这样才能在任何的地方使用。</p>
-<pre><code>var trans ut.Translator
-</code></pre>
-<p>创建完成后，使用</p>
-<pre><code>//初始化翻译
-	if err := InitTrans(&quot;zh&quot;);err != nil{
-	  fmt.Println(&quot;初始化翻译器错误&quot;)
-	  return
-	}
-   router := gin.Default()
-   router.POST(&quot;/login&quot;, func(c *gin.Context) {
-	   var login LoginForm
-	  if  err := c.ShouldBind(&amp;login);err != nil{
-		  errs ,ok := err.(validator.ValidationErrors)
-		  if !ok {
-			  c.JSON(http.StatusOK,gin.H{
-				  &quot;msg&quot;:err.Error(),
-			  })
-		  }
-		 c.JSON(http.StatusBadRequest,gin.H{
-			  &quot;err&quot;: RemoveTopStruct(errs.Translate(trans)),
-		  })
-		  return
-	  }
-		  c.JSON(http.StatusOK,gin.H{
-			  &quot;msg&quot;:&quot;登录成功&quot;,
-		  })
-   })
-</code></pre>
+<h2 id="路由模式示意图">路由模式示意图</h2>
+<p><img src="https://IseEkko.github.io//post-images/1647530608970.png" alt="" loading="lazy"><br>
+这里我们是如何做到，消息处理的指定呢？<br>
+在创建路由模式的实例的时候，我们需要传入的参数有两个，一个是交换机名称，一个是路由的key。在这里总结的时候我们猜测一波是这个key起到的指定作用。<br>
+消息的生产<br>
+<img src="https://IseEkko.github.io//post-images/1647530620476.png" alt="" loading="lazy"><br>
+上面是路由模式发送消息的完整代码，从中我们可以看到，首先我们进行了一个交换机的创建，然后在发送消息的时候我们的key用的是routkey。<br>
+消息的消费<br>
+<img src="https://IseEkko.github.io//post-images/1647530635417.png" alt="" loading="lazy"><br>
+除了队列和交换机的创建，这里我们进行绑定的时候传入了三个参数，队列的名称，routkey，和交换机。<br>
+后面和之前的相同。<br>
+如何完成指定发送呢？<br>
+在这里，我们的发送端和接受端，都注册了同一个交换机，然后交换机在进行数据发送的时候是通过routkey的值把数据进行指定传输的。</p>
 </div>
                                     <div class="mdui-divider mdui-m-b-2"></div>
                                     <div class="mdui-row-xs-2 post-fenye">
                                        
-                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://IseEkko.github.io/post/gin-zhong-jian-jian/">GIN中间件</a></div></div>
+                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://IseEkko.github.io/post/topic-hua-ti-mo-shi/">Topic话题模式</a></div></div>
                                         
 
                                         
-                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/gin-xue-xi/">GIN学习</a></div> </div>
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/publish-ding-yue-zhe-mo-shi/">publish订阅者模式</a></div> </div>
                                        
                                       </div>
                                    
