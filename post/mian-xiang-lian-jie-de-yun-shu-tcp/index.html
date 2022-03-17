@@ -4,7 +4,7 @@
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
         <title>面向连接的运输：TCP | isekko</title>
-        <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
+        <link rel="stylesheet" href="http://localhost:4000/styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
@@ -16,7 +16,7 @@
     <body>
               <header class="header mdui-m-b-5">      
             <div class="container  ">
-                <div class="index-title animated fadeInDown mdui-text-center mdui-text-color-white mdui-m-b-2" style="animation-delay: 0.2s"><a href="https://IseEkko.github.io/">isekko</a></div>
+                <div class="index-title animated fadeInDown mdui-text-center mdui-text-color-white mdui-m-b-2" style="animation-delay: 0.2s"><a href="http://localhost:4000">isekko</a></div>
                 <div class="mdui-text-color-white animated fadeInDown mdui-text-center  mdui-m-b-3" style="animation-delay: 0.4s">对个人笔记的总结，这个网站的笔记将会是我经过提炼过后的笔记。</div>
            
             <nav id="nav" class="mdui-text-center animated fadeInDown" style="animation-delay: 0.6s">
@@ -65,7 +65,7 @@
 <p>在这里简单的说一下TCP连接的建立，首先客户端发送一个特殊的报文，等到服务端接收到报文后，服务端会返回一个特殊的报文给客户端，客户端此时接收到报文后，会返回一个特殊的报文给服务端，这里我们需要注意的问题在于，前两个报文是没有载荷的，最后一个报文是有载荷的。这里说的就是TCP连接的三次握手。</p>
 <h3 id="tcp报文段结构">TCP报文段结构</h3>
 <p>这里我们将说明几个在TCP结构中比较重要的几个点<br>
-<img src="https://IseEkko.github.io//post-images/1646386594154.png" alt="" loading="lazy"></p>
+<img src="http://localhost:4000/post-images/1646386594154.png" alt="" loading="lazy"></p>
 <h4 id="1-序号和确认号">1. 序号和确认号</h4>
 <p>序号：在TCP报文传输的过程中，需要注意的点，从应用层进程中我们拿到了数据包，然后将数据交给TCP进行传输，在运输层要将数据交给网络层的时候，由于mss的限制，我们需要将数据进行拆分，拆分的每一块我们需要给他添加上TCP的头部，然后进行传输。在这里我们会给每个mss数据包进行编号，我们标号的号码也就是序号，序号是由数据在数据段中的偏移量进行命名的。</p>
 <p>确认号：在服务端接收到数据的时候，会返回一个确认号，这个确认号的目的是为了告诉客户端，你发送的XXX-1号及之前的数据都已经接收到了，这个确认号是具有累加性的，也就是说在返回ACK=200 然后返回 ACK =300的时候，这里300就已经包含了前面的两百了，所以在确认数据传输的时候，只需要确认300就可以确认299及299以前的数据都已经接收到了</p>
@@ -77,9 +77,9 @@
 <h4 id="1-有趣的事情">1. 有趣的事情</h4>
 <p>在传输中的超时计时器，在TCP中我们可以看到，使用的是单一的重传计时器，在准备发送的时候，也就是在第一个bit打出的时候，启动计时器，如果超时了，会把最早的数据段重新传输，在超时器超时前接收到服务端发送的ack，这个时候会将被确认的数据从缓存区中删除，然后重新计时。<br>
 在ack发送的过程中可能会出现下面这个情况<br>
-<img src="https://IseEkko.github.io//post-images/1646386665276.png" alt="" loading="lazy"><br>
+<img src="http://localhost:4000/post-images/1646386665276.png" alt="" loading="lazy"><br>
 这个时候因为ack的丢失导致我们的计时器的超时，这个时候我们的客户端会重新传输该数据包，然后此时服务端返回给我们ACK，这个时候因为在之前服务端就已经确认了该数据包，所以后面传输过来的数据包，TCP会选择将其丢弃。<br>
-<img src="https://IseEkko.github.io//post-images/1646386767647.png" alt="" loading="lazy"><br>
+<img src="http://localhost:4000/post-images/1646386767647.png" alt="" loading="lazy"><br>
 在上图中，我们看到客户端传输了两段数据过来，然后都被接收到了，但是在ack的传输中由于导致了超时机制，导致数据包的重新传输，这里我们需要注意的点是，我们看到在超时过后这里TCP只是把最早传输的数据包进行了传输，然后后面， 我们看到接收到了重新传输的数据，这个时候返回的ack是120，这个是因为累积确认机制。</p>
 <h4 id="2-超时间隔加倍">2. 超时间隔加倍</h4>
 <pre><code>   对于这里我们看得不是很懂但是知道在干嘛，这里就是在超时的时候对超时时间进行一个翻倍处理，我查了一下资料好像，这里最多进行两次翻倍处理。
@@ -92,17 +92,17 @@
                                     <div class="mdui-divider mdui-m-b-2"></div>
                                     <div class="mdui-row-xs-2 post-fenye">
                                        
-                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://IseEkko.github.io/post/lian-biao-zhong-de-jie-dian-mei-k-ge-yi-zu-xuan-zhuan/">链表中的节点每K个一组旋转</a></div></div>
+                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="http://localhost:4000/post/lian-biao-zhong-de-jie-dian-mei-k-ge-yi-zu-xuan-zhuan/">链表中的节点每K个一组旋转</a></div></div>
                                         
 
                                         
-                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/shi-yong-zap-ri-zhi/">使用zap日志</a></div> </div>
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="http://localhost:4000/post/shi-yong-zap-ri-zhi/">使用zap日志</a></div> </div>
                                        
                                       </div>
                                    
                                     <div class="mdui-divider mdui-m-t-2 mdui-m-b-2"></div>
                                     
-                                     <script src="https://IseEkko.github.io//media/scripts/Valine.min.js"></script>
+                                     <script src="http://localhost:4000/media/scripts/Valine.min.js"></script>
  <div class="comment"></div>
 
 <script>
