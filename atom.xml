@@ -1,52 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>http://localhost:4000</id>
+    <id>https://IseEkko.github.io/</id>
     <title>isekko</title>
-    <updated>2022-03-17T02:47:10.212Z</updated>
+    <updated>2022-03-17T02:49:42.245Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="http://localhost:4000"/>
-    <link rel="self" href="http://localhost:4000/atom.xml"/>
-    <subtitle>对个人笔记的总结，这个网站的笔记将会是我经过提炼过后的笔记。</subtitle>
-    <logo>http://localhost:4000/images/avatar.png</logo>
-    <icon>http://localhost:4000/favicon.ico</icon>
+    <link rel="alternate" href="https://IseEkko.github.io/"/>
+    <link rel="self" href="https://IseEkko.github.io/atom.xml"/>
+    <subtitle>做好每一件事，读好每一本书，天道酬勤</subtitle>
+    <logo>https://IseEkko.github.io/images/avatar.png</logo>
+    <icon>https://IseEkko.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, isekko</rights>
     <entry>
         <title type="html"><![CDATA[Simple模式]]></title>
-        <id>http://localhost:4000/post/simple-mo-shi/</id>
-        <link href="http://localhost:4000/post/simple-mo-shi/">
+        <id>https://IseEkko.github.io/post/simple-mo-shi/</id>
+        <link href="https://IseEkko.github.io/post/simple-mo-shi/">
         </link>
         <updated>2022-03-16T14:53:11.000Z</updated>
         <content type="html"><![CDATA[<p>最简单常用的模式<br>
-<img src="http://localhost:4000/post-images/1647442422855.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647442422855.png" alt="" loading="lazy"><br>
 创建的过程<br>
 首先我们要有一个rabbitmq的结构体，用于创建rabbitmq实例。<br>
-<img src="http://localhost:4000/post-images/1647442430003.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647442430003.png" alt="" loading="lazy"><br>
 然后我们需要一个全局的连接url：<br>
-<img src="http://localhost:4000/post-images/1647442437427.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647442437427.png" alt="" loading="lazy"><br>
 在里面我们解释了每一个参数意思。然后我们开始创建这个rabbitmq的实例：这里我们看到上面的结构体，我们可以看到，我们需要传入的参数是三个，<br>
-<img src="http://localhost:4000/post-images/1647442444041.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647442444041.png" alt="" loading="lazy"><br>
 创建了实例过后我们还要进行连接和获取通道，这样我们就算连接成功了这个rabbitmq。<br>
 这里段代码里面我们看到了还有处理错误的代码，这是我们在工程中应该注意的问题。<br>
-<img src="http://localhost:4000/post-images/1647442459705.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647442459705.png" alt="" loading="lazy"><br>
 然后为了方便这里我们写了一个构造函数：<br>
-<img src="http://localhost:4000/post-images/1647442476877.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647442476877.png" alt="" loading="lazy"><br>
 生产者逻辑代码<br>
 对于生产者代码中，我们首先需要申请队列，因为我们的消息是发送到队列中的。这里需要注意里面的参数意思。<br>
-<img src="http://localhost:4000/post-images/1647442484650.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647442484650.png" alt="" loading="lazy"><br>
 然后我们请求到了队列，然后我们就要讲这些消息放进队列里面去<br>
-<img src="http://localhost:4000/post-images/1647442491154.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647442491154.png" alt="" loading="lazy"><br>
 消费者逻辑代码<br>
 首先还是一样的，我们首先需要申请队列，这里申请的步骤和上面一样，这里就不再展示，然后这里我们直接展示消费者的核心代码。<br>
 我们首先接收到消息<br>
-<img src="http://localhost:4000/post-images/1647442497793.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647442497793.png" alt="" loading="lazy"><br>
 然后对消息进行处理<br>
-<img src="http://localhost:4000/post-images/1647442505223.png" alt="" loading="lazy"></p>
+<img src="https://IseEkko.github.io//post-images/1647442505223.png" alt="" loading="lazy"></p>
 ]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[DNS的作用和原理]]></title>
-        <id>http://localhost:4000/post/dns-de-zuo-yong-he-yuan-li/</id>
-        <link href="http://localhost:4000/post/dns-de-zuo-yong-he-yuan-li/">
+        <id>https://IseEkko.github.io/post/dns-de-zuo-yong-he-yuan-li/</id>
+        <link href="https://IseEkko.github.io/post/dns-de-zuo-yong-he-yuan-li/">
         </link>
         <updated>2022-03-16T14:48:19.000Z</updated>
         <content type="html"><![CDATA[<h2 id="dns">DNS</h2>
@@ -55,19 +55,19 @@
 <p>在人类的世界里面我们最容易知道的也是最好记的就是名称，那么我们给每个主机一个名字我们就知道了是哪个，但是对于计算机来说，最容易记的是编号，有着层级结构的ip地址。为了满足两者的需求我们就有了DNS，也就是说我们可以更具主机名称查询到对应的ip，DNS就是一个分布式的数据库。</p>
 <h2 id="dns域名解析的原理">DNS域名解析的原理</h2>
 <p>DNS采用的是分布式的设计方案，它的域名空间使用的是树形的层次结构。<br>
-<img src="http://localhost:4000/post-images/1647442173978.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647442173978.png" alt="" loading="lazy"><br>
 上图展示了 DNS 服务器的部分层次结构，从上到下依次为根域名服务器、顶级域名服务器和权威域名服务器。<br>
 除了上面的这些服务器外，还有一个不在这个结构里面但是很重要的本地服务器，一般来说，每一个ips都会有至少一个本地服务器，这个服务器的作用就是起到代理的作用，将dns请求发送到上面的三层机构中去寻找对应主机。</p>
 <h2 id="dns查询过程">DNS查询过程</h2>
 <p>假设主机 A（IP 地址为 abc.xyz.edu） 想知道主机 B 的 IP 地址 （def.mn.edu），如下图所示，主机 A 首先向它的本地 DNS 服务器发送一个 DNS 查询报文。该查询报文含有被转换的主机名 def.mn.edu。本地 DNS 服务器将该报文转发到根 DNS 服务器，根 DNS 服务器注意到查询的 IP 地址前缀为 edu 后向本地 DNS 服务器返回负责 edu 的顶级域名服务器的 IP 地址列表。该本地 DNS 服务器则再次向这些 顶级域名服务器发送查询报文。该顶级域名服务器注意到 mn.edu 的前缀，并用权威域名服务器的 IP 地址进行响应。通常情况下，顶级域名服务器并不总是知道每台主机的权威 DNS 服务器的 IP 地址，<br>
 而只知道中间的某个服务器，该中间 DNS 服务器依次能找到用于相应主机的 IP 地址，我们假设中间经历了权威服务器 ① 和 ②，最后找到了负责 def.mn.edu 的权威 DNS 服务器 ③，之后，本地 DNS 服务器直接向该服务器发送查询报文从而获得主机 B 的IP 地址。<br>
-<img src="http://localhost:4000/post-images/1647442239749.png" alt="" loading="lazy"></p>
+<img src="https://IseEkko.github.io//post-images/1647442239749.png" alt="" loading="lazy"></p>
 ]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[http不同版本的区别]]></title>
-        <id>http://localhost:4000/post/http-bu-tong-ban-ben-de-qu-bie/</id>
-        <link href="http://localhost:4000/post/http-bu-tong-ban-ben-de-qu-bie/">
+        <id>https://IseEkko.github.io/post/http-bu-tong-ban-ben-de-qu-bie/</id>
+        <link href="https://IseEkko.github.io/post/http-bu-tong-ban-ben-de-qu-bie/">
         </link>
         <updated>2022-03-16T14:45:33.000Z</updated>
         <summary type="html"><![CDATA[<p>讲解与对于不同版本之间的区别</p>
@@ -94,8 +94,8 @@ HTTP/1.0 默认浏览器和服务器之间保持短暂连接，浏览器的每�
     </entry>
     <entry>
         <title type="html"><![CDATA[如何知道http的报文长度]]></title>
-        <id>http://localhost:4000/post/ru-he-zhi-dao-http-de-bao-wen-chang-du/</id>
-        <link href="http://localhost:4000/post/ru-he-zhi-dao-http-de-bao-wen-chang-du/">
+        <id>https://IseEkko.github.io/post/ru-he-zhi-dao-http-de-bao-wen-chang-du/</id>
+        <link href="https://IseEkko.github.io/post/ru-he-zhi-dao-http-de-bao-wen-chang-du/">
         </link>
         <updated>2022-03-16T14:41:05.000Z</updated>
         <summary type="html"><![CDATA[<p>http的报文长度，分为两种情况</p>
@@ -123,7 +123,7 @@ HTTP/1.0 默认浏览器和服务器之间保持短暂连接，浏览器的每�
     3.数据块紧跟在长度头后，最后也用CRLF结尾，但数据不包含CRLF
     4.最后用一个长度为0的块表示结束
 </code></pre>
-<figure data-type="image" tabindex="1"><img src="http://localhost:4000/post-images/1647441798333.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://IseEkko.github.io//post-images/1647441798333.png" alt="" loading="lazy"></figure>
 <h2 id="范围请求">范围请求</h2>
 <pre><code> 我们进行了分块过后，我们会发现一个新的问题，也是常见的一个问题，我们比如在看电视的时候，我们想快进，然后我们选择快进的位置，其实我们就是请求了这个资源的某个范围，这样我们如何进行传输呢。
  这里需要知道一个告知用户，我们支持范围请求的一个字段，范围请求不是web服务器必备的功能，可以实现也可以不实现，所以服务器必须在响应头里使用字段Accept-Ranges:bytes明确告知客户端：我是支持范围请求的。
@@ -140,8 +140,8 @@ HTTP/1.0 默认浏览器和服务器之间保持短暂连接，浏览器的每�
     </entry>
     <entry>
         <title type="html"><![CDATA[两个协程交替打印奇偶数]]></title>
-        <id>http://localhost:4000/post/liang-ge-xie-cheng-jiao-ti-da-yin-qi-ou-shu/</id>
-        <link href="http://localhost:4000/post/liang-ge-xie-cheng-jiao-ti-da-yin-qi-ou-shu/">
+        <id>https://IseEkko.github.io/post/liang-ge-xie-cheng-jiao-ti-da-yin-qi-ou-shu/</id>
+        <link href="https://IseEkko.github.io/post/liang-ge-xie-cheng-jiao-ti-da-yin-qi-ou-shu/">
         </link>
         <updated>2022-03-15T14:43:08.000Z</updated>
         <summary type="html"><![CDATA[<p>常见的go工程问题</p>
@@ -152,14 +152,14 @@ HTTP/1.0 默认浏览器和服务器之间保持短暂连接，浏览器的每�
 <p>在go语言中，开启一个协程是很容易的，直接使用的是go关键字，这里需要我们注意的时候，我们如何做到两个协程的同步，这个让我一下想到的就是channel，使用channel来完成这个功能，我们用一个使用go关键字开启两个协程，然后通过通信做到这个功能。<br>
 也可以不使用channel，使用纯go 开启协程来做这个事情，这里涉及到的就是调度的问题，我们使用调度的方式，也就是当奇数进行打印的时候答应完一个就让出cpu的使用权限，然后偶数同理，但是这里我们需要注意的事情就是我们一定要设置使用的cpu核心数是多少。这里因为是两个交替打印所以我们使用到的就是一个核心数量就可以了。</p>
 <h2 id="实现源码">实现源码</h2>
-<p><img src="http://localhost:4000/post-images/1647355474623.png" alt="" loading="lazy"><br>
-<img src="http://localhost:4000/post-images/1647355482241.png" alt="" loading="lazy"></p>
+<p><img src="https://IseEkko.github.io//post-images/1647355474623.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647355482241.png" alt="" loading="lazy"></p>
 ]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[Keep-Alive 和非 Keep-Alice的差别]]></title>
-        <id>http://localhost:4000/post/keep-alive-he-fei-keep-alice-de-chai-bie/</id>
-        <link href="http://localhost:4000/post/keep-alive-he-fei-keep-alice-de-chai-bie/">
+        <id>https://IseEkko.github.io/post/keep-alive-he-fei-keep-alice-de-chai-bie/</id>
+        <link href="https://IseEkko.github.io/post/keep-alive-he-fei-keep-alice-de-chai-bie/">
         </link>
         <updated>2022-03-15T14:41:05.000Z</updated>
         <summary type="html"><![CDATA[<p>这里的意思就是保持连接，和不保持连接</p>
@@ -168,7 +168,7 @@ HTTP/1.0 默认浏览器和服务器之间保持短暂连接，浏览器的每�
 <!-- more -->
 <h2 id="理解">理解</h2>
 <p>我们如何来理解这个问题呢，keep-alive 和非 keep- alive的区别。其实是很好理解的，我们在非keep-alive中我们请求一个资源我们就要建立一个连接，keep-alive就很好理解了，下面我们通过一个图片来看理解一下。<br>
-<img src="http://localhost:4000/post-images/1647355356596.png" alt="" loading="lazy"></p>
+<img src="https://IseEkko.github.io//post-images/1647355356596.png" alt="" loading="lazy"></p>
 <h2 id="区别与缺点">区别与缺点</h2>
 <p>两者的区别和缺点，我们也很好的能通过上图看出来<br>
 非Keep-alive<br>
@@ -180,8 +180,8 @@ keep-alive很好的解决了上面的问题，也就是对于服务器严重的�
     </entry>
     <entry>
         <title type="html"><![CDATA[常见的五大基本类型（1）]]></title>
-        <id>http://localhost:4000/post/chang-jian-de-wu-da-ji-ben-lei-xing-1/</id>
-        <link href="http://localhost:4000/post/chang-jian-de-wu-da-ji-ben-lei-xing-1/">
+        <id>https://IseEkko.github.io/post/chang-jian-de-wu-da-ji-ben-lei-xing-1/</id>
+        <link href="https://IseEkko.github.io/post/chang-jian-de-wu-da-ji-ben-lei-xing-1/">
         </link>
         <updated>2022-03-15T14:38:10.000Z</updated>
         <summary type="html"><![CDATA[<p>这里讲解的是string的使用</p>
@@ -227,8 +227,8 @@ Getset key value 取出旧值然后覆盖值</p>
     </entry>
     <entry>
         <title type="html"><![CDATA[重建二叉树]]></title>
-        <id>http://localhost:4000/post/chong-jian-er-cha-shu/</id>
-        <link href="http://localhost:4000/post/chong-jian-er-cha-shu/">
+        <id>https://IseEkko.github.io/post/chong-jian-er-cha-shu/</id>
+        <link href="https://IseEkko.github.io/post/chong-jian-er-cha-shu/">
         </link>
         <updated>2022-03-15T14:29:57.000Z</updated>
         <summary type="html"><![CDATA[<p>这里讲解的是利用前序和中序遍历的结果重建二叉树</p>
@@ -239,13 +239,13 @@ Getset key value 取出旧值然后覆盖值</p>
 <p>我们首先要知道的是前序遍历和中序遍历是怎么遍历的。前序遍历是，首先处理中间节点，然后处理左右节点。中序遍历的遍历方式是首先遍历左节点然后遍历中左右节点。理解了这个过后我们就可以开始使用构造这个二叉树了。<br>
 我们首先可以明白的是，前序遍历的第一个节点就是头节点，然后通过头结点找到它在中序遍历的位置，然后通过这个位置，我们可以知道的是，在这个节点的左边是左子树，右边是右子树，然后我们就知道了左子树的结点个数和右子树的结点个数，这个时候我们就可以开始递归。然后我们就可以得到这个二叉树。</p>
 <h2 id="解题源码">解题源码</h2>
-<figure data-type="image" tabindex="1"><img src="http://localhost:4000/post-images/1647355074803.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://IseEkko.github.io//post-images/1647355074803.png" alt="" loading="lazy"></figure>
 ]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[二叉树查找最近公共祖先]]></title>
-        <id>http://localhost:4000/post/er-cha-shu-cha-zhao-zui-jin-gong-gong-zu-xian/</id>
-        <link href="http://localhost:4000/post/er-cha-shu-cha-zhao-zui-jin-gong-gong-zu-xian/">
+        <id>https://IseEkko.github.io/post/er-cha-shu-cha-zhao-zui-jin-gong-gong-zu-xian/</id>
+        <link href="https://IseEkko.github.io/post/er-cha-shu-cha-zhao-zui-jin-gong-gong-zu-xian/">
         </link>
         <updated>2022-03-14T15:03:38.000Z</updated>
         <summary type="html"><![CDATA[<p>这个题目的难度就是，我们不是搜索树了。</p>
@@ -256,13 +256,13 @@ Getset key value 取出旧值然后覆盖值</p>
 <p>这个题目我们需要想到的是，我们的思路还是差不多的，但是这里不能在用二叉搜索树的那个方法了，我们还是需要遍历，但是遍历的方式我们要进行改变。<br>
 我们还是从根开始遍历，我们遍历到叶子节点了这个时候我们需要做的就是返回并判断，最终找到我们需要找到了节点，还是左右节点分开。</p>
 <h2 id="解题源码">解题源码</h2>
-<figure data-type="image" tabindex="1"><img src="http://localhost:4000/post-images/1647270531026.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://IseEkko.github.io//post-images/1647270531026.png" alt="" loading="lazy"></figure>
 ]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[二叉搜索树的最近公共祖先]]></title>
-        <id>http://localhost:4000/post/er-cha-sou-suo-shu-de-zui-jin-gong-gong-zu-xian/</id>
-        <link href="http://localhost:4000/post/er-cha-sou-suo-shu-de-zui-jin-gong-gong-zu-xian/">
+        <id>https://IseEkko.github.io/post/er-cha-sou-suo-shu-de-zui-jin-gong-gong-zu-xian/</id>
+        <link href="https://IseEkko.github.io/post/er-cha-sou-suo-shu-de-zui-jin-gong-gong-zu-xian/">
         </link>
         <updated>2022-03-14T14:43:49.000Z</updated>
         <summary type="html"><![CDATA[<p>二叉搜索树的最近公共祖先，理解这个题目的本质</p>
@@ -273,7 +273,7 @@ Getset key value 取出旧值然后覆盖值</p>
 <p>对于这个题目，解题的步骤从根节点进行遍历，因为我们知道是，二叉搜索树的特性，通过比较大小进行遍历，这样回更加的快速并且保持正确性，然后把左右节点的路径都找到过后我们就开始进行比较，当发现相同的时候，并且是最后一个相同的时候这个就是最近的公共祖先。<br>
 这个理解起来不是很难，但是需要我们理解到位。</p>
 <h2 id="解题源码">解题源码</h2>
-<figure data-type="image" tabindex="1"><img src="http://localhost:4000/post-images/1647270127652.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://IseEkko.github.io//post-images/1647270127652.png" alt="" loading="lazy"></figure>
 ]]></content>
     </entry>
 </feed>
