@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>http://localhost:4000</id>
+    <id>https://IseEkko.github.io/</id>
     <title>BytesLzz</title>
-    <updated>2022-03-18T06:01:24.321Z</updated>
+    <updated>2022-03-18T15:08:57.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="http://localhost:4000"/>
-    <link rel="self" href="http://localhost:4000/atom.xml"/>
+    <link rel="alternate" href="https://IseEkko.github.io/"/>
+    <link rel="self" href="https://IseEkko.github.io/atom.xml"/>
     <subtitle>做好每一件事，读好每一本书，天道酬勤</subtitle>
-    <logo>http://localhost:4000/images/avatar.png</logo>
-    <icon>http://localhost:4000/favicon.ico</icon>
+    <logo>https://IseEkko.github.io/images/avatar.png</logo>
+    <icon>https://IseEkko.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, BytesLzz</rights>
     <entry>
         <title type="html"><![CDATA[Topic话题模式]]></title>
-        <id>http://localhost:4000/post/topic-hua-ti-mo-shi/</id>
-        <link href="http://localhost:4000/post/topic-hua-ti-mo-shi/">
+        <id>https://IseEkko.github.io/post/topic-hua-ti-mo-shi/</id>
+        <link href="https://IseEkko.github.io/post/topic-hua-ti-mo-shi/">
         </link>
         <updated>2022-03-18T01:24:09.000Z</updated>
         <summary type="html"><![CDATA[<p>我觉得是路由模式的升级版。</p>
@@ -23,19 +23,19 @@
 <h2 id="解析">解析</h2>
 <p>对于这个模式，我觉得就是对路由模式的升级，在路由模式中，我们可以根据配置的路由进行消费者的发送，然后这里是通过配置符号进行消费者的发送，这里有可能我们用到的是给多个消费者进行发送。</p>
 <h2 id="示意图">示意图</h2>
-<p><img src="http://localhost:4000/post-images/1647531221028.png" alt="" loading="lazy"><br>
+<p><img src="https://IseEkko.github.io//post-images/1647531221028.png" alt="" loading="lazy"><br>
 这个模式的实例创建是和路由模式是相同的，进行路由名称和交换机模式的传输，通过这两个进行实例的创建。<br>
 消息的处理<br>
 这里无论是生产和消费消息，和路由模式的区别就是在交换机创建时候的kind的选择<br>
-<img src="http://localhost:4000/post-images/1647531228782.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647531228782.png" alt="" loading="lazy"><br>
 然后在使用的时候，#代表的就是所有，然后*代表的是占位的意思。<br>
 这个主要是仔细看一下案例就可以。</p>
 ]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[Routing路由模式]]></title>
-        <id>http://localhost:4000/post/routing-lu-you-mo-shi/</id>
-        <link href="http://localhost:4000/post/routing-lu-you-mo-shi/">
+        <id>https://IseEkko.github.io/post/routing-lu-you-mo-shi/</id>
+        <link href="https://IseEkko.github.io/post/routing-lu-you-mo-shi/">
         </link>
         <updated>2022-03-18T01:23:15.000Z</updated>
         <summary type="html"><![CDATA[<p>路由模式，和订阅者模式的区别在于，他可以进行消息指定给哪个消费者。</p>
@@ -43,14 +43,14 @@
         <content type="html"><![CDATA[<p>路由模式，和订阅者模式的区别在于，他可以进行消息指定给哪个消费者。</p>
 <!-- more -->
 <h2 id="路由模式示意图">路由模式示意图</h2>
-<p><img src="http://localhost:4000/post-images/1647530608970.png" alt="" loading="lazy"><br>
+<p><img src="https://IseEkko.github.io//post-images/1647530608970.png" alt="" loading="lazy"><br>
 这里我们是如何做到，消息处理的指定呢？<br>
 在创建路由模式的实例的时候，我们需要传入的参数有两个，一个是交换机名称，一个是路由的key。在这里总结的时候我们猜测一波是这个key起到的指定作用。<br>
 消息的生产<br>
-<img src="http://localhost:4000/post-images/1647530620476.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647530620476.png" alt="" loading="lazy"><br>
 上面是路由模式发送消息的完整代码，从中我们可以看到，首先我们进行了一个交换机的创建，然后在发送消息的时候我们的key用的是routkey。<br>
 消息的消费<br>
-<img src="http://localhost:4000/post-images/1647530635417.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647530635417.png" alt="" loading="lazy"><br>
 除了队列和交换机的创建，这里我们进行绑定的时候传入了三个参数，队列的名称，routkey，和交换机。<br>
 后面和之前的相同。<br>
 如何完成指定发送呢？<br>
@@ -59,36 +59,36 @@
     </entry>
     <entry>
         <title type="html"><![CDATA[publish订阅者模式]]></title>
-        <id>http://localhost:4000/post/publish-ding-yue-zhe-mo-shi/</id>
-        <link href="http://localhost:4000/post/publish-ding-yue-zhe-mo-shi/">
+        <id>https://IseEkko.github.io/post/publish-ding-yue-zhe-mo-shi/</id>
+        <link href="https://IseEkko.github.io/post/publish-ding-yue-zhe-mo-shi/">
         </link>
         <updated>2022-03-17T15:08:24.000Z</updated>
-        <content type="html"><![CDATA[<p><img src="http://localhost:4000/post-images/1647529790148.png" alt="" loading="lazy"><br>
+        <content type="html"><![CDATA[<p><img src="https://IseEkko.github.io//post-images/1647529790148.png" alt="" loading="lazy"><br>
 订阅者模式中，我们加入了一个交换机，然后这个交换机会把消息转发给所有的消费者，所有的消费者拿到的消息都是一样的。</p>
 <h2 id="消息发送">消息发送</h2>
 <p>在这个模式中，我们首先要创建一个exchange，和simple模式不同的地方，在simple模式中我们创建的是队列<br>
-<img src="http://localhost:4000/post-images/1647529796092.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647529796092.png" alt="" loading="lazy"><br>
 然后是对消息的发送也有不同的地方，在simple模式中，我们的key是队列名称。<br>
-<img src="http://localhost:4000/post-images/1647529802002.png" alt="" loading="lazy"></p>
+<img src="https://IseEkko.github.io//post-images/1647529802002.png" alt="" loading="lazy"></p>
 <h2 id="消息处理">消息处理</h2>
 <p>在消息处理的时候，我们首先还是要先创建交换机，然后再进行后面的处理。<br>
 然后我们创建一个队列<br>
-<img src="http://localhost:4000/post-images/1647529807910.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647529807910.png" alt="" loading="lazy"><br>
 这里我们可以创建出一个队列q，然后这个队列是没有名称的，然后在下面的信息处理中，进行处理。这里我们可以看到绑定到了交换机中，然后进行消息的消费。<br>
-<img src="http://localhost:4000/post-images/1647529813618.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647529813618.png" alt="" loading="lazy"><br>
 对于这个模式来说，我们消费者和生产者都是通过exchange交换机进行绑定传输消息的。<br>
 上面就是对订阅者模式的讲解</p>
 ]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[TCP四次挥手]]></title>
-        <id>http://localhost:4000/post/tcp-si-ci-hui-shou/</id>
-        <link href="http://localhost:4000/post/tcp-si-ci-hui-shou/">
+        <id>https://IseEkko.github.io/post/tcp-si-ci-hui-shou/</id>
+        <link href="https://IseEkko.github.io/post/tcp-si-ci-hui-shou/">
         </link>
         <updated>2022-03-17T14:20:53.000Z</updated>
         <content type="html"><![CDATA[<p>现在我们需要关闭TCP连接，这个时候我们就需要进行四次挥手操作</p>
 <p>四次挥手的步骤<br>
-<img src="http://localhost:4000/post-images/1647527228182.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647527228182.png" alt="" loading="lazy"><br>
 四次挥手的示意图，这里我们需要知道的事情，在第二次手完成的时候，服务端可以把自己没有发送完的数据进行传输，然后发送fin包进入最终断开确认，然后当客户端返回ack后服务端直接关闭。<br>
 为什么客户端会等待<br>
 因为在客户端发送完ack后，ack数据包可以会丢失，然后这个时候服务端会一种等待最后确认状态，然后没有等到ack确认包，这个时候会进行fin包的重传，然后刷新超时时间，然后等待ack数据包，所以这里需要有一个客户端的超时等待。</p>
@@ -96,8 +96,8 @@
     </entry>
     <entry>
         <title type="html"><![CDATA[TCP三次握手]]></title>
-        <id>http://localhost:4000/post/tcp-san-ci-wo-shou/</id>
-        <link href="http://localhost:4000/post/tcp-san-ci-wo-shou/">
+        <id>https://IseEkko.github.io/post/tcp-san-ci-wo-shou/</id>
+        <link href="https://IseEkko.github.io/post/tcp-san-ci-wo-shou/">
         </link>
         <updated>2022-03-17T14:16:20.000Z</updated>
         <summary type="html"><![CDATA[<p>TCP的三次握手建立好了连接开始数据的传输，那么我们要知道是怎么建立连接的。</p>
@@ -113,7 +113,7 @@ TCP规定SYN不能携带数据，但是需要消耗掉一个序号</li>
 <li>TCP服务器收到请求报文后，如果同意连接，则发出确认报文。<br>
 确认报文中应该ACK=1，SYN=1，确认号是ack = x+1，同时会给自己初始化一个序列号seq=y，此时TCP服务器进程进入SYN-RCVD（同步收到）状态，这个报文不能携带数据，同样要消耗一个序号。</li>
 <li>TCP客户进程收到确认后，还要向服务器给出确认。确认的报文ACK=1，ack=y+1，自己的序列号seq = x+1，此时，TCP连接建立，然后客户端进入ESTABLISHEN（已建立连接）状态。TCP规定，ACK报文段可以携带数据，但是如果不携带数据则部消耗序号。<br>
-<img src="http://localhost:4000/post-images/1647526744143.png" alt="" loading="lazy"></li>
+<img src="https://IseEkko.github.io//post-images/1647526744143.png" alt="" loading="lazy"></li>
 </ol>
 <h2 id="简单的流程">简单的流程</h2>
 <p>在TCP中，我们三次握手的首先就是客户端发送一个SYN包，然后服务端接收到这个SYN包后，进行初始化建立缓存区，然后发送一个SYN+ACK包进行确认，最后客户端接收到后，发送ACK包进行最后的确认。<br>
@@ -125,46 +125,46 @@ TCP规定SYN不能携带数据，但是需要消耗掉一个序号</li>
 在TCP传输中，我们需要处理丢包和乱序问题。<br>
 在TCP的传输中，会创建一个发送缓冲区，然后把数据截取一部分，然后加上序列号、长度、数据内容，然后进行传输，当接收方接收到数据后，会回复一个报文，这个报文里面包含ACK确认信息，ACK = 序列号+长度 = 下一个起始序列号。这要一来一会的问答方式保证了数据传输的可靠性。<br>
 当丢失了报文，接收端可以要求发送端进行重新发送。<br>
-<img src="http://localhost:4000/post-images/1647526753768.png" alt="" loading="lazy"></p>
+<img src="https://IseEkko.github.io//post-images/1647526753768.png" alt="" loading="lazy"></p>
 ]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[Simple模式]]></title>
-        <id>http://localhost:4000/post/simple-mo-shi/</id>
-        <link href="http://localhost:4000/post/simple-mo-shi/">
+        <id>https://IseEkko.github.io/post/simple-mo-shi/</id>
+        <link href="https://IseEkko.github.io/post/simple-mo-shi/">
         </link>
         <updated>2022-03-16T14:53:11.000Z</updated>
         <content type="html"><![CDATA[<p>最简单常用的模式<br>
-<img src="http://localhost:4000/post-images/1647442422855.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647442422855.png" alt="" loading="lazy"><br>
 创建的过程<br>
 首先我们要有一个rabbitmq的结构体，用于创建rabbitmq实例。<br>
-<img src="http://localhost:4000/post-images/1647442430003.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647442430003.png" alt="" loading="lazy"><br>
 然后我们需要一个全局的连接url：<br>
-<img src="http://localhost:4000/post-images/1647442437427.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647442437427.png" alt="" loading="lazy"><br>
 在里面我们解释了每一个参数意思。然后我们开始创建这个rabbitmq的实例：这里我们看到上面的结构体，我们可以看到，我们需要传入的参数是三个，<br>
-<img src="http://localhost:4000/post-images/1647442444041.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647442444041.png" alt="" loading="lazy"><br>
 创建了实例过后我们还要进行连接和获取通道，这样我们就算连接成功了这个rabbitmq。<br>
 这里段代码里面我们看到了还有处理错误的代码，这是我们在工程中应该注意的问题。<br>
-<img src="http://localhost:4000/post-images/1647442459705.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647442459705.png" alt="" loading="lazy"><br>
 然后为了方便这里我们写了一个构造函数：<br>
-<img src="http://localhost:4000/post-images/1647442476877.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647442476877.png" alt="" loading="lazy"><br>
 生产者逻辑代码<br>
 对于生产者代码中，我们首先需要申请队列，因为我们的消息是发送到队列中的。这里需要注意里面的参数意思。<br>
-<img src="http://localhost:4000/post-images/1647442484650.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647442484650.png" alt="" loading="lazy"><br>
 然后我们请求到了队列，然后我们就要讲这些消息放进队列里面去<br>
-<img src="http://localhost:4000/post-images/1647442491154.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647442491154.png" alt="" loading="lazy"><br>
 消费者逻辑代码<br>
 首先还是一样的，我们首先需要申请队列，这里申请的步骤和上面一样，这里就不再展示，然后这里我们直接展示消费者的核心代码。<br>
 我们首先接收到消息<br>
-<img src="http://localhost:4000/post-images/1647442497793.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647442497793.png" alt="" loading="lazy"><br>
 然后对消息进行处理<br>
-<img src="http://localhost:4000/post-images/1647442505223.png" alt="" loading="lazy"></p>
+<img src="https://IseEkko.github.io//post-images/1647442505223.png" alt="" loading="lazy"></p>
 ]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[DNS的作用和原理]]></title>
-        <id>http://localhost:4000/post/dns-de-zuo-yong-he-yuan-li/</id>
-        <link href="http://localhost:4000/post/dns-de-zuo-yong-he-yuan-li/">
+        <id>https://IseEkko.github.io/post/dns-de-zuo-yong-he-yuan-li/</id>
+        <link href="https://IseEkko.github.io/post/dns-de-zuo-yong-he-yuan-li/">
         </link>
         <updated>2022-03-16T14:48:19.000Z</updated>
         <content type="html"><![CDATA[<h2 id="dns">DNS</h2>
@@ -173,19 +173,19 @@ TCP规定SYN不能携带数据，但是需要消耗掉一个序号</li>
 <p>在人类的世界里面我们最容易知道的也是最好记的就是名称，那么我们给每个主机一个名字我们就知道了是哪个，但是对于计算机来说，最容易记的是编号，有着层级结构的ip地址。为了满足两者的需求我们就有了DNS，也就是说我们可以更具主机名称查询到对应的ip，DNS就是一个分布式的数据库。</p>
 <h2 id="dns域名解析的原理">DNS域名解析的原理</h2>
 <p>DNS采用的是分布式的设计方案，它的域名空间使用的是树形的层次结构。<br>
-<img src="http://localhost:4000/post-images/1647442173978.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647442173978.png" alt="" loading="lazy"><br>
 上图展示了 DNS 服务器的部分层次结构，从上到下依次为根域名服务器、顶级域名服务器和权威域名服务器。<br>
 除了上面的这些服务器外，还有一个不在这个结构里面但是很重要的本地服务器，一般来说，每一个ips都会有至少一个本地服务器，这个服务器的作用就是起到代理的作用，将dns请求发送到上面的三层机构中去寻找对应主机。</p>
 <h2 id="dns查询过程">DNS查询过程</h2>
 <p>假设主机 A（IP 地址为 abc.xyz.edu） 想知道主机 B 的 IP 地址 （def.mn.edu），如下图所示，主机 A 首先向它的本地 DNS 服务器发送一个 DNS 查询报文。该查询报文含有被转换的主机名 def.mn.edu。本地 DNS 服务器将该报文转发到根 DNS 服务器，根 DNS 服务器注意到查询的 IP 地址前缀为 edu 后向本地 DNS 服务器返回负责 edu 的顶级域名服务器的 IP 地址列表。该本地 DNS 服务器则再次向这些 顶级域名服务器发送查询报文。该顶级域名服务器注意到 mn.edu 的前缀，并用权威域名服务器的 IP 地址进行响应。通常情况下，顶级域名服务器并不总是知道每台主机的权威 DNS 服务器的 IP 地址，<br>
 而只知道中间的某个服务器，该中间 DNS 服务器依次能找到用于相应主机的 IP 地址，我们假设中间经历了权威服务器 ① 和 ②，最后找到了负责 def.mn.edu 的权威 DNS 服务器 ③，之后，本地 DNS 服务器直接向该服务器发送查询报文从而获得主机 B 的IP 地址。<br>
-<img src="http://localhost:4000/post-images/1647442239749.png" alt="" loading="lazy"></p>
+<img src="https://IseEkko.github.io//post-images/1647442239749.png" alt="" loading="lazy"></p>
 ]]></content>
     </entry>
     <entry>
         <title type="html"><![CDATA[http不同版本的区别]]></title>
-        <id>http://localhost:4000/post/http-bu-tong-ban-ben-de-qu-bie/</id>
-        <link href="http://localhost:4000/post/http-bu-tong-ban-ben-de-qu-bie/">
+        <id>https://IseEkko.github.io/post/http-bu-tong-ban-ben-de-qu-bie/</id>
+        <link href="https://IseEkko.github.io/post/http-bu-tong-ban-ben-de-qu-bie/">
         </link>
         <updated>2022-03-16T14:45:33.000Z</updated>
         <summary type="html"><![CDATA[<p>讲解与对于不同版本之间的区别</p>
@@ -212,8 +212,8 @@ HTTP/1.0 默认浏览器和服务器之间保持短暂连接，浏览器的每�
     </entry>
     <entry>
         <title type="html"><![CDATA[如何知道http的报文长度]]></title>
-        <id>http://localhost:4000/post/ru-he-zhi-dao-http-de-bao-wen-chang-du/</id>
-        <link href="http://localhost:4000/post/ru-he-zhi-dao-http-de-bao-wen-chang-du/">
+        <id>https://IseEkko.github.io/post/ru-he-zhi-dao-http-de-bao-wen-chang-du/</id>
+        <link href="https://IseEkko.github.io/post/ru-he-zhi-dao-http-de-bao-wen-chang-du/">
         </link>
         <updated>2022-03-16T14:41:05.000Z</updated>
         <summary type="html"><![CDATA[<p>http的报文长度，分为两种情况</p>
@@ -241,7 +241,7 @@ HTTP/1.0 默认浏览器和服务器之间保持短暂连接，浏览器的每�
     3.数据块紧跟在长度头后，最后也用CRLF结尾，但数据不包含CRLF
     4.最后用一个长度为0的块表示结束
 </code></pre>
-<figure data-type="image" tabindex="1"><img src="http://localhost:4000/post-images/1647441798333.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://IseEkko.github.io//post-images/1647441798333.png" alt="" loading="lazy"></figure>
 <h2 id="范围请求">范围请求</h2>
 <pre><code> 我们进行了分块过后，我们会发现一个新的问题，也是常见的一个问题，我们比如在看电视的时候，我们想快进，然后我们选择快进的位置，其实我们就是请求了这个资源的某个范围，这样我们如何进行传输呢。
  这里需要知道一个告知用户，我们支持范围请求的一个字段，范围请求不是web服务器必备的功能，可以实现也可以不实现，所以服务器必须在响应头里使用字段Accept-Ranges:bytes明确告知客户端：我是支持范围请求的。
@@ -258,8 +258,8 @@ HTTP/1.0 默认浏览器和服务器之间保持短暂连接，浏览器的每�
     </entry>
     <entry>
         <title type="html"><![CDATA[两个协程交替打印奇偶数]]></title>
-        <id>http://localhost:4000/post/liang-ge-xie-cheng-jiao-ti-da-yin-qi-ou-shu/</id>
-        <link href="http://localhost:4000/post/liang-ge-xie-cheng-jiao-ti-da-yin-qi-ou-shu/">
+        <id>https://IseEkko.github.io/post/liang-ge-xie-cheng-jiao-ti-da-yin-qi-ou-shu/</id>
+        <link href="https://IseEkko.github.io/post/liang-ge-xie-cheng-jiao-ti-da-yin-qi-ou-shu/">
         </link>
         <updated>2022-03-15T14:43:08.000Z</updated>
         <summary type="html"><![CDATA[<p>常见的go工程问题</p>
@@ -270,8 +270,8 @@ HTTP/1.0 默认浏览器和服务器之间保持短暂连接，浏览器的每�
 <p>在go语言中，开启一个协程是很容易的，直接使用的是go关键字，这里需要我们注意的时候，我们如何做到两个协程的同步，这个让我一下想到的就是channel，使用channel来完成这个功能，我们用一个使用go关键字开启两个协程，然后通过通信做到这个功能。<br>
 也可以不使用channel，使用纯go 开启协程来做这个事情，这里涉及到的就是调度的问题，我们使用调度的方式，也就是当奇数进行打印的时候答应完一个就让出cpu的使用权限，然后偶数同理，但是这里我们需要注意的事情就是我们一定要设置使用的cpu核心数是多少。这里因为是两个交替打印所以我们使用到的就是一个核心数量就可以了。</p>
 <h2 id="实现源码">实现源码</h2>
-<p><img src="http://localhost:4000/post-images/1647355474623.png" alt="" loading="lazy"><br>
-<img src="http://localhost:4000/post-images/1647355482241.png" alt="" loading="lazy"></p>
+<p><img src="https://IseEkko.github.io//post-images/1647355474623.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647355482241.png" alt="" loading="lazy"></p>
 ]]></content>
     </entry>
 </feed>
