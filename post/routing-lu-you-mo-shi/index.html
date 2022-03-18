@@ -4,7 +4,7 @@
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
         <title>Routing路由模式 | BytesLzz</title>
-        <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
+        <link rel="stylesheet" href="http://localhost:4000/styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
@@ -16,7 +16,7 @@
     <body>
               <header class="header mdui-m-b-5">      
             <div class="container  ">
-                <div class="index-title animated fadeInDown mdui-text-center mdui-text-color-white mdui-m-b-2" style="animation-delay: 0.2s"><a href="https://IseEkko.github.io/">BytesLzz</a></div>
+                <div class="index-title animated fadeInDown mdui-text-center mdui-text-color-white mdui-m-b-2" style="animation-delay: 0.2s"><a href="http://localhost:4000">BytesLzz</a></div>
                 <div class="mdui-text-color-white animated fadeInDown mdui-text-center  mdui-m-b-3" style="animation-delay: 0.4s">做好每一件事，读好每一本书，天道酬勤</div>
            
             <nav id="nav" class="mdui-text-center animated fadeInDown" style="animation-delay: 0.6s">
@@ -61,14 +61,14 @@
                                     <div class="mdui-m-b-2 mdui-typo post-neirong"><p>路由模式，和订阅者模式的区别在于，他可以进行消息指定给哪个消费者。</p>
 <!-- more -->
 <h2 id="路由模式示意图">路由模式示意图</h2>
-<p><img src="https://IseEkko.github.io//post-images/1647530608970.png" alt="" loading="lazy"><br>
+<p><img src="http://localhost:4000/post-images/1647530608970.png" alt="" loading="lazy"><br>
 这里我们是如何做到，消息处理的指定呢？<br>
 在创建路由模式的实例的时候，我们需要传入的参数有两个，一个是交换机名称，一个是路由的key。在这里总结的时候我们猜测一波是这个key起到的指定作用。<br>
 消息的生产<br>
-<img src="https://IseEkko.github.io//post-images/1647530620476.png" alt="" loading="lazy"><br>
+<img src="http://localhost:4000/post-images/1647530620476.png" alt="" loading="lazy"><br>
 上面是路由模式发送消息的完整代码，从中我们可以看到，首先我们进行了一个交换机的创建，然后在发送消息的时候我们的key用的是routkey。<br>
 消息的消费<br>
-<img src="https://IseEkko.github.io//post-images/1647530635417.png" alt="" loading="lazy"><br>
+<img src="http://localhost:4000/post-images/1647530635417.png" alt="" loading="lazy"><br>
 除了队列和交换机的创建，这里我们进行绑定的时候传入了三个参数，队列的名称，routkey，和交换机。<br>
 后面和之前的相同。<br>
 如何完成指定发送呢？<br>
@@ -77,17 +77,17 @@
                                     <div class="mdui-divider mdui-m-b-2"></div>
                                     <div class="mdui-row-xs-2 post-fenye">
                                        
-                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://IseEkko.github.io/post/topic-hua-ti-mo-shi/">Topic话题模式</a></div></div>
+                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="http://localhost:4000/post/topic-hua-ti-mo-shi/">Topic话题模式</a></div></div>
                                         
 
                                         
-                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/publish-ding-yue-zhe-mo-shi/">publish订阅者模式</a></div> </div>
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="http://localhost:4000/post/publish-ding-yue-zhe-mo-shi/">publish订阅者模式</a></div> </div>
                                        
                                       </div>
                                    
                                     <div class="mdui-divider mdui-m-t-2 mdui-m-b-2"></div>
                                     
-                                     <script src="https://IseEkko.github.io//media/scripts/Valine.min.js"></script>
+                                     <script src="http://localhost:4000/media/scripts/Valine.min.js"></script>
  <div class="comment"></div>
 
 <script>
