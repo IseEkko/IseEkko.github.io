@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://IseEkko.github.io/</id>
     <title>isekko</title>
-    <updated>2022-03-18T01:20:53.740Z</updated>
+    <updated>2022-03-18T01:24:59.727Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://IseEkko.github.io/"/>
     <link rel="self" href="https://IseEkko.github.io/atom.xml"/>
@@ -11,11 +11,33 @@
     <icon>https://IseEkko.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, isekko</rights>
     <entry>
-        <title type="html"><![CDATA[Routing模式]]></title>
-        <id>https://IseEkko.github.io/post/routing-mo-shi/</id>
-        <link href="https://IseEkko.github.io/post/routing-mo-shi/">
+        <title type="html"><![CDATA[Topic话题模式]]></title>
+        <id>https://IseEkko.github.io/post/topic-hua-ti-mo-shi/</id>
+        <link href="https://IseEkko.github.io/post/topic-hua-ti-mo-shi/">
         </link>
-        <updated>2022-03-17T15:43:36.000Z</updated>
+        <updated>2022-03-18T01:24:09.000Z</updated>
+        <summary type="html"><![CDATA[<p>我觉得是路由模式的升级版。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>我觉得是路由模式的升级版。</p>
+<!-- more -->
+<h2 id="解析">解析</h2>
+<p>对于这个模式，我觉得就是对路由模式的升级，在路由模式中，我们可以根据配置的路由进行消费者的发送，然后这里是通过配置符号进行消费者的发送，这里有可能我们用到的是给多个消费者进行发送。</p>
+<h2 id="示意图">示意图</h2>
+<p><img src="https://IseEkko.github.io//post-images/1647531221028.png" alt="" loading="lazy"><br>
+这个模式的实例创建是和路由模式是相同的，进行路由名称和交换机模式的传输，通过这两个进行实例的创建。<br>
+消息的处理<br>
+这里无论是生产和消费消息，和路由模式的区别就是在交换机创建时候的kind的选择<br>
+<img src="https://IseEkko.github.io//post-images/1647531228782.png" alt="" loading="lazy"><br>
+然后在使用的时候，#代表的就是所有，然后*代表的是占位的意思。<br>
+这个主要是仔细看一下案例就可以。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Routing路由模式]]></title>
+        <id>https://IseEkko.github.io/post/routing-lu-you-mo-shi/</id>
+        <link href="https://IseEkko.github.io/post/routing-lu-you-mo-shi/">
+        </link>
+        <updated>2022-03-18T01:23:15.000Z</updated>
         <summary type="html"><![CDATA[<p>路由模式，和订阅者模式的区别在于，他可以进行消息指定给哪个消费者。</p>
 ]]></summary>
         <content type="html"><![CDATA[<p>路由模式，和订阅者模式的区别在于，他可以进行消息指定给哪个消费者。</p>
@@ -33,28 +55,6 @@
 后面和之前的相同。<br>
 如何完成指定发送呢？<br>
 在这里，我们的发送端和接受端，都注册了同一个交换机，然后交换机在进行数据发送的时候是通过routkey的值把数据进行指定传输的。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Topic模式]]></title>
-        <id>https://IseEkko.github.io/post/topic-mo-shi/</id>
-        <link href="https://IseEkko.github.io/post/topic-mo-shi/">
-        </link>
-        <updated>2022-03-17T15:43:14.000Z</updated>
-        <summary type="html"><![CDATA[<p>我觉得是路由模式的升级版。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>我觉得是路由模式的升级版。</p>
-<!-- more -->
-<h2 id="解析">解析</h2>
-<p>对于这个模式，我觉得就是对路由模式的升级，在路由模式中，我们可以根据配置的路由进行消费者的发送，然后这里是通过配置符号进行消费者的发送，这里有可能我们用到的是给多个消费者进行发送。</p>
-<h2 id="示意图">示意图</h2>
-<p><img src="https://IseEkko.github.io//post-images/1647531221028.png" alt="" loading="lazy"><br>
-这个模式的实例创建是和路由模式是相同的，进行路由名称和交换机模式的传输，通过这两个进行实例的创建。<br>
-消息的处理<br>
-这里无论是生产和消费消息，和路由模式的区别就是在交换机创建时候的kind的选择<br>
-<img src="https://IseEkko.github.io//post-images/1647531228782.png" alt="" loading="lazy"><br>
-然后在使用的时候，#代表的就是所有，然后*代表的是占位的意思。<br>
-这个主要是仔细看一下案例就可以。</p>
 ]]></content>
     </entry>
     <entry>

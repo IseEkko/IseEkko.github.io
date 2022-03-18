@@ -3,7 +3,7 @@
         <head>
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
-        <title>Routing模式 | isekko</title>
+        <title>Topic话题模式 | isekko</title>
         <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
@@ -56,23 +56,20 @@
                 <div class="mdui-row">
                         <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
                                 <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="post-title  mdui-m-b-1">Routing模式</div>
-                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-03-17 23:43:36">2022-03-17 / 1 min read</div>
-                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>路由模式，和订阅者模式的区别在于，他可以进行消息指定给哪个消费者。</p>
+                                    <div class="post-title  mdui-m-b-1">Topic话题模式</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-03-18 09:24:09">2022-03-18 / 1 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>我觉得是路由模式的升级版。</p>
 <!-- more -->
-<h2 id="路由模式示意图">路由模式示意图</h2>
-<p><img src="https://IseEkko.github.io//post-images/1647530608970.png" alt="" loading="lazy"><br>
-这里我们是如何做到，消息处理的指定呢？<br>
-在创建路由模式的实例的时候，我们需要传入的参数有两个，一个是交换机名称，一个是路由的key。在这里总结的时候我们猜测一波是这个key起到的指定作用。<br>
-消息的生产<br>
-<img src="https://IseEkko.github.io//post-images/1647530620476.png" alt="" loading="lazy"><br>
-上面是路由模式发送消息的完整代码，从中我们可以看到，首先我们进行了一个交换机的创建，然后在发送消息的时候我们的key用的是routkey。<br>
-消息的消费<br>
-<img src="https://IseEkko.github.io//post-images/1647530635417.png" alt="" loading="lazy"><br>
-除了队列和交换机的创建，这里我们进行绑定的时候传入了三个参数，队列的名称，routkey，和交换机。<br>
-后面和之前的相同。<br>
-如何完成指定发送呢？<br>
-在这里，我们的发送端和接受端，都注册了同一个交换机，然后交换机在进行数据发送的时候是通过routkey的值把数据进行指定传输的。</p>
+<h2 id="解析">解析</h2>
+<p>对于这个模式，我觉得就是对路由模式的升级，在路由模式中，我们可以根据配置的路由进行消费者的发送，然后这里是通过配置符号进行消费者的发送，这里有可能我们用到的是给多个消费者进行发送。</p>
+<h2 id="示意图">示意图</h2>
+<p><img src="https://IseEkko.github.io//post-images/1647531221028.png" alt="" loading="lazy"><br>
+这个模式的实例创建是和路由模式是相同的，进行路由名称和交换机模式的传输，通过这两个进行实例的创建。<br>
+消息的处理<br>
+这里无论是生产和消费消息，和路由模式的区别就是在交换机创建时候的kind的选择<br>
+<img src="https://IseEkko.github.io//post-images/1647531228782.png" alt="" loading="lazy"><br>
+然后在使用的时候，#代表的就是所有，然后*代表的是占位的意思。<br>
+这个主要是仔细看一下案例就可以。</p>
 </div>
                                     <div class="mdui-divider mdui-m-b-2"></div>
                                     <div class="mdui-row-xs-2 post-fenye">
@@ -81,7 +78,7 @@
                                         
 
                                         
-                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/topic-mo-shi/">Topic模式</a></div> </div>
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/routing-lu-you-mo-shi/">Routing路由模式</a></div> </div>
                                        
                                       </div>
                                    
