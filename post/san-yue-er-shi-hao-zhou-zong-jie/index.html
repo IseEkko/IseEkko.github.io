@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+        <head>
+        <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
+        <meta charset="utf-8">
+        <title>三月二十号-周总结 | BytesLzz</title>
+        <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
+        <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
+        <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+        <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+         <script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+         <script >hljs.initHighlightingOnLoad();</script>
+
+    </head>
+    <body>
+              <header class="header mdui-m-b-5">      
+            <div class="container  ">
+                <div class="index-title animated fadeInDown mdui-text-center mdui-text-color-white mdui-m-b-2" style="animation-delay: 0.2s"><a href="https://IseEkko.github.io/">BytesLzz</a></div>
+                <div class="mdui-text-color-white animated fadeInDown mdui-text-center  mdui-m-b-3" style="animation-delay: 0.4s">做好每一件事，读好每一本书，天道酬勤</div>
+           
+            <nav id="nav" class="mdui-text-center animated fadeInDown" style="animation-delay: 0.6s">
+                   
+                            <li><a href="/">首页</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                            <li><a href="/archives">归档</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                            <li><a href="/tags">标签</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                            <li><a href="/post/about">关于</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                  </nav>
+                </div>
+        </header>
+        <div class="mdui-container ">
+                <div class="mdui-row">
+                        <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
+                                <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
+                                    <div class="post-title  mdui-m-b-1">三月二十号-周总结</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-03-20 13:27:33">2022-03-20 / 13 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>一周过去了，在周末把这个星期的收获总结一遍。</p>
+<h2 id="计算机网络">计算机网络</h2>
+<p>本周对计算机网络进行了一定的学习，主要学习的范围是应用层和传输层。</p>
+<h3 id="应用层">应用层</h3>
+<h4 id="keep-alive和非keep-alive">keep-alive和非keep-alive</h4>
+<p>在应用层中，我们主要要学习的东西是http协议相关的知识，本周对http协议也有了新的一个认识，首先我们来看一下http协议。<br>
+http协议是我们在做web应用的一个协议，他是一个请求/响应式的一种协议，也就是发起请求然后等待一个响应。说到请求和响应我们就想到了我们首先要建立连接，在http中建立的是tcp协议，在http的演进中这个连接的方式发生了改变，在http1.1前使用的是非长连接方式，在这个连接方式中也就是为每一个请求建立一个tcp连接。然后我们知道的是TCP建立一个连接会消耗很多的资源，所以从速度上来说就慢了许多，后面我们会细说TCP连接的三个握手和四次挥手。这里下面我们放一张图也就是长连接和非长连接的示意图：<br>
+<img src="https://IseEkko.github.io//post-images/1647762950584.png" alt="" loading="lazy"><br>
+但是这个两个方式都是优缺点的，第一个非长连接的缺点很明显当很多人进行访问的时候这个时候对于服务器的压力是很多的，然后第二个长连接就是保持连接的时间如果时间不合理也会让服务器的资源被无效的占用。这个问题我们解决的办法就是正确的设置keepalive-timeout的时间。</p>
+<h4 id="如何知道http协议传输的报文长度">如何知道http协议传输的报文长度</h4>
+<p>对于小文件来说，服务器会直接在响应报文的content-Lenth字段上写上<br>
+对于大文件来说，在http1.1以后用的方式是分块传输，这个时候客户端只会知道进行的是分块传输，是通过Transfer-Encoding：chunked字段，这里我们要知道不会传输数据的长度，每一个包会包含一个十六进制的长度值和数据，最后一个分块长度是0，表示实体的结束，客户端可以根据这个确认数据接收完成。</p>
+<h4 id="大文件的传输方式">大文件的传输方式</h4>
+<p>对于大文件我们有几种传输方式分别是：数据压缩、分块传输、范围请求、多段数据请求<br>
+对于这四种方式适用的地方是不一样的，首先我们先来说一下数据压缩，<br>
+对于数据压缩来说，很简单就是选择一个压缩算法，然后对数据进行压缩然后进行传输，我们都知道压缩完的数据是变小了的，这里我们有一个问题，我们如何选择算法，根据什么呢？<br>
+压缩算法的选择看得是Transfer-Encoding：chunked字段，在这个字段里面我们可以知道浏览器支持的压缩算法，然后服务端会对比自己支持的算法然后进行选择。但是这个传输方式的缺点是很明显的，对于文本文件是没有问题的，但是呢我们要知道对于图片和视频文件来说，我们知道要知道的是这些文件都是经过高度压缩了的，所以压缩算法对于他来说是无效的。<br>
+分块传输，我们将大文件拆分成小文件进行传输，这样的话我们的网络中就不会占用过多的时间可以节省服务的资源。详细的内容请查看以前的博客。<br>
+范围请求，我们在观看视频的时候，很多时候需要进行快进，那么我们如何办到呢。我们使用到的技术就是范围请求。在http中有一个range字段，因为在http中这个功能可有可无的，所以我们要通过Accept-Ranges:bytes明确告知客户端：我是支持范围请求的。<br>
+多段数据进行传输，这种情况需要使用一种特殊的MIME类型:multipart/byteranges，表示报文的div是由多段字节序列组成的，并且还要用一个参数boundary=xxx给出段之间的分隔标记。</p>
+<h4 id="http协议不同版本之间的区别">http协议不同版本之间的区别</h4>
+<p>1.0和1.1的区别<br>
+• 缓存处理：<br>
+1.1较1.0相比缓存的策略更加的灵活<br>
+• 节约带宽：<br>
+在1.1中添加了range字段，可以请求资源的部分内容，这使得开发者可以线程的请求某一资源。从而重新的利用带宽资源进行高效的并发<br>
+• 错误请求的管理：<br>
+1.1较1.0新增了24个状态码<br>
+• Host 请求头：<br>
+早期的服务器，都是一个机器处理单一的任务，所以可以直接用ip进行标识，但是后面有了虚拟机过后，一个主机可以有多个虚拟机，然后这个时候我们为了支持这个虚拟主机，1.1就增加了host请求头<br>
+• 长连接：<br>
+HTTP/1.0 默认浏览器和服务器之间保持短暂连接，浏览器的每次请求都需要与服务器建立一个 TCP 连接，服务器完成后立即断开 TCP 连接。HTTP/1.1 默认使用的是持久连接，其支持在同一个 TCP 请求中传送多个 HTTP 请求和响应。此之前的 HTTP 版本的默认连接都是使用非持久连接，如果想要在旧版本的 HTTP 协议上维持持久连接，则需要指定 Connection 的首部字段的值为 Keep-Alive。<br>
+1.x和2.0 的区别<br>
+• 二进制传送：<br>
+之前版本 数据都是用文本传输，因为文本有多种格式，所以不能很好地适应所有场景； 2.0传送的是二进制，相当于统一了格式<br>
+• 多路复用：<br>
+1.1虽然默认复用TCP连接，但是每个请求是串行执行的，如果前面的请求超时，后面的请求只能等着（也就是线头阻塞）； 2.0的时候每个请求有自己的ID，多个请求可以在同一个TCP连接上并行执行，不会互相影响<br>
+• header压缩：<br>
+每次进行HTTP请求响应的时候，头部里很多的字段都是重复的，在2.0中，将字段记录到一张表中，头部只需要存放字段对应的编号就行，用的时候只需要拿着编号去表里查找就行，<br>
+减少了传输的数据量<br>
+• 服务端推送：<br>
+服务器会在客户端没发起请求的时候主动推送一些需要的资源，比如客户端请求一个html文件，服务器发送完之后会把和这个html页面相关的静态文件也发送给客户端，当客户端准备向服务器请求静态文件的时候，就可以直接从缓存中获取，就不需要再发起请求了</p>
+<h4 id="dns的作用和原理">DNS的作用和原理</h4>
+<p>在网络的世界里面，我们看着文字的符号便于记忆，但是对于计算机来说有规律的数字更好的理解，然后就有了DNS。理解就是一个分布式的数据库，然后要找主机我们就更具域名进行查询。</p>
+<h3 id="传输层">传输层</h3>
+<p>学习完了应用层的基本内容后我们进入了传输层的学习，传输层也就是对数据进行传输的地方，这里主要讲解的就是TCP传输协议的知识，我们知道它是可靠的数据传输方式，这个要归功于rdt机制，对传输的数据进行确认后再发送后面的数据加上重传机制，保证了TCP的可靠传输。</p>
+<h4 id="tcp连接是如何进行连接的">TCP连接是如何进行连接的</h4>
+<p>TCP的连接的过程，也就是我们以前常说的三次握手，那么这个三次握手的过程是怎么样的呢。<br>
+<img src="https://IseEkko.github.io//post-images/1647762973573.png" alt="" loading="lazy"><br>
+上图中很好的展示了TCP三次握手的过程，在这里面我们需要注意的点是，在三次握手中，第一次和第二次握手是不携带数据传输的，但是要占用序号位，第三次握手时候可以包含数据，但是这里不一样的是，携带了数据就要占用序号位，如果没有数据传输那么就不会进行序号位的占用。<br>
+####为什么是三次握手不是两次呢<br>
+在TCP中第一次握手时候是客户端发起的请求，然后为了确保数据的可靠，那么我们就要进行数据的确认，第二次握手的时候我们对第一次握手的数据进行了确认，但是第二次握手的数据没有得到确认那么这个方式就是不可靠的，比如说我们进行第二次握手的时候，其实根本没有收到ack数据包进行第一次握手的确认，那么当客户端进行再次确认的时候，又会进行第一次握手的操作，然后服务端再一次进行ack确认报文的发送，那么对于客户端来说就只有一个连接，但是对于服务端来说就两个连接，这样的数据传输就没有可靠性的。所以我们要进行三次握手而不是两次。</p>
+<h4 id="保证数据的可靠性">保证数据的可靠性</h4>
+<p>TCP是全双工的信道，如何避免乱序和丢包问题呢？在TCP协议中，我们之前说了一下他是传输一个数据等待确认后再进行后面的传输。<br>
+这里我们详细的讲解一下，在TCP传输的过程中会建立一个发送端缓存区，然后截取数据的一部分，然后加上序列号、长度、数据内容然后进行传输，传输后会等待一个确认的报文，ack就是传输确认的报文，也就是ack报文，这个报文包含什么那些东西呢？ACK = 序列号 + 长度 = 下一个起始序列号。这样就保证了数据的可靠性。<br>
+<img src="https://IseEkko.github.io//post-images/1647762983716.png" alt="" loading="lazy"></p>
+<h4 id="tcp拥塞控制采取的四种算法">TCP拥塞控制采取的四种算法</h4>
+<p>TCP传输不仅数据传输可靠，而且在传输在时候会更具网络的状况进行流量的管控。这里我们就简单的说一下这四种算法</p>
+<h5 id="慢开始">慢开始</h5>
+<p>在网络中我们不知道网络中的通信状态，这个时候TCP会发送一个很小的数据包进行通道的侦测，然后慢慢的增加窗口的大小。</p>
+<h5 id="拥塞避免">拥塞避免</h5>
+<p>这里我们为了拥塞窗口的缓慢增大，每经过一个RTT，我发送窗口就会加一。<br>
+当网络的拥塞发生的时候，让新的慢开始门限值变为发生拥塞时候的值的一半,并将拥塞窗口置为 1 ,然后再次重复两种算法（慢开始和拥塞避免）,这时一瞬间会将网络中的数据量大量降低。</p>
+<h5 id="快恢复">快恢复</h5>
+<p>快恢复算法，和快重传算法是配合使用的，连续接收到三次确认后，会减半阀值，,窗口长度起点和阙值一样，执行拥塞避免，线性递增</p>
+<h5 id="快重传">快重传</h5>
+<p>当接收方接收到一个失序的数据包的时候马上进行重传。我们假设有四个数据包，分别是1，2，3，4，然后我们这里接收到的是1，3，4。这个时候发送端一直接收到的是数据包一的确认包，然后这个接收到三次1的确认后，我们就会立即重新传输对方没有接收到的报文。由于发送发尽快发送没有接收到的报文段，所以快速重传会提高网络的吞吐量。</p>
+<h4 id="tcp断开连接的过程">TCP断开连接的过程</h4>
+<p>上面我们对TCP连接的建立和传输中遇见的问题解决办法，进行了一次总结，然后下面我们说一下TCP连接的断开，也就是四次挥手的过程，在四次挥手的过程中也有我们需要注意的地方。首先我们先看一下整个过程的流程图。<br>
+<img src="https://IseEkko.github.io//post-images/1647762278280.png" alt="" loading="lazy"><br>
+在这里我们需要知道的是在最后的时候发起断开连接的端，会进行一个等待后才会关闭。我们要等待这个时间呢？<br>
+等待这个时间其实是为了等待最后确认的ack到达没有到达接收端，因为如果没有接收到，接受端会再次发送fin包进行最后的确认。</p>
+<h2 id="redis">Redis</h2>
+<p>本周只学习了redis的一个很小的部分，就是string类型。<br>
+一些基本的操作详细请看之前发的博客。</p>
+<h2 id="go工程问题">Go工程问题</h2>
+<p>在这周海子给我说了一下在面试经常面的问题，这里有一个问题就是对协程的使用，就是对协程的使用，使用两个协程进行交替打印奇偶数字。<br>
+<img src="https://IseEkko.github.io//post-images/1647762593057.png" alt="" loading="lazy"><br>
+<img src="https://IseEkko.github.io//post-images/1647762605452.png" alt="" loading="lazy"><br>
+上面是两种解法，在看这里的时候直接看代码就像理解就可以了。</p>
+<h3 id="go秒杀">Go秒杀</h3>
+<p>本周开始秒杀系统的书写在本次开发中会把问题记录得很细致，每一个知识点都会有记录，这里对本周的学习进行一个总结。</p>
+<h4 id="rabbitmq">RabbitMQ</h4>
+<p>本周对系统的准备主要学习的RabbitMQ消息队列的使用和几个模式的书写。<br>
+每种模式的书写可以查看之前的博客更加的细致。也更好的理解。</p>
+</div>
+                                    <div class="mdui-divider mdui-m-b-2"></div>
+                                    <div class="mdui-row-xs-2 post-fenye">
+                                       
+                                        <div class="mdui-col"> </div>
+                                        
+
+                                        
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/tcp-yong-sai-kong-zhi-cai-qu-de-si-chong-suan-fa/">TCP拥塞控制采取的四种算法</a></div> </div>
+                                       
+                                      </div>
+                                   
+                                    <div class="mdui-divider mdui-m-t-2 mdui-m-b-2"></div>
+                                    
+                                     <script src="https://IseEkko.github.io//media/scripts/Valine.min.js"></script>
+ <div class="comment"></div>
+
+<script>
+      new Valine({
+            el: '.comment',
+
+
+
+            path: window.location.pathname,
+            pageSize: 30,
+            avatar:'mm', 
+       })
+    </script> 
+<script>
+    if(window.location.hash){
+        var checkExist = setInterval(function() {
+           if ($(window.location.hash).length) {
+              $('html, body').animate({scrollTop: $(window.location.hash).offset().top-90}, 1000);
+              clearInterval(checkExist);
+           }
+        }, 100);
+    }
+</script>
+                                </article>
+
+                                    
+                        </div>
+                      </div>
+    
+                
+
+              </div>
+                    <footer class="footer mdui-m-t-5 mdui-text-center">
+               <nav class="social-links">
+                      <ul>
+                      
+                      	
+                        <li class="social-link"><a href="feed:https://iseekko.github.io//atom.xml" target="_blank"><i class="iconfont icon-rss"></i></a></li>
+                          
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      </ul>
+                    </nav>
+                    <div class="copyright">
+                      <p>Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> <br/> Theme <a href="https://github.com/alterfang/gridea-theme-song/" target="_blank"  title="宋"  >Song</a> by <a href="https://shanbu.fun/" target="_blank"  title="山卜方" >shanbufun</a> </p>
+                  </div>
+                  
+              </footer>
+    </body>
+</html>
