@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://IseEkko.github.io/</id>
     <title>BytesLzz</title>
-    <updated>2022-03-20T07:58:04.473Z</updated>
+    <updated>2022-03-21T15:19:31.600Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://IseEkko.github.io/"/>
     <link rel="self" href="https://IseEkko.github.io/atom.xml"/>
@@ -10,6 +10,56 @@
     <logo>https://IseEkko.github.io/images/avatar.png</logo>
     <icon>https://IseEkko.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, BytesLzz</rights>
+    <entry>
+        <title type="html"><![CDATA[全排列问题]]></title>
+        <id>https://IseEkko.github.io/post/quan-pai-lie-wen-ti/</id>
+        <link href="https://IseEkko.github.io/post/quan-pai-lie-wen-ti/">
+        </link>
+        <updated>2022-03-21T15:16:30.000Z</updated>
+        <content type="html"><![CDATA[<p>今天遇见的题目是全排列的问题，这里进行一个总结<br>
+<img src="https://IseEkko.github.io//post-images/1647875887964.png" alt="" loading="lazy"><br>
+题目解析<br>
+今天进行全排列的解析，给一个数组，然后进行排列组合，给出最后所有的排列组合。有一定的经验所以我们可以画出下面这个图<br>
+<img src="https://IseEkko.github.io//post-images/1647875897982.png" alt="" loading="lazy"><br>
+这里我们可以很清楚的看到，这里使用的方式是回溯，那么我们就可以开始写这个代码了。<br>
+这个题目在做的时候，我们使用到的是slice的一些方法，删除第k个元素，然后加入第k个元素。<br>
+达到回溯的效果。<br>
+解题源码<br>
+<img src="https://IseEkko.github.io//post-images/1647875924078.png" alt="" loading="lazy">		<br>
+稍微加一点难度就是这个数组是无序的有重复的数组。<br>
+这个时候在循环的时候就要判断数组中重复的数字。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[路由器和交换机的区别]]></title>
+        <id>https://IseEkko.github.io/post/lu-you-qi-he-jiao-huan-ji-de-qu-bie/</id>
+        <link href="https://IseEkko.github.io/post/lu-you-qi-he-jiao-huan-ji-de-qu-bie/">
+        </link>
+        <updated>2022-03-21T15:15:55.000Z</updated>
+        <content type="html"><![CDATA[<p>路由器和交换机，他们位于不同的位置，<br>
+交换机处于网络中的数据链路层，根据mac地址进行转发，一般用于构建简单的内部网络<br>
+路由器，路由器是在网络层中进行工作的，根据的是ip地址进行转发的。一般用于构建复杂的网络。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[路由转发]]></title>
+        <id>https://IseEkko.github.io/post/lu-you-zhuan-fa/</id>
+        <link href="https://IseEkko.github.io/post/lu-you-zhuan-fa/">
+        </link>
+        <updated>2022-03-21T15:11:49.000Z</updated>
+        <summary type="html"><![CDATA[<p>在网络传输的过程中，会经过很多的路由，那么我们如何进行转发的呢？</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>在网络传输的过程中，会经过很多的路由，那么我们如何进行转发的呢？</p>
+<!-- more -->
+<h2 id="流程">流程</h2>
+<p>在传输的过程中，路由需要做的，就是把数据包传输到他该去的地方，在如今的网络中，已经有很多且复杂的网络。这个时候我们需要做的是什么呢。<br>
+首先从ip数据包中提取出目的主机的io地址，然后找到他所在的网络。<br>
+这个时候判断ip所在的网络是不是和本路由直接相连，如果是那么就直接进行转发。<br>
+如果不是，路由会检查路由表，看路由表中是不是有ip地址的特定主机路由，如果有那么就直接跳转到下一跳路由中去。<br>
+如果我们没有找到对应的特定主机，路由器会检查路由表，使每一行的子网掩码与目的的ip匹配，如果找到了，则按照路由表转发下一跳路由中<br>
+如果没有找到，就按照默认的路由转发到默认路由中，不然无法找到路由那么就向源主机报错。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[三月二十号-周总结]]></title>
         <id>https://IseEkko.github.io/post/san-yue-er-shi-hao-zhou-zong-jie/</id>
@@ -238,88 +288,6 @@ TCP规定SYN不能携带数据，但是需要消耗掉一个序号</li>
 在TCP的传输中，会创建一个发送缓冲区，然后把数据截取一部分，然后加上序列号、长度、数据内容，然后进行传输，当接收方接收到数据后，会回复一个报文，这个报文里面包含ACK确认信息，ACK = 序列号+长度 = 下一个起始序列号。这要一来一会的问答方式保证了数据传输的可靠性。<br>
 当丢失了报文，接收端可以要求发送端进行重新发送。<br>
 <img src="https://IseEkko.github.io//post-images/1647526753768.png" alt="" loading="lazy"></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Simple模式]]></title>
-        <id>https://IseEkko.github.io/post/simple-mo-shi/</id>
-        <link href="https://IseEkko.github.io/post/simple-mo-shi/">
-        </link>
-        <updated>2022-03-16T14:53:11.000Z</updated>
-        <content type="html"><![CDATA[<p>最简单常用的模式<br>
-<img src="https://IseEkko.github.io//post-images/1647442422855.png" alt="" loading="lazy"><br>
-创建的过程<br>
-首先我们要有一个rabbitmq的结构体，用于创建rabbitmq实例。<br>
-<img src="https://IseEkko.github.io//post-images/1647442430003.png" alt="" loading="lazy"><br>
-然后我们需要一个全局的连接url：<br>
-<img src="https://IseEkko.github.io//post-images/1647442437427.png" alt="" loading="lazy"><br>
-在里面我们解释了每一个参数意思。然后我们开始创建这个rabbitmq的实例：这里我们看到上面的结构体，我们可以看到，我们需要传入的参数是三个，<br>
-<img src="https://IseEkko.github.io//post-images/1647442444041.png" alt="" loading="lazy"><br>
-创建了实例过后我们还要进行连接和获取通道，这样我们就算连接成功了这个rabbitmq。<br>
-这里段代码里面我们看到了还有处理错误的代码，这是我们在工程中应该注意的问题。<br>
-<img src="https://IseEkko.github.io//post-images/1647442459705.png" alt="" loading="lazy"><br>
-然后为了方便这里我们写了一个构造函数：<br>
-<img src="https://IseEkko.github.io//post-images/1647442476877.png" alt="" loading="lazy"><br>
-生产者逻辑代码<br>
-对于生产者代码中，我们首先需要申请队列，因为我们的消息是发送到队列中的。这里需要注意里面的参数意思。<br>
-<img src="https://IseEkko.github.io//post-images/1647442484650.png" alt="" loading="lazy"><br>
-然后我们请求到了队列，然后我们就要讲这些消息放进队列里面去<br>
-<img src="https://IseEkko.github.io//post-images/1647442491154.png" alt="" loading="lazy"><br>
-消费者逻辑代码<br>
-首先还是一样的，我们首先需要申请队列，这里申请的步骤和上面一样，这里就不再展示，然后这里我们直接展示消费者的核心代码。<br>
-我们首先接收到消息<br>
-<img src="https://IseEkko.github.io//post-images/1647442497793.png" alt="" loading="lazy"><br>
-然后对消息进行处理<br>
-<img src="https://IseEkko.github.io//post-images/1647442505223.png" alt="" loading="lazy"></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[DNS的作用和原理]]></title>
-        <id>https://IseEkko.github.io/post/dns-de-zuo-yong-he-yuan-li/</id>
-        <link href="https://IseEkko.github.io/post/dns-de-zuo-yong-he-yuan-li/">
-        </link>
-        <updated>2022-03-16T14:48:19.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="dns">DNS</h2>
-<p>DNS（Domain Name System）是域名系统的英文缩写，是一种组织成域层次结构的计算机和网络服务命名系统，用于 TCP/IP 网络。</p>
-<h2 id="作用">作用</h2>
-<p>在人类的世界里面我们最容易知道的也是最好记的就是名称，那么我们给每个主机一个名字我们就知道了是哪个，但是对于计算机来说，最容易记的是编号，有着层级结构的ip地址。为了满足两者的需求我们就有了DNS，也就是说我们可以更具主机名称查询到对应的ip，DNS就是一个分布式的数据库。</p>
-<h2 id="dns域名解析的原理">DNS域名解析的原理</h2>
-<p>DNS采用的是分布式的设计方案，它的域名空间使用的是树形的层次结构。<br>
-<img src="https://IseEkko.github.io//post-images/1647442173978.png" alt="" loading="lazy"><br>
-上图展示了 DNS 服务器的部分层次结构，从上到下依次为根域名服务器、顶级域名服务器和权威域名服务器。<br>
-除了上面的这些服务器外，还有一个不在这个结构里面但是很重要的本地服务器，一般来说，每一个ips都会有至少一个本地服务器，这个服务器的作用就是起到代理的作用，将dns请求发送到上面的三层机构中去寻找对应主机。</p>
-<h2 id="dns查询过程">DNS查询过程</h2>
-<p>假设主机 A（IP 地址为 abc.xyz.edu） 想知道主机 B 的 IP 地址 （def.mn.edu），如下图所示，主机 A 首先向它的本地 DNS 服务器发送一个 DNS 查询报文。该查询报文含有被转换的主机名 def.mn.edu。本地 DNS 服务器将该报文转发到根 DNS 服务器，根 DNS 服务器注意到查询的 IP 地址前缀为 edu 后向本地 DNS 服务器返回负责 edu 的顶级域名服务器的 IP 地址列表。该本地 DNS 服务器则再次向这些 顶级域名服务器发送查询报文。该顶级域名服务器注意到 mn.edu 的前缀，并用权威域名服务器的 IP 地址进行响应。通常情况下，顶级域名服务器并不总是知道每台主机的权威 DNS 服务器的 IP 地址，<br>
-而只知道中间的某个服务器，该中间 DNS 服务器依次能找到用于相应主机的 IP 地址，我们假设中间经历了权威服务器 ① 和 ②，最后找到了负责 def.mn.edu 的权威 DNS 服务器 ③，之后，本地 DNS 服务器直接向该服务器发送查询报文从而获得主机 B 的IP 地址。<br>
-<img src="https://IseEkko.github.io//post-images/1647442239749.png" alt="" loading="lazy"></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[http不同版本的区别]]></title>
-        <id>https://IseEkko.github.io/post/http-bu-tong-ban-ben-de-qu-bie/</id>
-        <link href="https://IseEkko.github.io/post/http-bu-tong-ban-ben-de-qu-bie/">
-        </link>
-        <updated>2022-03-16T14:45:33.000Z</updated>
-        <summary type="html"><![CDATA[<p>讲解与对于不同版本之间的区别</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>讲解与对于不同版本之间的区别</p>
-<!-- more -->
-<h2 id="http10和http11的区别">Http1.0和http1.1的区别</h2>
-<p>• 缓存处理：1.1较1.0相比缓存的策略更加的灵活<br>
-• 节约带宽：在1.1中添加了range字段，可以请求资源的部分内容，这使得开发者可以线程的请求某一资源。从而重新的利用带宽资源进行高效的并发<br>
-• 错误请求的管理：1.1较1.0新增了24个状态码<br>
-• Host 请求头：早期的服务器，都是一个机器处理单一的任务，所以可以直接用ip进行标识，但是后面有了虚拟机过后，一个主机可以有多个虚拟机，然后这个时候我们为了支持这个虚拟主机，1.1就增加了host请求头<br>
-• 长连接：<br>
-HTTP/1.0 默认浏览器和服务器之间保持短暂连接，浏览器的每次请求都需要与服务器建立一个 TCP 连接，服务器完成后立即断开 TCP 连接。HTTP/1.1 默认使用的是持久连接，其支持在同一个 TCP 请求中传送多个 HTTP 请求和响应。此之前的 HTTP 版本的默认连接都是使用非持久连接，如果想要在旧版本的 HTTP 协议上维持持久连接，则需要指定 Connection 的首部字段的值为 Keep-Alive。</p>
-<h2 id="http-1x和http-20的区别">Http 1.X和http 2.0的区别</h2>
-<p>• 二进制传送：<br>
-之前版本 数据都是用文本传输，因为文本有多种格式，所以不能很好地适应所有场景； 2.0传送的是二进制，相当于统一了格式<br>
-• 多路复用：<br>
-1.1虽然默认复用TCP连接，但是每个请求是串行执行的，如果前面的请求超时，后面的请求只能等着（也就是线头阻塞）； 2.0的时候每个请求有自己的ID，多个请求可以在同一个TCP连接上并行执行，不会互相影响<br>
-• header压缩：<br>
-每次进行HTTP请求响应的时候，头部里很多的字段都是重复的，在2.0中，将字段记录到一张表中，头部只需要存放字段对应的编号就行，用的时候只需要拿着编号去表里查找就行，减少了传输的数据量<br>
-• 服务端推送：<br>
-服务器会在客户端没发起请求的时候主动推送一些需要的资源，比如客户端请求一个html文件，服务器发送完之后会把和这个html页面相关的静态文件也发送给客户端，当客户端准备向服务器请求静态文件的时候，就可以直接从缓存中获取，就不需要再发起请求了</p>
 ]]></content>
     </entry>
 </feed>

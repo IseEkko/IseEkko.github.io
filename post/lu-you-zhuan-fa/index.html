@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
-       <head>
+        <head>
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
-        <title>算法 | BytesLzz</title>
+        <title>路由转发 | BytesLzz</title>
         <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
@@ -14,7 +14,7 @@
 
     </head>
     <body>
-          <header class="header mdui-m-b-5">      
+              <header class="header mdui-m-b-5">      
             <div class="container  ">
                 <div class="index-title animated fadeInDown mdui-text-center mdui-text-color-white mdui-m-b-2" style="animation-delay: 0.2s"><a href="https://IseEkko.github.io/">BytesLzz</a></div>
                 <div class="mdui-text-color-white animated fadeInDown mdui-text-center  mdui-m-b-3" style="animation-delay: 0.4s">做好每一件事，读好每一本书，天道酬勤</div>
@@ -54,52 +54,67 @@
         </header>
         <div class="mdui-container ">
                 <div class="mdui-row">
-                        <div class="mdui-col-md-8 mdui-col-offset-md-2 mdui-m-t-1">
-                                                         
-                               <article class="mdui-p-a-5 index-list mdui-m-b-3 animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="mdui-typo-body-2 mdui-m-b-1" datetime="2022-01-14 14:41:41">2022-01-14</div>
-                                    <div class="mdui-typo-headline mdui-m-b-3 index-list-title index-guo"><a href="https://IseEkko.github.io/post/er-cha-shu-de-suo-you-lu-jing/">二叉树的所有路径</a></div>
-                                    <div class="mdui-typo-subheading mdui-m-b-2 index-neirong"><p>关于二叉树的所有路径的题目，这里我们是用递归的思想写出来的题目</p>
+                        <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
+                                <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
+                                    <div class="post-title  mdui-m-b-1">路由转发</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-03-21 23:11:49">2022-03-21 / 2 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>在网络传输的过程中，会经过很多的路由，那么我们如何进行转发的呢？</p>
+<!-- more -->
+<h2 id="流程">流程</h2>
+<p>在传输的过程中，路由需要做的，就是把数据包传输到他该去的地方，在如今的网络中，已经有很多且复杂的网络。这个时候我们需要做的是什么呢。<br>
+首先从ip数据包中提取出目的主机的io地址，然后找到他所在的网络。<br>
+这个时候判断ip所在的网络是不是和本路由直接相连，如果是那么就直接进行转发。<br>
+如果不是，路由会检查路由表，看路由表中是不是有ip地址的特定主机路由，如果有那么就直接跳转到下一跳路由中去。<br>
+如果我们没有找到对应的特定主机，路由器会检查路由表，使每一行的子网掩码与目的的ip匹配，如果找到了，则按照路由表转发下一跳路由中<br>
+如果没有找到，就按照默认的路由转发到默认路由中，不然无法找到路由那么就向源主机报错。</p>
 </div>
-                                    <div class="index-list-rm index-guo"><a href="https://IseEkko.github.io/post/er-cha-shu-de-suo-you-lu-jing/">Read More</a></div>
-                                </article>
-                                
-                               <article class="mdui-p-a-5 index-list mdui-m-b-3 animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="mdui-typo-body-2 mdui-m-b-1" datetime="2022-01-11 15:34:17">2022-01-11</div>
-                                    <div class="mdui-typo-headline mdui-m-b-3 index-list-title index-guo"><a href="https://IseEkko.github.io/post/ping-heng-er-cha-shu/">平衡二叉树</a></div>
-                                    <div class="mdui-typo-subheading mdui-m-b-2 index-neirong"><p>什么是平衡二叉树？<br>
-我们应该怎么去判断？</p>
-</div>
-                                    <div class="index-list-rm index-guo"><a href="https://IseEkko.github.io/post/ping-heng-er-cha-shu/">Read More</a></div>
-                                </article>
-                                
-                               <article class="mdui-p-a-5 index-list mdui-m-b-3 animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="mdui-typo-body-2 mdui-m-b-1" datetime="2022-01-11 15:01:46">2022-01-11</div>
-                                    <div class="mdui-typo-headline mdui-m-b-3 index-list-title index-guo"><a href="https://IseEkko.github.io/post/er-cha-shu-de-zui-xiao-shen-du/">二叉树的最小深度</a></div>
-                                    <div class="mdui-typo-subheading mdui-m-b-2 index-neirong"><p>对于二叉树最小深度的解题相关，包含源码</p>
-</div>
-                                    <div class="index-list-rm index-guo"><a href="https://IseEkko.github.io/post/er-cha-shu-de-zui-xiao-shen-du/">Read More</a></div>
-                                </article>
-                                
-                               <article class="mdui-p-a-5 index-list mdui-m-b-3 animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="mdui-typo-body-2 mdui-m-b-1" datetime="2022-01-10 21:36:10">2022-01-10</div>
-                                    <div class="mdui-typo-headline mdui-m-b-3 index-list-title index-guo"><a href="https://IseEkko.github.io/post/er-cha-shu-de-zui-da-shen-du/">二叉树的最大深度</a></div>
-                                    <div class="mdui-typo-subheading mdui-m-b-2 index-neirong"><p>二叉树的最大深度。我们使用什么方法去破解？</p>
-</div>
-                                    <div class="index-list-rm index-guo"><a href="https://IseEkko.github.io/post/er-cha-shu-de-zui-da-shen-du/">Read More</a></div>
-                                </article>
-                                
-                                                            <nav class="mdui-m-t-5">
-                                
-                                <div class="index-yema mdui-float-left"><a href="https://IseEkko.github.io/tag/89sSoit-w">上一页</a></div>
-                                 
-                                
-                                </nav>     
+                                    <div class="mdui-divider mdui-m-b-2"></div>
+                                    <div class="mdui-row-xs-2 post-fenye">
+                                       
+                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://IseEkko.github.io/post/lu-you-qi-he-jiao-huan-ji-de-qu-bie/">路由器和交换机的区别</a></div></div>
+                                        
 
+                                        
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/san-yue-er-shi-hao-zhou-zong-jie/">三月二十号-周总结</a></div> </div>
+                                       
+                                      </div>
+                                   
+                                    <div class="mdui-divider mdui-m-t-2 mdui-m-b-2"></div>
+                                    
+                                     <script src="https://IseEkko.github.io//media/scripts/Valine.min.js"></script>
+ <div class="comment"></div>
+
+<script>
+      new Valine({
+            el: '.comment',
+
+
+
+            path: window.location.pathname,
+            pageSize: 30,
+            avatar:'mm', 
+       })
+    </script> 
+<script>
+    if(window.location.hash){
+        var checkExist = setInterval(function() {
+           if ($(window.location.hash).length) {
+              $('html, body').animate({scrollTop: $(window.location.hash).offset().top-90}, 1000);
+              clearInterval(checkExist);
+           }
+        }, 100);
+    }
+</script>
+                                </article>
+
+                                    
                         </div>
                       </div>
+    
+                
+
               </div>
-                <footer class="footer mdui-m-t-5 mdui-text-center">
+                    <footer class="footer mdui-m-t-5 mdui-text-center">
                <nav class="social-links">
                       <ul>
                       
