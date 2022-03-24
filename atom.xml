@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://IseEkko.github.io/</id>
     <title>BytesLzz</title>
-    <updated>2022-03-22T15:13:42.133Z</updated>
+    <updated>2022-03-24T00:09:33.936Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://IseEkko.github.io/"/>
     <link rel="self" href="https://IseEkko.github.io/atom.xml"/>
@@ -10,6 +10,37 @@
     <logo>https://IseEkko.github.io/images/avatar.png</logo>
     <icon>https://IseEkko.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, BytesLzz</rights>
+    <entry>
+        <title type="html"><![CDATA[NAT地址转换]]></title>
+        <id>https://IseEkko.github.io/post/nat-di-zhi-zhuan-huan/</id>
+        <link href="https://IseEkko.github.io/post/nat-di-zhi-zhuan-huan/">
+        </link>
+        <updated>2022-03-24T00:08:35.000Z</updated>
+        <content type="html"><![CDATA[<p>NAT地址转换它是一种把内部私有网络地址翻译成公有网络 IP 地址的技术。该技术不仅能解决 IP 地址不足的问题，而且还能隐藏和保护网络内部主机，从而避免来自外部网络的攻击。<br>
+实现的三种方法</p>
+<h2 id="三种实现方法有利有弊">三种实现方法有利有弊</h2>
+<h3 id="第一种">第一种</h3>
+<p>静态地址转换，内部私有 IP 地址和公有 IP 地址是一对一的关系，并且不会发生改变。通过静态转换，可网络对内部网以实现外部络特定设备的访问，这种方式原理简单，但当某一共有 IP 地址被占用时，跟这个 IP 绑定的内部主机将无法访问 Internet。</p>
+<h3 id="第二种">第二种</h3>
+<p>动态转换：采用动态转换的方式时，私有 IP 地址每次转化成的公有 IP 地址是不唯一的。当私有 IP 地址被授权访问 Internet 时会被随机转换成一个合法的公有 IP 地址。当 ISP 通过的合法 IP 地址数量略少于网络内部计算机数量时，可以采用这种方式。</p>
+<h3 id="第三种">第三种</h3>
+<p>端口多路复用：该方式将外出数据包的源端口进行端口转换，通过端口多路复用的方式，实现内部网络所有主机共享一个合法的外部 IP 地址进行 Internet 访问，从而最大限度地节约 IP 地址资源。同时，该方案可以隐藏内部网络中的主机，从而有效避免来自 Internet 的攻击。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[ARP协议]]></title>
+        <id>https://IseEkko.github.io/post/arp-xie-yi/</id>
+        <link href="https://IseEkko.github.io/post/arp-xie-yi/">
+        </link>
+        <updated>2022-03-24T00:08:05.000Z</updated>
+        <content type="html"><![CDATA[<p>ARP协议是一个mac地址和IP地址的一个映射关系，也就是系统通过ip找到他的mac地址。<br>
+过程</p>
+<p>① 首先，每个主机都会在自己的 ARP 缓冲区中建立一个 ARP 列表，以表示 IP 地址和 MAC 地址之间的对应关系；</p>
+<p>② 当源主机要发送数据时，首先检查 ARP 列表中是否有 IP 地址对应的目的主机 MAC 地址，如果存在，则可以直接发送数据，否则就向同一子网的所有主机发送 ARP 数据包。该数据包包括的内容有源主机的 IP 地址和 MAC 地址，以及目的主机的 IP 地址。</p>
+<p>③ 当本网络中的所有主机收到该 ARP 数据包时，首先检查数据包中的 目的 主机IP 地址是否是自己的 IP 地址，如果不是，则忽略该数据包，如果是，则首先从数据包中取出源主机的 IP 和 MAC 地址写入到 ARP 列表中，如果已经存在，则覆盖，然后将自己的 MAC 地址写入 ARP 响应包中，告诉源主机自己是它想要找的 MAC 地址。</p>
+<p>④ 源主机收到 ARP 响应包后。将目的主机的 IP 和 MAC 地址写入 ARP 列表，并利用此信息发送数据。如果源主机一直没有收到 ARP 响应数据包，表示 ARP 查询失败。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[岛屿数量]]></title>
         <id>https://IseEkko.github.io/post/dao-yu-shu-liang/</id>
@@ -231,43 +262,6 @@ HTTP/1.0 默认浏览器和服务器之间保持短暂连接，浏览器的每�
 后面和之前的相同。<br>
 如何完成指定发送呢？<br>
 在这里，我们的发送端和接受端，都注册了同一个交换机，然后交换机在进行数据发送的时候是通过routkey的值把数据进行指定传输的。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[publish订阅者模式]]></title>
-        <id>https://IseEkko.github.io/post/publish-ding-yue-zhe-mo-shi/</id>
-        <link href="https://IseEkko.github.io/post/publish-ding-yue-zhe-mo-shi/">
-        </link>
-        <updated>2022-03-17T15:08:24.000Z</updated>
-        <content type="html"><![CDATA[<p><img src="https://IseEkko.github.io//post-images/1647529790148.png" alt="" loading="lazy"><br>
-订阅者模式中，我们加入了一个交换机，然后这个交换机会把消息转发给所有的消费者，所有的消费者拿到的消息都是一样的。</p>
-<h2 id="消息发送">消息发送</h2>
-<p>在这个模式中，我们首先要创建一个exchange，和simple模式不同的地方，在simple模式中我们创建的是队列<br>
-<img src="https://IseEkko.github.io//post-images/1647529796092.png" alt="" loading="lazy"><br>
-然后是对消息的发送也有不同的地方，在simple模式中，我们的key是队列名称。<br>
-<img src="https://IseEkko.github.io//post-images/1647529802002.png" alt="" loading="lazy"></p>
-<h2 id="消息处理">消息处理</h2>
-<p>在消息处理的时候，我们首先还是要先创建交换机，然后再进行后面的处理。<br>
-然后我们创建一个队列<br>
-<img src="https://IseEkko.github.io//post-images/1647529807910.png" alt="" loading="lazy"><br>
-这里我们可以创建出一个队列q，然后这个队列是没有名称的，然后在下面的信息处理中，进行处理。这里我们可以看到绑定到了交换机中，然后进行消息的消费。<br>
-<img src="https://IseEkko.github.io//post-images/1647529813618.png" alt="" loading="lazy"><br>
-对于这个模式来说，我们消费者和生产者都是通过exchange交换机进行绑定传输消息的。<br>
-上面就是对订阅者模式的讲解</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[TCP四次挥手]]></title>
-        <id>https://IseEkko.github.io/post/tcp-si-ci-hui-shou/</id>
-        <link href="https://IseEkko.github.io/post/tcp-si-ci-hui-shou/">
-        </link>
-        <updated>2022-03-17T14:20:53.000Z</updated>
-        <content type="html"><![CDATA[<p>现在我们需要关闭TCP连接，这个时候我们就需要进行四次挥手操作</p>
-<p>四次挥手的步骤<br>
-<img src="https://IseEkko.github.io//post-images/1647527228182.png" alt="" loading="lazy"><br>
-四次挥手的示意图，这里我们需要知道的事情，在第二次手完成的时候，服务端可以把自己没有发送完的数据进行传输，然后发送fin包进入最终断开确认，然后当客户端返回ack后服务端直接关闭。<br>
-为什么客户端会等待<br>
-因为在客户端发送完ack后，ack数据包可以会丢失，然后这个时候服务端会一种等待最后确认状态，然后没有等到ack确认包，这个时候会进行fin包的重传，然后刷新超时时间，然后等待ack数据包，所以这里需要有一个客户端的超时等待。</p>
 ]]></content>
     </entry>
 </feed>
