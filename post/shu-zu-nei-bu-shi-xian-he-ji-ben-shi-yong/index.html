@@ -3,7 +3,7 @@
         <head>
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
-        <title>NAT地址转换 | BytesLzz</title>
+        <title>数组内部实现和基本使用 | BytesLzz</title>
         <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
@@ -56,26 +56,39 @@
                 <div class="mdui-row">
                         <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
                                 <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="post-title  mdui-m-b-1">NAT地址转换</div>
-                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-03-24 08:08:35">2022-03-24 / 2 min read</div>
-                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>NAT地址转换它是一种把内部私有网络地址翻译成公有网络 IP 地址的技术。该技术不仅能解决 IP 地址不足的问题，而且还能隐藏和保护网络内部主机，从而避免来自外部网络的攻击。<br>
-实现的三种方法</p>
-<h2 id="三种实现方法有利有弊">三种实现方法有利有弊</h2>
-<h3 id="第一种">第一种</h3>
-<p>静态地址转换，内部私有 IP 地址和公有 IP 地址是一对一的关系，并且不会发生改变。通过静态转换，可网络对内部网以实现外部络特定设备的访问，这种方式原理简单，但当某一共有 IP 地址被占用时，跟这个 IP 绑定的内部主机将无法访问 Internet。</p>
-<h3 id="第二种">第二种</h3>
-<p>动态转换：采用动态转换的方式时，私有 IP 地址每次转化成的公有 IP 地址是不唯一的。当私有 IP 地址被授权访问 Internet 时会被随机转换成一个合法的公有 IP 地址。当 ISP 通过的合法 IP 地址数量略少于网络内部计算机数量时，可以采用这种方式。</p>
-<h3 id="第三种">第三种</h3>
-<p>端口多路复用：该方式将外出数据包的源端口进行端口转换，通过端口多路复用的方式，实现内部网络所有主机共享一个合法的外部 IP 地址进行 Internet 访问，从而最大限度地节约 IP 地址资源。同时，该方案可以隐藏内部网络中的主机，从而有效避免来自 Internet 的攻击。</p>
+                                    <div class="post-title  mdui-m-b-1">数组内部实现和基本使用</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-03-24 19:45:07">2022-03-24 / 2 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>了解go数组的细节</p>
+<h2 id="数组的内部实现和基础功能">数组的内部实现和基础功能</h2>
+<p>在go中数组是一个长度固定的数据类型，用于存储具有相同类型的元素的连续块。因为存储的空间是连续的，所以遍历和查找元素也是很方便和简单的。</p>
+<h3 id="声明和初始化">声明和初始化</h3>
+<p>一旦声明了数组的长度和数组类型那么久不能在改变了，在go中数组的长度和类型也是类型的判断属性。只有两个属性相同的时候才能判定这个两个数组相同。</p>
+<h3 id="初始化">初始化</h3>
+<p>第一种：声明一个数组，并设置为零值<br>
+var array [5]int<br>
+第二种：使用数组字面量声明数组<br>
+array := [5]int{1,2,3,4,5}<br>
+第三种：让go自动计算声明数组长度<br>
+array ：= […]int{1,2,3,4,5}<br>
+第四种：声明数组并指定特定元素的值<br>
+array  := [5]int{1:10,2:20}</p>
+<h2 id="使用数组">使用数组</h2>
+<p>因为数组的地址空间是连续的，所以数组的效率是很高的。如果要访问数组中的某个元素，使用【】加上下标就可以进行访问。<br>
+使用指针类型的数组的时候，里面存放的是地址。把一个指针数组赋值给另一个指针数组，这个时候这两个数组中存放的地址是相同的，也就是指向的同一个地址空间。</p>
+<h2 id="多维数组">多维数组</h2>
+<p>数组本身只有一个纬度，不过可以组合多个数组创建多位数组。这里就不再多说多位数组的相关知识了。</p>
+<h2 id="在函数间传递数组">在函数间传递数组</h2>
+<p>在go中传递一个值，都是以类型的方式进行传输的，也就是说传递一个数组，会复制一个完整的数组进行传输，也就是说无论数组多大我们都会进行数组的全复制然后进行传输。<br>
+这样的话我们就会损失效率，我们解决的办法就是使用指针类型进行传输。这个时候传输复制的时候就只用复制8字节的指针类型了。</p>
 </div>
                                     <div class="mdui-divider mdui-m-b-2"></div>
                                     <div class="mdui-row-xs-2 post-fenye">
                                        
-                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://IseEkko.github.io/post/shu-zu-nei-bu-shi-xian-he-ji-ben-shi-yong/">数组内部实现和基本使用</a></div></div>
+                                        <div class="mdui-col"> </div>
                                         
 
                                         
-                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/arp-xie-yi/">ARP协议</a></div> </div>
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/nat-di-zhi-zhuan-huan/">NAT地址转换</a></div> </div>
                                        
                                       </div>
                                    

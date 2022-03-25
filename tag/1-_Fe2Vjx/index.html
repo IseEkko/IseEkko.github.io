@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
-        <head>
+       <head>
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
-        <title>NAT地址转换 | BytesLzz</title>
+        <title>go基础 | BytesLzz</title>
         <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
@@ -14,7 +14,7 @@
 
     </head>
     <body>
-              <header class="header mdui-m-b-5">      
+          <header class="header mdui-m-b-5">      
             <div class="container  ">
                 <div class="index-title animated fadeInDown mdui-text-center mdui-text-color-white mdui-m-b-2" style="animation-delay: 0.2s"><a href="https://IseEkko.github.io/">BytesLzz</a></div>
                 <div class="mdui-text-color-white animated fadeInDown mdui-text-center  mdui-m-b-3" style="animation-delay: 0.4s">做好每一件事，读好每一本书，天道酬勤</div>
@@ -54,67 +54,24 @@
         </header>
         <div class="mdui-container ">
                 <div class="mdui-row">
-                        <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
-                                <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="post-title  mdui-m-b-1">NAT地址转换</div>
-                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-03-24 08:08:35">2022-03-24 / 2 min read</div>
-                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>NAT地址转换它是一种把内部私有网络地址翻译成公有网络 IP 地址的技术。该技术不仅能解决 IP 地址不足的问题，而且还能隐藏和保护网络内部主机，从而避免来自外部网络的攻击。<br>
-实现的三种方法</p>
-<h2 id="三种实现方法有利有弊">三种实现方法有利有弊</h2>
-<h3 id="第一种">第一种</h3>
-<p>静态地址转换，内部私有 IP 地址和公有 IP 地址是一对一的关系，并且不会发生改变。通过静态转换，可网络对内部网以实现外部络特定设备的访问，这种方式原理简单，但当某一共有 IP 地址被占用时，跟这个 IP 绑定的内部主机将无法访问 Internet。</p>
-<h3 id="第二种">第二种</h3>
-<p>动态转换：采用动态转换的方式时，私有 IP 地址每次转化成的公有 IP 地址是不唯一的。当私有 IP 地址被授权访问 Internet 时会被随机转换成一个合法的公有 IP 地址。当 ISP 通过的合法 IP 地址数量略少于网络内部计算机数量时，可以采用这种方式。</p>
-<h3 id="第三种">第三种</h3>
-<p>端口多路复用：该方式将外出数据包的源端口进行端口转换，通过端口多路复用的方式，实现内部网络所有主机共享一个合法的外部 IP 地址进行 Internet 访问，从而最大限度地节约 IP 地址资源。同时，该方案可以隐藏内部网络中的主机，从而有效避免来自 Internet 的攻击。</p>
-</div>
-                                    <div class="mdui-divider mdui-m-b-2"></div>
-                                    <div class="mdui-row-xs-2 post-fenye">
-                                       
-                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://IseEkko.github.io/post/shu-zu-nei-bu-shi-xian-he-ji-ben-shi-yong/">数组内部实现和基本使用</a></div></div>
-                                        
-
-                                        
-                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/arp-xie-yi/">ARP协议</a></div> </div>
-                                       
-                                      </div>
-                                   
-                                    <div class="mdui-divider mdui-m-t-2 mdui-m-b-2"></div>
-                                    
-                                     <script src="https://IseEkko.github.io//media/scripts/Valine.min.js"></script>
- <div class="comment"></div>
-
-<script>
-      new Valine({
-            el: '.comment',
-
-
-
-            path: window.location.pathname,
-            pageSize: 30,
-            avatar:'mm', 
-       })
-    </script> 
-<script>
-    if(window.location.hash){
-        var checkExist = setInterval(function() {
-           if ($(window.location.hash).length) {
-              $('html, body').animate({scrollTop: $(window.location.hash).offset().top-90}, 1000);
-              clearInterval(checkExist);
-           }
-        }, 100);
-    }
-</script>
+                        <div class="mdui-col-md-8 mdui-col-offset-md-2 mdui-m-t-1">
+                                                         
+                               <article class="mdui-p-a-5 index-list mdui-m-b-3 animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
+                                    <div class="mdui-typo-body-2 mdui-m-b-1" datetime="2022-03-24 19:45:07">2022-03-24</div>
+                                    <div class="mdui-typo-headline mdui-m-b-3 index-list-title index-guo"><a href="https://IseEkko.github.io/post/shu-zu-nei-bu-shi-xian-he-ji-ben-shi-yong/">数组内部实现和基本使用</a></div>
+                                    <div class="mdui-typo-subheading mdui-m-b-2 index-neirong"></div>
+                                    <div class="index-list-rm index-guo"><a href="https://IseEkko.github.io/post/shu-zu-nei-bu-shi-xian-he-ji-ben-shi-yong/">Read More</a></div>
                                 </article>
+                                
+                                                            <nav class="mdui-m-t-5">
+                                
+                                
+                                </nav>     
 
-                                    
                         </div>
                       </div>
-    
-                
-
               </div>
-                    <footer class="footer mdui-m-t-5 mdui-text-center">
+                <footer class="footer mdui-m-t-5 mdui-text-center">
                <nav class="social-links">
                       <ul>
                       
