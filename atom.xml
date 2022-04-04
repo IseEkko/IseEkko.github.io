@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://IseEkko.github.io/</id>
     <title>BytesLzz</title>
-    <updated>2022-03-31T15:03:29.923Z</updated>
+    <updated>2022-04-04T08:57:50.997Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://IseEkko.github.io/"/>
     <link rel="self" href="https://IseEkko.github.io/atom.xml"/>
@@ -10,6 +10,24 @@
     <logo>https://IseEkko.github.io/images/avatar.png</logo>
     <icon>https://IseEkko.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, BytesLzz</rights>
+    <entry>
+        <title type="html"><![CDATA[一致性hash算法]]></title>
+        <id>https://IseEkko.github.io/post/yi-zhi-xing-hash-suan-fa/</id>
+        <link href="https://IseEkko.github.io/post/yi-zhi-xing-hash-suan-fa/">
+        </link>
+        <updated>2022-04-04T08:57:04.000Z</updated>
+        <content type="html"><![CDATA[<p>分布式缓存中的运用。</p>
+<h2 id="分布式缓存">分布式缓存</h2>
+<p>在我们的分布式应用中我们常常会用到分布式缓存，什么是分布式缓存，说简单点就是将缓存放在几台机器上，然后我们就会发现一个问题，我们怎么做到用户想要数据的时候将数据给到用户呢。</p>
+<h2 id="一般的hash算法">一般的hash算法</h2>
+<p>使用一般的hash算法呢，就是将值进行hash然后取余服务器的数量，然后就会得到数字，然后将数据放在对应编号的服务器中。<br>
+但是这样的话，容错性和扩展性都很差，为什么呢？<br>
+无论是多了一台机器还是少一台机器它的hash后取余的位置都会不一样，然后访问数据的时候，因为服务器数量的变化这里也是不一样的。也就是说如果出现宕机或者想要增加服务器，那么所有的缓存都会失效。<br>
+为了避免这样的问题产生，我们就要使用到hash一致性算法</p>
+<h2 id="hash一致性算法">hash一致性算法</h2>
+<p>hash一致性算法，在hash一致性算法中，我们首先先生成一个2^32的圆，然后将服务器节点进行hash放在圆上，然后将数据进行hash，然后hash到的位置，我们进行顺时针的寻找，寻找到第一个节点，我们就会将数据存放在上面，然后这里我们需要注意的事情是，这里我们需要增加虚拟节点，因为在hash的时候我们的服务器节点不一定说就是均匀分布的，这个时候如果节点很少，可能就会发生一些数据的偏移，可能会出现大部分的数据存放在一个服务器上，然后这个时候对于这个服务器来说，这样的压力就会很大，所以我们通过将节点进行增加几个虚拟节点来解决这个问题。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[数组内部实现和基本使用]]></title>
         <id>https://IseEkko.github.io/post/shu-zu-nei-bu-shi-xian-he-ji-ben-shi-yong/</id>
@@ -245,28 +263,6 @@ HTTP/1.0 默认浏览器和服务器之间保持短暂连接，浏览器的每�
 <p>当接受方收到一个失序的数据包的时候，马上进行重传，我们假设没有四个数据包，分别是1，2，3，4，然后我们接收到了1，3，4。这个时候接受端会发送确认包，当发送端接收到三次一的确认的时候我们，就会立即传输没有接收到的数据包。</p>
 <h2 id="快恢复">快恢复</h2>
 <p>快恢复算法和快重传算法是配合使用的，连续接收到三次确认后会减半阀值，窗口长度和阀值一样，执行拥塞避免，线性递增。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Topic话题模式]]></title>
-        <id>https://IseEkko.github.io/post/topic-hua-ti-mo-shi/</id>
-        <link href="https://IseEkko.github.io/post/topic-hua-ti-mo-shi/">
-        </link>
-        <updated>2022-03-18T01:24:09.000Z</updated>
-        <summary type="html"><![CDATA[<p>我觉得是路由模式的升级版。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>我觉得是路由模式的升级版。</p>
-<!-- more -->
-<h2 id="解析">解析</h2>
-<p>对于这个模式，我觉得就是对路由模式的升级，在路由模式中，我们可以根据配置的路由进行消费者的发送，然后这里是通过配置符号进行消费者的发送，这里有可能我们用到的是给多个消费者进行发送。</p>
-<h2 id="示意图">示意图</h2>
-<p><img src="https://IseEkko.github.io//post-images/1647617723443.png" alt="" loading="lazy"><br>
-这个模式的实例创建是和路由模式是相同的，进行路由名称和交换机模式的传输，通过这两个进行实例的创建。<br>
-消息的处理<br>
-这里无论是生产和消费消息，和路由模式的区别就是在交换机创建时候的kind的选择<br>
-<img src="https://IseEkko.github.io//post-images/1647617735245.png" alt="" loading="lazy"><br>
-然后在使用的时候，#代表的就是所有，然后*代表的是占位的意思。<br>
-这个主要是仔细看一下案例就可以。</p>
 ]]></content>
     </entry>
 </feed>
