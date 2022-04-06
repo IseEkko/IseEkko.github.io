@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://IseEkko.github.io/</id>
     <title>BytesLzz</title>
-    <updated>2022-04-04T08:57:50.997Z</updated>
+    <updated>2022-04-06T15:18:21.208Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://IseEkko.github.io/"/>
     <link rel="self" href="https://IseEkko.github.io/atom.xml"/>
@@ -10,6 +10,20 @@
     <logo>https://IseEkko.github.io/images/avatar.png</logo>
     <icon>https://IseEkko.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, BytesLzz</rights>
+    <entry>
+        <title type="html"><![CDATA[打印齿形的二叉树层序遍历]]></title>
+        <id>https://IseEkko.github.io/post/da-yin-chi-xing-de-er-cha-shu-ceng-xu-bian-li/</id>
+        <link href="https://IseEkko.github.io/post/da-yin-chi-xing-de-er-cha-shu-ceng-xu-bian-li/">
+        </link>
+        <updated>2022-04-06T15:16:26.000Z</updated>
+        <content type="html"><![CDATA[<p>层序遍历是一个很常见的一个算法结构，这里我们进一步的进行二叉树的学习，这里需要蛇形的打印出二叉树的层序遍历</p>
+<h2 id="题目解析">题目解析</h2>
+<p>这里题目很简单，就是打印的顺序和上一层的顺序是相反的，也就是说单数层和双数层的打印顺序是相反的，那么就是说我们在打印不同层的时候，我们打印的顺序是不一样的，也就是说在之前层序的基础上，我们这里要判断一下层数的判断。<br>
+我们这里的代码使用的切片来进行数据的处理，这里我们还要注意的事情是我们在不同层打印顺序问题，使用到的是将顺序进行交换，就是在判断层数的基础上，我们将需要交换的位置进行交换。</p>
+<h2 id="解题源码">解题源码</h2>
+<figure data-type="image" tabindex="1"><img src="https://IseEkko.github.io//post-images/1649258272528.png" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[一致性hash算法]]></title>
         <id>https://IseEkko.github.io/post/yi-zhi-xing-hash-suan-fa/</id>
@@ -244,25 +258,6 @@ HTTP/1.0 默认浏览器和服务器之间保持短暂连接，浏览器的每�
 <h4 id="rabbitmq">RabbitMQ</h4>
 <p>本周对系统的准备主要学习的RabbitMQ消息队列的使用和几个模式的书写。<br>
 每种模式的书写可以查看之前的博客更加的细致。也更好的理解。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[TCP拥塞控制采取的四种算法]]></title>
-        <id>https://IseEkko.github.io/post/tcp-yong-sai-kong-zhi-cai-qu-de-si-chong-suan-fa/</id>
-        <link href="https://IseEkko.github.io/post/tcp-yong-sai-kong-zhi-cai-qu-de-si-chong-suan-fa/">
-        </link>
-        <updated>2022-03-19T05:52:42.000Z</updated>
-        <content type="html"><![CDATA[<p>在TCP拥塞控制中，那么他在是怎么进行的的呢，一共是四个算法。</p>
-<h2 id="慢开始">慢开始</h2>
-<p>在一开始的时候，TCP不知道网络现在的状态就会先发送一个小的数据包进行传输，用来侦测网络的状态，然后慢慢的增加窗口的长度。<br>
-在这里我们就有一个问题，也就是说，我们的窗口肯定不是无限在增长的，然后在增长的过程中，我们肯定是要做限制的，这个限制就是：ssthresh。</p>
-<h2 id="拥塞避免">拥塞避免</h2>
-<p>这里我们为了让拥塞窗口缓慢的增大，每经过一个RTT，发送方的拥塞窗口就会进行加一，然后这个时候窗口就会进行线性的增长。<br>
-在网络拥塞发生的时候，让新的慢开始门限变为发生拥塞时候的一半，，并将拥塞窗口置为1，然后再次重复两种算法（慢开始和拥塞避免），这个时候一瞬间会将网络中的数据量大量的降低。</p>
-<h2 id="快重传">快重传</h2>
-<p>当接受方收到一个失序的数据包的时候，马上进行重传，我们假设没有四个数据包，分别是1，2，3，4，然后我们接收到了1，3，4。这个时候接受端会发送确认包，当发送端接收到三次一的确认的时候我们，就会立即传输没有接收到的数据包。</p>
-<h2 id="快恢复">快恢复</h2>
-<p>快恢复算法和快重传算法是配合使用的，连续接收到三次确认后会减半阀值，窗口长度和阀值一样，执行拥塞避免，线性递增。</p>
 ]]></content>
     </entry>
 </feed>

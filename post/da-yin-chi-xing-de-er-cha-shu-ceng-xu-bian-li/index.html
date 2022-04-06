@@ -3,7 +3,7 @@
         <head>
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
-        <title>一致性hash算法 | BytesLzz</title>
+        <title>打印齿形的二叉树层序遍历 | BytesLzz</title>
         <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
@@ -56,27 +56,23 @@
                 <div class="mdui-row">
                         <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
                                 <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="post-title  mdui-m-b-1">一致性hash算法</div>
-                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-04-04 16:57:04">2022-04-04 / 2 min read</div>
-                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>分布式缓存中的运用。</p>
-<h2 id="分布式缓存">分布式缓存</h2>
-<p>在我们的分布式应用中我们常常会用到分布式缓存，什么是分布式缓存，说简单点就是将缓存放在几台机器上，然后我们就会发现一个问题，我们怎么做到用户想要数据的时候将数据给到用户呢。</p>
-<h2 id="一般的hash算法">一般的hash算法</h2>
-<p>使用一般的hash算法呢，就是将值进行hash然后取余服务器的数量，然后就会得到数字，然后将数据放在对应编号的服务器中。<br>
-但是这样的话，容错性和扩展性都很差，为什么呢？<br>
-无论是多了一台机器还是少一台机器它的hash后取余的位置都会不一样，然后访问数据的时候，因为服务器数量的变化这里也是不一样的。也就是说如果出现宕机或者想要增加服务器，那么所有的缓存都会失效。<br>
-为了避免这样的问题产生，我们就要使用到hash一致性算法</p>
-<h2 id="hash一致性算法">hash一致性算法</h2>
-<p>hash一致性算法，在hash一致性算法中，我们首先先生成一个2^32的圆，然后将服务器节点进行hash放在圆上，然后将数据进行hash，然后hash到的位置，我们进行顺时针的寻找，寻找到第一个节点，我们就会将数据存放在上面，然后这里我们需要注意的事情是，这里我们需要增加虚拟节点，因为在hash的时候我们的服务器节点不一定说就是均匀分布的，这个时候如果节点很少，可能就会发生一些数据的偏移，可能会出现大部分的数据存放在一个服务器上，然后这个时候对于这个服务器来说，这样的压力就会很大，所以我们通过将节点进行增加几个虚拟节点来解决这个问题。</p>
+                                    <div class="post-title  mdui-m-b-1">打印齿形的二叉树层序遍历</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-04-06 23:16:26">2022-04-06 / 1 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>层序遍历是一个很常见的一个算法结构，这里我们进一步的进行二叉树的学习，这里需要蛇形的打印出二叉树的层序遍历</p>
+<h2 id="题目解析">题目解析</h2>
+<p>这里题目很简单，就是打印的顺序和上一层的顺序是相反的，也就是说单数层和双数层的打印顺序是相反的，那么就是说我们在打印不同层的时候，我们打印的顺序是不一样的，也就是说在之前层序的基础上，我们这里要判断一下层数的判断。<br>
+我们这里的代码使用的切片来进行数据的处理，这里我们还要注意的事情是我们在不同层打印顺序问题，使用到的是将顺序进行交换，就是在判断层数的基础上，我们将需要交换的位置进行交换。</p>
+<h2 id="解题源码">解题源码</h2>
+<figure data-type="image" tabindex="1"><img src="https://IseEkko.github.io//post-images/1649258272528.png" alt="" loading="lazy"></figure>
 </div>
                                     <div class="mdui-divider mdui-m-b-2"></div>
                                     <div class="mdui-row-xs-2 post-fenye">
                                        
-                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://IseEkko.github.io/post/da-yin-chi-xing-de-er-cha-shu-ceng-xu-bian-li/">打印齿形的二叉树层序遍历</a></div></div>
+                                        <div class="mdui-col"> </div>
                                         
 
                                         
-                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/shu-zu-nei-bu-shi-xian-he-ji-ben-shi-yong/">数组内部实现和基本使用</a></div> </div>
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/yi-zhi-xing-hash-suan-fa/">一致性hash算法</a></div> </div>
                                        
                                       </div>
                                    
