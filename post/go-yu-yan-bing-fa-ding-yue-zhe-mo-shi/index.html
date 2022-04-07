@@ -3,7 +3,7 @@
         <head>
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
-        <title>打印齿形的二叉树层序遍历 | BytesLzz</title>
+        <title>go语言并发-订阅者模式 | BytesLzz</title>
         <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
@@ -56,23 +56,133 @@
                 <div class="mdui-row">
                         <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
                                 <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="post-title  mdui-m-b-1">打印齿形的二叉树层序遍历</div>
-                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-04-06 23:16:26">2022-04-06 / 1 min read</div>
-                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>层序遍历是一个很常见的一个算法结构，这里我们进一步的进行二叉树的学习，这里需要蛇形的打印出二叉树的层序遍历</p>
-<h2 id="题目解析">题目解析</h2>
-<p>这里题目很简单，就是打印的顺序和上一层的顺序是相反的，也就是说单数层和双数层的打印顺序是相反的，那么就是说我们在打印不同层的时候，我们打印的顺序是不一样的，也就是说在之前层序的基础上，我们这里要判断一下层数的判断。<br>
-我们这里的代码使用的切片来进行数据的处理，这里我们还要注意的事情是我们在不同层打印顺序问题，使用到的是将顺序进行交换，就是在判断层数的基础上，我们将需要交换的位置进行交换。</p>
-<h2 id="解题源码">解题源码</h2>
-<figure data-type="image" tabindex="1"><img src="https://IseEkko.github.io//post-images/1649258272528.png" alt="" loading="lazy"></figure>
+                                    <div class="post-title  mdui-m-b-1">go语言并发-订阅者模式</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-04-07 15:44:39">2022-04-07 / 4 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>在之前的学习中，接触到了消息队列的一些知识，然后今天在看书的时候，发现了一个使用go channel完成了一个订阅者模式的并发demo。</p>
+<h2 id="订阅者模式">订阅者模式</h2>
+<p>关于订阅者模式，在这里给大家讲解一下，订阅者模式其实就是将产生的消息，给多个订阅者，然后订阅者可以看到这里订阅的消息。<br>
+这里实现的时候呢，因为有并发的知识，所以我们用到了协程，下面我们来具体的实现一下。</p>
+<h2 id="具体的实现流程">具体的实现流程</h2>
+<h3 id="创建订阅者结构">创建订阅者结构</h3>
+<pre><code>type (
+	subscriber chan interface{}         //订阅者的通道
+	topicFunc  func(v interface{}) bool //主题过滤器
+)
+
+//发布者对象
+type Publisher struct {
+	m           sync.Mutex               //读写锁
+	buffer      int                      //订阅队列缓存大小
+	timeout     time.Duration            //发布者超时时间
+	subscribers map[subscriber]topicFunc //订阅者消息
+}
+</code></pre>
+<p>上面我们定义了基本的订阅者的结构，上面也有对订阅者字段的解释，这里着重理解的东西就是：</p>
+<pre><code>subscribers map[subscriber]topicFunc //订阅者消息
+</code></pre>
+<p>这个结构其实就是订阅者模式的一个重要的结构，这里存放的是订阅者的过滤器，也就是通过这个结构我们可以清楚的知道，订阅者订阅的是那个主题。</p>
+<h3 id="构造函数">构造函数</h3>
+<p>使用构造函数构造出订阅者的实体，然后进行后面的操作</p>
+<pre><code>func NewPublisher(publishTimeout time.Duration, buffer int) *Publisher {
+	return &amp;Publisher{
+		buffer:      buffer,
+		timeout:     publishTimeout,
+		subscribers: make(map[subscriber]topicFunc),
+	}
+}
+</code></pre>
+<h3 id="添加订阅者信息">添加订阅者信息</h3>
+<pre><code>//订阅全部，也就是不加入过滤器
+func (p *Publisher) Subscribe() chan interface{} {
+	return p.SubscribeTopic(nil)
+}
+
+//添加一个订阅者，同时订阅者是有过滤器的
+//这里其实就是返回一个订阅者的信息，然后添加上过滤器
+func (p *Publisher) SubscribeTopic(topic topicFunc) chan interface{} {
+	ch := make(chan interface{}, p.buffer)
+	p.m.Lock()
+	p.subscribers[ch] = topic
+	p.m.Unlock()
+	return ch
+}
+</code></pre>
+<p>这里就是添加订阅者，这里添加的时候添加订阅者的过滤器，也就是增加一个映射关系。</p>
+<h3 id="添加主题">添加主题</h3>
+<pre><code>//发布一个主题
+func (p *Publisher) Publish(v interface{}) {
+	p.m.Lock()
+	defer p.m.Unlock()
+	var wg sync.WaitGroup
+	//这里返回的是订阅者，然后后面是返回的过滤器
+	for sub, topic := range p.subscribers {
+		wg.Add(1)
+		go p.sendTopic(sub, topic, v, &amp;wg)
+	}
+	wg.Wait()
+}
+
+//发布主题，可以容忍一定的超时
+func (p *Publisher) sendTopic(sub subscriber, topic topicFunc, v interface{}, wg *sync.WaitGroup) {
+	defer wg.Done()
+	if topic != nil &amp;&amp; !topic(v) {
+		return
+	}
+	select {
+	case sub &lt;- v:
+	case &lt;-time.After(p.timeout):
+	}
+}
+</code></pre>
+<p>这里我们使用到的并发式的添加消息，这里使用到了sync.WaitGroup，进行协程的同步。</p>
+<h3 id="关闭订阅者模式">关闭订阅者模式</h3>
+<pre><code>//关闭发布对象，同时关闭
+func (p *Publisher) Close() {
+	p.m.Lock()
+	defer p.m.Unlock()
+	for sub := range p.subscribers {
+		delete(p.subscribers, sub)
+		close(sub)
+	}
+}
+</code></pre>
+<h2 id="最后的测试">最后的测试</h2>
+<pre><code>func main() {
+	p := NewPublisher(100*time.Millisecond, 10)
+	defer p.Close()
+	all := p.Subscribe()
+	golang := p.SubscribeTopic(func(v interface{}) bool {
+		if s, ok := v.(string); ok {
+			return strings.Contains(s, &quot;golang&quot;)
+		}
+		return false
+	})
+	p.Publish(&quot;hello,lzz&quot;)
+	p.Publish(&quot;hello,golang&quot;)
+	go func() {
+		for msg := range all {
+			fmt.Println(&quot;all:&quot;, msg)
+		}
+	}()
+	go func() {
+		for msg := range golang {
+			fmt.Println(&quot;golang:&quot;, msg)
+		}
+	}()
+	time.Sleep(3 * time.Second)
+}
+</code></pre>
+<p>最后的输出结果：<br>
+<img src="https://IseEkko.github.io//post-images/1649321380937.png" alt="" loading="lazy"></p>
 </div>
                                     <div class="mdui-divider mdui-m-b-2"></div>
                                     <div class="mdui-row-xs-2 post-fenye">
                                        
-                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://IseEkko.github.io/post/go-yu-yan-bing-fa-ding-yue-zhe-mo-shi/">go语言并发-订阅者模式</a></div></div>
+                                        <div class="mdui-col"> </div>
                                         
 
                                         
-                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/yi-zhi-xing-hash-suan-fa/">一致性hash算法</a></div> </div>
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/da-yin-chi-xing-de-er-cha-shu-ceng-xu-bian-li/">打印齿形的二叉树层序遍历</a></div> </div>
                                        
                                       </div>
                                    
