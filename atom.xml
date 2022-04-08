@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://IseEkko.github.io/</id>
     <title>BytesLzz</title>
-    <updated>2022-04-08T05:19:30.405Z</updated>
+    <updated>2022-04-08T08:47:06.736Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://IseEkko.github.io/"/>
     <link rel="self" href="https://IseEkko.github.io/atom.xml"/>
@@ -10,6 +10,54 @@
     <logo>https://IseEkko.github.io/images/avatar.png</logo>
     <icon>https://IseEkko.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, BytesLzz</rights>
+    <entry>
+        <title type="html"><![CDATA[go_context（1）]]></title>
+        <id>https://IseEkko.github.io/post/go_context-xue-xi-1/</id>
+        <link href="https://IseEkko.github.io/post/go_context-xue-xi-1/">
+        </link>
+        <updated>2022-04-08T08:25:53.000Z</updated>
+        <summary type="html"><![CDATA[<p>一直对context这个东西保持一个神秘感，今天对这部分内容进行了一个查看，可能理解不是很到位。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>一直对context这个东西保持一个神秘感，今天对这部分内容进行了一个查看，可能理解不是很到位。</p>
+<!-- more -->
+<h2 id="context是什么">context是什么</h2>
+<p>首先对于context这个东西到底是什么，在之前我的学长们总是给说什么上下文，但是呢我总是不理解这个东西，上下文？？？一脸的问号，什么是上下文？<br>
+在我们交流的语言中呢，比如英语这个玩意（我贼垃圾），比如一个单词在这里是这个意思，但是换个地方他就不是那个意思了，，，emm也不知道大家理解没有，大概就是这个意思。<br>
+然后官方一点的回答，什么是context。这个东西是怎么产生的。<br>
+其实这个东西是在go1.17的时候加入的官方库的，具体的产生和go的并发是有关系的，在go的编程中最重要的东西就是channel和goroutine这两个玩意。在我们写go程序的时候，我们需要调用函数，在调用的时候很有可能我们会开启一连串的goroutine，那么我们怎么来达到一个特殊数据的一些传递和对goroutine的关闭呢？通过信号量这个玩意，使用sync.Wait来对它进行一个信号量的管理，其实这样肯定是不好的。所以我们的contxet就诞生了。</p>
+<pre><code>简单的来说：context的作用就是在不同的goroutine之间进行同步，请求特定的数据取消信号量以及处理请求的截止时间。
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://IseEkko.github.io//post-images/1649406933876.png" alt="" loading="lazy"></figure>
+<h2 id="context的使用">context的使用</h2>
+<p>现在我们来看一下这个玩意我们应该怎么使用</p>
+<h3 id="context创建">Context创建</h3>
+<p>要想使用那么第一步肯定就是对这个东西的创建。<br>
+context包主要提供了两种方式创建context:</p>
+<ul>
+<li>context.Backgroud()</li>
+<li>context.TODO()</li>
+<li>这两个函数其实只是互为别名，没有差别，官方给的定义是：<br>
+context.Background 是上下文的默认值，所有其他的上下文都应该从它衍生（Derived）出来。<br>
+context.TODO 应该只在不确定应该使用哪种上下文时使用；<br>
+所以在大多数情况下，我们都使用context.Background作为起始的上下文向下传递。<br>
+我们可以查看一下这部分的源码：<br>
+<img src="https://IseEkko.github.io//post-images/1649407256932.png" alt="" loading="lazy"><br>
+我们可以很清楚的看见，这两个最后返回的东西其实是一样的。</li>
+</ul>
+<h3 id="四个重要的函数">四个重要的函数</h3>
+<p>我们创建过后，我们可以看到他可以调用的四个重要函数</p>
+<pre><code>func WithCancel(parent Context) (ctx Context, cancel CancelFunc)
+func WithDeadline(parent Context, deadline time.Time) (Context, CancelFunc)
+func WithTimeout(parent Context, timeout time.Duration) (Context, CancelFunc)
+func WithValue(parent Context, key, val interface{}) Context
+</code></pre>
+<p>这里我们看到了这个四个重要的函数，这里我们简单的说一下它是干什么用的，后面我再对四个函数进行一个详细的学习和总结</p>
+<h3 id="withvalue携带数据">WithValue携带数据</h3>
+<h3 id="withtimeout超时控制">WithTimeout超时控制</h3>
+<h3 id="withcancel取消控制">withCancel取消控制</h3>
+<h3 id="withdeadline就是对withcancel取消控制的调用">WithDeadline就是对withCancel取消控制的调用</h3>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[三数之和]]></title>
         <id>https://IseEkko.github.io/post/san-shu-zhi-he/</id>
@@ -312,17 +360,6 @@ array  := [5]int{1:10,2:20}</p>
 <img src="https://IseEkko.github.io//post-images/1647875924078.png" alt="" loading="lazy">		<br>
 稍微加一点难度就是这个数组是无序的有重复的数组。<br>
 这个时候在循环的时候就要判断数组中重复的数字。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[路由器和交换机的区别]]></title>
-        <id>https://IseEkko.github.io/post/lu-you-qi-he-jiao-huan-ji-de-qu-bie/</id>
-        <link href="https://IseEkko.github.io/post/lu-you-qi-he-jiao-huan-ji-de-qu-bie/">
-        </link>
-        <updated>2022-03-21T15:15:55.000Z</updated>
-        <content type="html"><![CDATA[<p>路由器和交换机，他们位于不同的位置，<br>
-交换机处于网络中的数据链路层，根据mac地址进行转发，一般用于构建简单的内部网络<br>
-路由器，路由器是在网络层中进行工作的，根据的是ip地址进行转发的。一般用于构建复杂的网络。</p>
 ]]></content>
     </entry>
 </feed>
