@@ -67,7 +67,7 @@
 其实这个东西是在go1.17的时候加入的官方库的，具体的产生和go的并发是有关系的，在go的编程中最重要的东西就是channel和goroutine这两个玩意。在我们写go程序的时候，我们需要调用函数，在调用的时候很有可能我们会开启一连串的goroutine，那么我们怎么来达到一个特殊数据的一些传递和对goroutine的关闭呢？通过信号量这个玩意，使用sync.Wait来对它进行一个信号量的管理，其实这样肯定是不好的。所以我们的contxet就诞生了。</p>
 <pre><code>简单的来说：context的作用就是在不同的goroutine之间进行同步，请求特定的数据取消信号量以及处理请求的截止时间。
 </code></pre>
-<figure data-type="image" tabindex="1"><img src="https://IseEkko.github.io//post-images/1649406933876.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://IseEkko.github.io//post-images/1649408733993.png" alt="" loading="lazy"></figure>
 <h2 id="context的使用">context的使用</h2>
 <p>现在我们来看一下这个玩意我们应该怎么使用</p>
 <h3 id="context创建">Context创建</h3>
