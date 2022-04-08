@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://IseEkko.github.io/</id>
     <title>BytesLzz</title>
-    <updated>2022-04-07T08:51:02.649Z</updated>
+    <updated>2022-04-08T05:19:30.405Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://IseEkko.github.io/"/>
     <link rel="self" href="https://IseEkko.github.io/atom.xml"/>
@@ -10,6 +10,59 @@
     <logo>https://IseEkko.github.io/images/avatar.png</logo>
     <icon>https://IseEkko.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, BytesLzz</rights>
+    <entry>
+        <title type="html"><![CDATA[三数之和]]></title>
+        <id>https://IseEkko.github.io/post/san-shu-zhi-he/</id>
+        <link href="https://IseEkko.github.io/post/san-shu-zhi-he/">
+        </link>
+        <updated>2022-04-08T05:17:18.000Z</updated>
+        <content type="html"><![CDATA[<p>三数之和，这个题目做过了很多次但是还是有点不清楚，今天重新做了一下。</p>
+<h2 id="题目解析">题目解析</h2>
+<p>这个题目理解起来还是很简单的，也就是在一个数组里面我们将三个数字加起来等于0那么记录一下就可以了，所以最后的输出肯定是一个二维数组。首先我们要做的事情就是找出来这些数字。<br>
+这里我们使用迭代的方式，我们首先将数组进行排序，然后使用双指针的方式将数字找出来，首先我们先取出一个数字，然后我们就将一个三个数字的题目转换成一个两个数字的题目。<br>
+然后我们在找两个数字的时候，因为我们的数组是进行了排序的，所以我们就将情况分解出来，也就是说如果最后三个数字的和大于零那么就是说明右边界太大了，那么我们就调整右边界，同理我们可以调整左边界。<br>
+这里需要注意一个点，也就是我们在最后的结构，我们不要重复的，所以相同的数字我们就要将它排除，这里我们有三段代码做了这件事情。</p>
+<h2 id="解题源码">解题源码</h2>
+<pre><code>func threeSum(nums []int) [][]int {
+  sort.Ints(nums)
+  return TreeNum(nums)
+}
+
+
+func TreeNum(nums []int)[][]int{
+   res := make([][]int,0)
+   for i := 0;i&lt;len(nums)-2;i++{
+       n1 := nums[i]
+       if n1 &gt; 0{
+           break
+       }
+       if i &gt; 0 &amp;&amp; n1 == nums[i-1]{
+           continue
+       }
+
+       l,r := i+1,len(nums)-1
+       for l &lt; r{
+                n2 ,n3 := nums[l],nums[r]
+                if n1+n2+n3 == 0 {
+                    res = append(res,[]int{n1,n2,n3})
+                    for l&lt;r &amp;&amp; nums[l] == n2{
+                        l++
+                    }
+                    for l&lt;r &amp;&amp; nums[r] == n3{
+                        r--
+                    }
+                }else if n1+n2+n3 &lt; 0{
+                    l++
+                }else{
+                    r--
+                }
+       }
+   }
+   return res
+}
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[go语言并发-订阅者模式]]></title>
         <id>https://IseEkko.github.io/post/go-yu-yan-bing-fa-ding-yue-zhe-mo-shi/</id>
@@ -270,25 +323,6 @@ array  := [5]int{1:10,2:20}</p>
         <content type="html"><![CDATA[<p>路由器和交换机，他们位于不同的位置，<br>
 交换机处于网络中的数据链路层，根据mac地址进行转发，一般用于构建简单的内部网络<br>
 路由器，路由器是在网络层中进行工作的，根据的是ip地址进行转发的。一般用于构建复杂的网络。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[路由转发]]></title>
-        <id>https://IseEkko.github.io/post/lu-you-zhuan-fa/</id>
-        <link href="https://IseEkko.github.io/post/lu-you-zhuan-fa/">
-        </link>
-        <updated>2022-03-21T15:11:49.000Z</updated>
-        <summary type="html"><![CDATA[<p>在网络传输的过程中，会经过很多的路由，那么我们如何进行转发的呢？</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>在网络传输的过程中，会经过很多的路由，那么我们如何进行转发的呢？</p>
-<!-- more -->
-<h2 id="流程">流程</h2>
-<p>在传输的过程中，路由需要做的，就是把数据包传输到他该去的地方，在如今的网络中，已经有很多且复杂的网络。这个时候我们需要做的是什么呢。<br>
-首先从ip数据包中提取出目的主机的io地址，然后找到他所在的网络。<br>
-这个时候判断ip所在的网络是不是和本路由直接相连，如果是那么就直接进行转发。<br>
-如果不是，路由会检查路由表，看路由表中是不是有ip地址的特定主机路由，如果有那么就直接跳转到下一跳路由中去。<br>
-如果我们没有找到对应的特定主机，路由器会检查路由表，使每一行的子网掩码与目的的ip匹配，如果找到了，则按照路由表转发下一跳路由中<br>
-如果没有找到，就按照默认的路由转发到默认路由中，不然无法找到路由那么就向源主机报错。</p>
 ]]></content>
     </entry>
 </feed>

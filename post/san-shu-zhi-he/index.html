@@ -3,7 +3,7 @@
         <head>
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
-        <title>go语言并发-订阅者模式 | BytesLzz</title>
+        <title>三数之和 | BytesLzz</title>
         <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
@@ -56,133 +56,62 @@
                 <div class="mdui-row">
                         <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
                                 <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="post-title  mdui-m-b-1">go语言并发-订阅者模式</div>
-                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-04-07 15:44:39">2022-04-07 / 4 min read</div>
-                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>在之前的学习中，接触到了消息队列的一些知识，然后今天在看书的时候，发现了一个使用go channel完成了一个订阅者模式的并发demo。</p>
-<h2 id="订阅者模式">订阅者模式</h2>
-<p>关于订阅者模式，在这里给大家讲解一下，订阅者模式其实就是将产生的消息，给多个订阅者，然后订阅者可以看到这里订阅的消息。<br>
-这里实现的时候呢，因为有并发的知识，所以我们用到了协程，下面我们来具体的实现一下。</p>
-<h2 id="具体的实现流程">具体的实现流程</h2>
-<h3 id="创建订阅者结构">创建订阅者结构</h3>
-<pre><code>type (
-	subscriber chan interface{}         //订阅者的通道
-	topicFunc  func(v interface{}) bool //主题过滤器
-)
-
-//发布者对象
-type Publisher struct {
-	m           sync.Mutex               //读写锁
-	buffer      int                      //订阅队列缓存大小
-	timeout     time.Duration            //发布者超时时间
-	subscribers map[subscriber]topicFunc //订阅者消息
-}
-</code></pre>
-<p>上面我们定义了基本的订阅者的结构，上面也有对订阅者字段的解释，这里着重理解的东西就是：</p>
-<pre><code>subscribers map[subscriber]topicFunc //订阅者消息
-</code></pre>
-<p>这个结构其实就是订阅者模式的一个重要的结构，这里存放的是订阅者的过滤器，也就是通过这个结构我们可以清楚的知道，订阅者订阅的是那个主题。</p>
-<h3 id="构造函数">构造函数</h3>
-<p>使用构造函数构造出订阅者的实体，然后进行后面的操作</p>
-<pre><code>func NewPublisher(publishTimeout time.Duration, buffer int) *Publisher {
-	return &amp;Publisher{
-		buffer:      buffer,
-		timeout:     publishTimeout,
-		subscribers: make(map[subscriber]topicFunc),
-	}
-}
-</code></pre>
-<h3 id="添加订阅者信息">添加订阅者信息</h3>
-<pre><code>//订阅全部，也就是不加入过滤器
-func (p *Publisher) Subscribe() chan interface{} {
-	return p.SubscribeTopic(nil)
+                                    <div class="post-title  mdui-m-b-1">三数之和</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-04-08 13:17:18">2022-04-08 / 2 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>三数之和，这个题目做过了很多次但是还是有点不清楚，今天重新做了一下。</p>
+<h2 id="题目解析">题目解析</h2>
+<p>这个题目理解起来还是很简单的，也就是在一个数组里面我们将三个数字加起来等于0那么记录一下就可以了，所以最后的输出肯定是一个二维数组。首先我们要做的事情就是找出来这些数字。<br>
+这里我们使用迭代的方式，我们首先将数组进行排序，然后使用双指针的方式将数字找出来，首先我们先取出一个数字，然后我们就将一个三个数字的题目转换成一个两个数字的题目。<br>
+然后我们在找两个数字的时候，因为我们的数组是进行了排序的，所以我们就将情况分解出来，也就是说如果最后三个数字的和大于零那么就是说明右边界太大了，那么我们就调整右边界，同理我们可以调整左边界。<br>
+这里需要注意一个点，也就是我们在最后的结构，我们不要重复的，所以相同的数字我们就要将它排除，这里我们有三段代码做了这件事情。</p>
+<h2 id="解题源码">解题源码</h2>
+<pre><code>func threeSum(nums []int) [][]int {
+  sort.Ints(nums)
+  return TreeNum(nums)
 }
 
-//添加一个订阅者，同时订阅者是有过滤器的
-//这里其实就是返回一个订阅者的信息，然后添加上过滤器
-func (p *Publisher) SubscribeTopic(topic topicFunc) chan interface{} {
-	ch := make(chan interface{}, p.buffer)
-	p.m.Lock()
-	p.subscribers[ch] = topic
-	p.m.Unlock()
-	return ch
-}
-</code></pre>
-<p>这里就是添加订阅者，这里添加的时候添加订阅者的过滤器，也就是增加一个映射关系。</p>
-<h3 id="添加主题">添加主题</h3>
-<pre><code>//发布一个主题
-func (p *Publisher) Publish(v interface{}) {
-	p.m.Lock()
-	defer p.m.Unlock()
-	var wg sync.WaitGroup
-	//这里返回的是订阅者，然后后面是返回的过滤器
-	for sub, topic := range p.subscribers {
-		wg.Add(1)
-		go p.sendTopic(sub, topic, v, &amp;wg)
-	}
-	wg.Wait()
-}
 
-//发布主题，可以容忍一定的超时
-func (p *Publisher) sendTopic(sub subscriber, topic topicFunc, v interface{}, wg *sync.WaitGroup) {
-	defer wg.Done()
-	if topic != nil &amp;&amp; !topic(v) {
-		return
-	}
-	select {
-	case sub &lt;- v:
-	case &lt;-time.After(p.timeout):
-	}
+func TreeNum(nums []int)[][]int{
+   res := make([][]int,0)
+   for i := 0;i&lt;len(nums)-2;i++{
+       n1 := nums[i]
+       if n1 &gt; 0{
+           break
+       }
+       if i &gt; 0 &amp;&amp; n1 == nums[i-1]{
+           continue
+       }
+
+       l,r := i+1,len(nums)-1
+       for l &lt; r{
+                n2 ,n3 := nums[l],nums[r]
+                if n1+n2+n3 == 0 {
+                    res = append(res,[]int{n1,n2,n3})
+                    for l&lt;r &amp;&amp; nums[l] == n2{
+                        l++
+                    }
+                    for l&lt;r &amp;&amp; nums[r] == n3{
+                        r--
+                    }
+                }else if n1+n2+n3 &lt; 0{
+                    l++
+                }else{
+                    r--
+                }
+       }
+   }
+   return res
 }
 </code></pre>
-<p>这里我们使用到的并发式的添加消息，这里使用到了sync.WaitGroup，进行协程的同步。</p>
-<h3 id="关闭订阅者模式">关闭订阅者模式</h3>
-<pre><code>//关闭发布对象，同时关闭
-func (p *Publisher) Close() {
-	p.m.Lock()
-	defer p.m.Unlock()
-	for sub := range p.subscribers {
-		delete(p.subscribers, sub)
-		close(sub)
-	}
-}
-</code></pre>
-<h2 id="最后的测试">最后的测试</h2>
-<pre><code>func main() {
-	p := NewPublisher(100*time.Millisecond, 10)
-	defer p.Close()
-	all := p.Subscribe()
-	golang := p.SubscribeTopic(func(v interface{}) bool {
-		if s, ok := v.(string); ok {
-			return strings.Contains(s, &quot;golang&quot;)
-		}
-		return false
-	})
-	p.Publish(&quot;hello,lzz&quot;)
-	p.Publish(&quot;hello,golang&quot;)
-	go func() {
-		for msg := range all {
-			fmt.Println(&quot;all:&quot;, msg)
-		}
-	}()
-	go func() {
-		for msg := range golang {
-			fmt.Println(&quot;golang:&quot;, msg)
-		}
-	}()
-	time.Sleep(3 * time.Second)
-}
-</code></pre>
-<p>最后的输出结果：<br>
-<img src="https://IseEkko.github.io//post-images/1649321380937.png" alt="" loading="lazy"></p>
 </div>
                                     <div class="mdui-divider mdui-m-b-2"></div>
                                     <div class="mdui-row-xs-2 post-fenye">
                                        
-                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://IseEkko.github.io/post/san-shu-zhi-he/">三数之和</a></div></div>
+                                        <div class="mdui-col"> </div>
                                         
 
                                         
-                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/da-yin-chi-xing-de-er-cha-shu-ceng-xu-bian-li/">打印齿形的二叉树层序遍历</a></div> </div>
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/go-yu-yan-bing-fa-ding-yue-zhe-mo-shi/">go语言并发-订阅者模式</a></div> </div>
                                        
                                       </div>
                                    
