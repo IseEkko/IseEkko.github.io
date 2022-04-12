@@ -3,7 +3,7 @@
         <head>
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
-        <title>错误异常机制 | BytesLzz</title>
+        <title>七天实现web框架--路由映射 | BytesLzz</title>
         <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
@@ -56,91 +56,126 @@
                 <div class="mdui-row">
                         <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
                                 <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="post-title  mdui-m-b-1">错误异常机制</div>
-                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-04-09 11:12:07">2022-04-09 / 4 min read</div>
-                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>在编写程序的时候很容易遇见的一个问题，也是必须要处理的，今天简单的去了解了一下什么是错误什么是异常，在go中是如何处理的</p>
+                                    <div class="post-title  mdui-m-b-1">七天实现web框架--路由映射</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-04-12 22:21:46">2022-04-12 / 5 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>最近在学习一个七天系列课程，然后在这里对自己学习到的东西进行一个总结。今天实现的是web框架中的路由映射。</p>
 <!-- more -->
-<h2 id="错误异常">错误异常</h2>
-<p>在了解怎么做之前，我们首先应该要明白，什么是错误，什么是异常</p>
-<ul>
-<li>错误：可以预测</li>
-<li>异常：不可预测<br>
-在程序的编码中，我们写的代码有时候我们知道他可能会出现什么错，那么我们就叫做错误，比如说我们写的这个代码：</li>
-</ul>
-<pre><code>func pan(i int) {
-	if i == 0 {
-		err := fmt.Sprintf(&quot;i 不能为 0 &quot;, time.Now())
-		panic(err)
-	}
+<h2 id="http-net包">Http-Net包</h2>
+<p>在实现这个路由解析器的时候，我们首先要明白go原本的http/net包是如何实现路由解析定向的。<br>
+其中重要的函数</p>
+<pre><code>// HandleFunc registers the handler function for the given pattern
+// in the DefaultServeMux.
+// The documentation for ServeMux explains how patterns are matched.
+func HandleFunc(pattern string, handler func(ResponseWriter, *Request)) {
+ DefaultServeMux.HandleFunc(pattern, handler)
 }
 </code></pre>
-<p>如果我们用这个判断除数的话，那么可以知道除数是不能为0的，如果出现了除数为0那么他肯定是错误的，这种可以预测的，我们称之为错误。其他的错误是我们没有预测那么那些错误就是异常。感觉说的有点小绕。<br>
-其实简单的就是，预测的叫做错误没有预测的就是异常。</p>
-<h2 id="如何进行处理">如何进行处理</h2>
-<p>在go中如果我们执行了panic，我们会得到下面这种结构。首先我们来看一下我们执行的代码：</p>
-<pre><code>func main() {
-  pan(0)
-  fmt.Println(&quot;main安全退出&quot;)
-}
-func pan(i int) {
+<p>这里的函数参数，第一个是路径的函数，第二个是处理函数handle，这个函数最后调用的其实就是</p>
+<pre><code>// The HandlerFunc type is an adapter to allow the use of
+// ordinary functions as HTTP handlers. If f is a function
+// with the appropriate signature, HandlerFunc(f) is a
+// Handler that calls f.
+type HandlerFunc func(ResponseWriter, *Request)
 
-  if i == 0 {
-  	err := fmt.Sprintf(&quot;i 不能为 0 &quot;, time.Now())
-  	panic(err)
-  }
+// ServeHTTP calls f(w, r).
+func (f HandlerFunc) ServeHTTP(w ResponseWriter, r *Request) {
+	f(w, r)
 }
 </code></pre>
-<p>这里我们输入了0，那么肯定是会执行panic函数的，那么执行了panic函数过后程序就会直接被终止，所以我们会得到下面这个结果。</p>
-<pre><code>/private/var/folders/55/2cf9m54s36q_1yf2j1svkf580000gn/T/GoLand/___go_build_awesomeProject1_2022_4_9_PanicAndRecover
-panic: i 不能为 0 %!(EXTRA time.Time=2022-04-09 11:19:17.141969 +0800 CST m=+0.000072167)
+<p>也就是说实现了handler的接口，那么就有了处理请求的能力。那么我们来看实现handler这个接口的条件是什么。这里肤浅的解释一下这个go接口的实现，在go语言中是支持鸭子类型的，所以我们只要实现了接口里面的方法，那么就实现了这个接口。<br>
+handler接口：</p>
+<pre><code>type Handler interface {
+	ServeHTTP(ResponseWriter, *Request)
+}
+</code></pre>
+<p>实现这个接口我们就有能力处理网络的请求了。但是其中我们还有东西需要我们去了解<br>
+首先就是我们如何获取网络请求中的路径呢？<br>
+其实这个很简单，在我们的Request中其实是包含了请求的路径的，获取的方式：<br>
+req.URL.Path<br>
+获取了过后我们就可以将请求的路径和对应的函数的建立起映射的关系。<br>
+在这里我们简单的演示了一下上面提到的基本的使用，也就是实现基本的网络请求处理。</p>
+<pre><code>type engine struct {
+}
 
-goroutine 1 [running]:
-main.pan(0x0)
-        /Users/lizhongzheng/GolandProjects/awesomeProject1/2022-4-9/PanicAndRecover/main.go:16 +0xd0
-main.main()
-        /Users/lizhongzheng/GolandProjects/awesomeProject1/2022-4-9/PanicAndRecover/main.go:9 +0x24
-</code></pre>
-<p>这里会清楚的写到在那里执行执行了panic，然后panic的错误是什么等相关信息。<br>
-但是我们这里就会产生一个疑问，如果我们的程序正在运行但是不想让这个Panic将我们的程序直接终止，我们应该怎么处理。我们看到这里的结果是直接终止了程序的执行，最后是没有回到主函数执行输出的。<br>
-对着这种处理，在php和java中使用有try catch这个方法进行处理，但是在go中是没有的，那么应该如果进行类似的处理呢？<br>
-这里我们就要使用到一个recover()函数了，这个函数和panic一般都是一起出现的，这个函数的作用就是处理panic报的错误，然后收集不让程序直接退出。<br>
-这里我们来演示一下有recover这个函数后，程序的执行吧，还是先上我们执行的源码：</p>
-<pre><code>func main() {
-	pan(0)
-	fmt.Println(&quot;main安全退出&quot;)
-}
-func pan(i int) {
-	defer func() {
-		if err := recover(); err != nil {
-			fmt.Println(&quot;检测到错误&quot;, err)
-		} else {
-			panic(&quot;检测失败&quot;)
+func (e *engine) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	switch req.URL.Path {
+	case &quot;/&quot;:
+		fmt.Fprintf(w, &quot;URL.Path = %q\n&quot;, req.URL.Path)
+	case &quot;/hello&quot;:
+		for k, v := range req.Header {
+			fmt.Fprintf(w, &quot;Header[%q] = %q\n&quot;, k, v)
 		}
-	}()
-	if i == 0 {
-		err := fmt.Sprintf(&quot;i 不能为 0 &quot;, time.Now())
-		panic(err)
+	default:
+		fmt.Fprintf(w, &quot;404 NOT FOUND: %s\n&quot;, req.URL)
+	}
+}
+func main() {
+	en := new(engine)
+	log.Fatal(http.ListenAndServe(&quot;:9999&quot;, en))
+}
+</code></pre>
+<p>然后我们就可以开始实现框架的第一步，路由映射关系。</p>
+<h2 id="框架映射结构">框架映射结构</h2>
+<p>最后实现的源码：</p>
+<pre><code>package gee
+
+import (
+	&quot;fmt&quot;
+	&quot;net/http&quot;
+)
+
+// HandlerFunc defines the request handler used by gee
+type HandlerFunc func(http.ResponseWriter, *http.Request)
+
+// Engine implement the interface of ServeHTTP
+type Engine struct {
+	router map[string]HandlerFunc
+}
+
+// New is the constructor of gee.Engine
+func New() *Engine {
+	return &amp;Engine{router: make(map[string]HandlerFunc)}
+}
+
+func (engine *Engine) addRoute(method string, pattern string, handler HandlerFunc) {
+	key := method + &quot;-&quot; + pattern
+	engine.router[key] = handler
+}
+
+// GET defines the method to add GET request
+func (engine *Engine) GET(pattern string, handler HandlerFunc) {
+	engine.addRoute(&quot;GET&quot;, pattern, handler)
+}
+
+// POST defines the method to add POST request
+func (engine *Engine) POST(pattern string, handler HandlerFunc) {
+	engine.addRoute(&quot;POST&quot;, pattern, handler)
+}
+
+// Run defines the method to start a http server
+func (engine *Engine) Run(addr string) (err error) {
+	return http.ListenAndServe(addr, engine)
+}
+
+func (engine *Engine) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	key := req.Method + &quot;-&quot; + req.URL.Path
+	if handler, ok := engine.router[key]; ok {
+		handler(w, req)
+	} else {
+		fmt.Fprintf(w, &quot;404 NOT FOUND: %s\n&quot;, req.URL)
 	}
 }
 </code></pre>
-<p>这个我们使用的defer，延迟处理函数，然后在这里return前进行一个调用，对于defer函数在以后我们再进行讲解，在这里我们知道它是延迟处理就可以了。<br>
-然后下面是我们的执行结果：</p>
-<pre><code>/private/var/folders/55/2cf9m54s36q_1yf2j1svkf580000gn/T/GoLand/___go_build_awesomeProject1_2022_4_9_PanicAndRecover
-检测到错误 i 不能为 0 %!(EXTRA time.Time=2022-04-09 11:27:48.221554 +0800 CST m=+0.000130459)
-&lt;!-- more --&gt;
-
-main安全退出
-</code></pre>
-<p>不错我们执行到了最后，main函数安全退出，我们就演示到这里了，这就是go处理错误和异常的方法了。</p>
+<p>在这里我们可以看到的是我们这里的实现的效果和gin很像，这里我们建立了一个map，用来映射路由和函数，然后这里我们在存储的时候，我们还将请求的方法进行了一个存储，也就是说相同的路径但是不同的请求方式他最后调用的函数也是不一样的。</p>
 </div>
                                     <div class="mdui-divider mdui-m-b-2"></div>
                                     <div class="mdui-row-xs-2 post-fenye">
                                        
-                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://IseEkko.github.io/post/qi-tian-shi-xian-web-kuang-jia-lu-you-ying-she/">七天实现web框架--路由映射</a></div></div>
+                                        <div class="mdui-col"> </div>
                                         
 
                                         
-                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/go_context-xue-xi-1/">go_context（1）</a></div> </div>
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/cuo-wu-yi-chang-ji-zhi/">错误异常机制</a></div> </div>
                                        
                                       </div>
                                    

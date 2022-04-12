@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://IseEkko.github.io/</id>
     <title>BytesLzz</title>
-    <updated>2022-04-09T03:29:25.597Z</updated>
+    <updated>2022-04-12T14:32:42.619Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://IseEkko.github.io/"/>
     <link rel="self" href="https://IseEkko.github.io/atom.xml"/>
@@ -10,6 +10,125 @@
     <logo>https://IseEkko.github.io/images/avatar.png</logo>
     <icon>https://IseEkko.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, BytesLzz</rights>
+    <entry>
+        <title type="html"><![CDATA[七天实现web框架--路由映射]]></title>
+        <id>https://IseEkko.github.io/post/qi-tian-shi-xian-web-kuang-jia-lu-you-ying-she/</id>
+        <link href="https://IseEkko.github.io/post/qi-tian-shi-xian-web-kuang-jia-lu-you-ying-she/">
+        </link>
+        <updated>2022-04-12T14:21:46.000Z</updated>
+        <summary type="html"><![CDATA[<p>最近在学习一个七天系列课程，然后在这里对自己学习到的东西进行一个总结。今天实现的是web框架中的路由映射。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>最近在学习一个七天系列课程，然后在这里对自己学习到的东西进行一个总结。今天实现的是web框架中的路由映射。</p>
+<!-- more -->
+<h2 id="http-net包">Http-Net包</h2>
+<p>在实现这个路由解析器的时候，我们首先要明白go原本的http/net包是如何实现路由解析定向的。<br>
+其中重要的函数</p>
+<pre><code>// HandleFunc registers the handler function for the given pattern
+// in the DefaultServeMux.
+// The documentation for ServeMux explains how patterns are matched.
+func HandleFunc(pattern string, handler func(ResponseWriter, *Request)) {
+ DefaultServeMux.HandleFunc(pattern, handler)
+}
+</code></pre>
+<p>这里的函数参数，第一个是路径的函数，第二个是处理函数handle，这个函数最后调用的其实就是</p>
+<pre><code>// The HandlerFunc type is an adapter to allow the use of
+// ordinary functions as HTTP handlers. If f is a function
+// with the appropriate signature, HandlerFunc(f) is a
+// Handler that calls f.
+type HandlerFunc func(ResponseWriter, *Request)
+
+// ServeHTTP calls f(w, r).
+func (f HandlerFunc) ServeHTTP(w ResponseWriter, r *Request) {
+	f(w, r)
+}
+</code></pre>
+<p>也就是说实现了handler的接口，那么就有了处理请求的能力。那么我们来看实现handler这个接口的条件是什么。这里肤浅的解释一下这个go接口的实现，在go语言中是支持鸭子类型的，所以我们只要实现了接口里面的方法，那么就实现了这个接口。<br>
+handler接口：</p>
+<pre><code>type Handler interface {
+	ServeHTTP(ResponseWriter, *Request)
+}
+</code></pre>
+<p>实现这个接口我们就有能力处理网络的请求了。但是其中我们还有东西需要我们去了解<br>
+首先就是我们如何获取网络请求中的路径呢？<br>
+其实这个很简单，在我们的Request中其实是包含了请求的路径的，获取的方式：<br>
+req.URL.Path<br>
+获取了过后我们就可以将请求的路径和对应的函数的建立起映射的关系。<br>
+在这里我们简单的演示了一下上面提到的基本的使用，也就是实现基本的网络请求处理。</p>
+<pre><code>type engine struct {
+}
+
+func (e *engine) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	switch req.URL.Path {
+	case &quot;/&quot;:
+		fmt.Fprintf(w, &quot;URL.Path = %q\n&quot;, req.URL.Path)
+	case &quot;/hello&quot;:
+		for k, v := range req.Header {
+			fmt.Fprintf(w, &quot;Header[%q] = %q\n&quot;, k, v)
+		}
+	default:
+		fmt.Fprintf(w, &quot;404 NOT FOUND: %s\n&quot;, req.URL)
+	}
+}
+func main() {
+	en := new(engine)
+	log.Fatal(http.ListenAndServe(&quot;:9999&quot;, en))
+}
+</code></pre>
+<p>然后我们就可以开始实现框架的第一步，路由映射关系。</p>
+<h2 id="框架映射结构">框架映射结构</h2>
+<p>最后实现的源码：</p>
+<pre><code>package gee
+
+import (
+	&quot;fmt&quot;
+	&quot;net/http&quot;
+)
+
+// HandlerFunc defines the request handler used by gee
+type HandlerFunc func(http.ResponseWriter, *http.Request)
+
+// Engine implement the interface of ServeHTTP
+type Engine struct {
+	router map[string]HandlerFunc
+}
+
+// New is the constructor of gee.Engine
+func New() *Engine {
+	return &amp;Engine{router: make(map[string]HandlerFunc)}
+}
+
+func (engine *Engine) addRoute(method string, pattern string, handler HandlerFunc) {
+	key := method + &quot;-&quot; + pattern
+	engine.router[key] = handler
+}
+
+// GET defines the method to add GET request
+func (engine *Engine) GET(pattern string, handler HandlerFunc) {
+	engine.addRoute(&quot;GET&quot;, pattern, handler)
+}
+
+// POST defines the method to add POST request
+func (engine *Engine) POST(pattern string, handler HandlerFunc) {
+	engine.addRoute(&quot;POST&quot;, pattern, handler)
+}
+
+// Run defines the method to start a http server
+func (engine *Engine) Run(addr string) (err error) {
+	return http.ListenAndServe(addr, engine)
+}
+
+func (engine *Engine) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	key := req.Method + &quot;-&quot; + req.URL.Path
+	if handler, ok := engine.router[key]; ok {
+		handler(w, req)
+	} else {
+		fmt.Fprintf(w, &quot;404 NOT FOUND: %s\n&quot;, req.URL)
+	}
+}
+</code></pre>
+<p>在这里我们可以看到的是我们这里的实现的效果和gin很像，这里我们建立了一个map，用来映射路由和函数，然后这里我们在存储的时候，我们还将请求的方法进行了一个存储，也就是说相同的路径但是不同的请求方式他最后调用的函数也是不一样的。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[错误异常机制]]></title>
         <id>https://IseEkko.github.io/post/cuo-wu-yi-chang-ji-zhi/</id>
@@ -410,20 +529,6 @@ array  := [5]int{1:10,2:20}</p>
 <p>② 当源主机要发送数据时，首先检查 ARP 列表中是否有 IP 地址对应的目的主机 MAC 地址，如果存在，则可以直接发送数据，否则就向同一子网的所有主机发送 ARP 数据包。该数据包包括的内容有源主机的 IP 地址和 MAC 地址，以及目的主机的 IP 地址。</p>
 <p>③ 当本网络中的所有主机收到该 ARP 数据包时，首先检查数据包中的 目的 主机IP 地址是否是自己的 IP 地址，如果不是，则忽略该数据包，如果是，则首先从数据包中取出源主机的 IP 和 MAC 地址写入到 ARP 列表中，如果已经存在，则覆盖，然后将自己的 MAC 地址写入 ARP 响应包中，告诉源主机自己是它想要找的 MAC 地址。</p>
 <p>④ 源主机收到 ARP 响应包后。将目的主机的 IP 和 MAC 地址写入 ARP 列表，并利用此信息发送数据。如果源主机一直没有收到 ARP 响应数据包，表示 ARP 查询失败。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[岛屿数量]]></title>
-        <id>https://IseEkko.github.io/post/dao-yu-shu-liang/</id>
-        <link href="https://IseEkko.github.io/post/dao-yu-shu-liang/">
-        </link>
-        <updated>2022-03-22T15:09:58.000Z</updated>
-        <content type="html"><![CDATA[<p>今天做了一个题目就是关于一个二维数组。</p>
-<h2 id="题目解析">题目解析</h2>
-<p>在这个题目里面，我们需要做的是判断岛的数量，在这里1表示的是岛屿，0表示的是海洋，相邻的1表示的是一个岛屿。然后看到这里，我们就想到了我们要使用的方法，就是遍历然后计算1的位置。<br>
-如何判断相邻的1是一个岛屿，使用的就是dfs广度优先算法。</p>
-<h2 id="解析源码">解析源码</h2>
-<figure data-type="image" tabindex="1"><img src="https://IseEkko.github.io//post-images/1647961967703.png" alt="" loading="lazy"></figure>
 ]]></content>
     </entry>
 </feed>
