@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://IseEkko.github.io/</id>
     <title>BytesLzz</title>
-    <updated>2022-04-12T14:32:42.619Z</updated>
+    <updated>2022-04-13T07:32:47.904Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://IseEkko.github.io/"/>
     <link rel="self" href="https://IseEkko.github.io/atom.xml"/>
@@ -10,6 +10,189 @@
     <logo>https://IseEkko.github.io/images/avatar.png</logo>
     <icon>https://IseEkko.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, BytesLzz</rights>
+    <entry>
+        <title type="html"><![CDATA[七天实现web框架--上下文建立]]></title>
+        <id>https://IseEkko.github.io/post/qi-tian-shi-xian-web-kuang-jia-shang-xia-wen-jian-li/</id>
+        <link href="https://IseEkko.github.io/post/qi-tian-shi-xian-web-kuang-jia-shang-xia-wen-jian-li/">
+        </link>
+        <updated>2022-04-13T06:52:28.000Z</updated>
+        <summary type="html"><![CDATA[<p>对Web服务来说，无非是根据请求*http.Request，构造响应http.ResponseWriter</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>对Web服务来说，无非是根据请求*http.Request，构造响应http.ResponseWriter</p>
+<!-- more -->
+<h2 id="上下文必要性">上下文必要性</h2>
+<p>在书写web应用的时候，我们使用原始的库的时候，其中接受请求信息和返回的消息体是单独的存在，然后这样就会导致我们书写很多冗余的代码，然后在返回的时候我们需要返回json这个时候如果使用原生的库这个时候我们书写的代码是：</p>
+<pre><code>obj = map[string]interface{}{
+ &quot;name&quot;: &quot;geektutu&quot;,
+ &quot;password&quot;: &quot;1234&quot;,
+}
+w.Header().Set(&quot;Content-Type&quot;, &quot;application/json&quot;)
+w.WriteHeader(http.StatusOK)
+encoder := json.NewEncoder(w)
+if err := encoder.Encode(obj); err != nil {
+ http.Error(w, err.Error(), 500)
+}
+</code></pre>
+<p>然后如果我们封装了过后我们书写的代码是：</p>
+<pre><code>c.JSON(http.StatusOK, gee.H{
+    &quot;username&quot;: c.PostForm(&quot;username&quot;),
+    &quot;password&quot;: c.PostForm(&quot;password&quot;),
+})
+</code></pre>
+<p>这里我们可以明显的感受到我们的代码简单了很多，如果没有进行封装，这个时候我们使用起来是非常难受的。在这里我们需要知道的是，其实在web应用中，我们需要很多的工具，在处理请求的时候，例如，将来解析动态路由/hello/:name，参数:name的值放在哪呢？再比如，框架需要支持中间件，那中间件产生的信息放在哪呢？Context 随着每一个请求的出现而产生，请求的结束而销毁，和当前请求强相关的信息都应由 Context 承载。<br>
+也就是在这次会话的时候context就是一个会话的百宝箱，这个时候我们可以找到我们处理这次会话的所有工具。</p>
+<h2 id="实现代码">实现代码</h2>
+<pre><code>type H map[string]interface{}
+
+type Context struct {
+	// origin objects
+	Writer http.ResponseWriter
+	Req    *http.Request
+	// request info
+	Path   string
+	Method string
+	// response info
+	StatusCode int
+}
+
+func newContext(w http.ResponseWriter, req *http.Request) *Context {
+	return &amp;Context{
+		Writer: w,
+		Req:    req,
+		Path:   req.URL.Path,
+		Method: req.Method,
+	}
+}
+
+func (c *Context) PostForm(key string) string {
+	return c.Req.FormValue(key)
+}
+
+func (c *Context) Query(key string) string {
+	return c.Req.URL.Query().Get(key)
+}
+
+func (c *Context) Status(code int) {
+	c.StatusCode = code
+	c.Writer.WriteHeader(code)
+}
+
+func (c *Context) SetHeader(key string, value string) {
+	c.Writer.Header().Set(key, value)
+}
+
+func (c *Context) String(code int, format string, values ...interface{}) {
+	c.SetHeader(&quot;Content-Type&quot;, &quot;text/plain&quot;)
+	c.Status(code)
+	c.Writer.Write([]byte(fmt.Sprintf(format, values...)))
+}
+
+func (c *Context) JSON(code int, obj interface{}) {
+	c.SetHeader(&quot;Content-Type&quot;, &quot;application/json&quot;)
+	c.Status(code)
+	encoder := json.NewEncoder(c.Writer)
+	if err := encoder.Encode(obj); err != nil {
+		http.Error(c.Writer, err.Error(), 500)
+	}
+}
+
+func (c *Context) Data(code int, data []byte) {
+	c.Status(code)
+	c.Writer.Write(data)
+}
+
+func (c *Context) HTML(code int, html string) {
+	c.SetHeader(&quot;Content-Type&quot;, &quot;text/html&quot;)
+	c.Status(code)
+	c.Writer.Write([]byte(html))
+}
+</code></pre>
+<p>在这里面我们将很多的工具进行了封装<br>
+代码最开头，给map[string]interface{}起了一个别名gee.H，构建JSON数据时，显得更简洁。<br>
+Context目前只包含了http.ResponseWriter和*http.Request，另外提供了对 Method 和 Path 这两个常用属性的直接访问。<br>
+提供了访问Query和PostForm参数的方法。<br>
+提供了快速构造String/Data/JSON/HTML响应的方法。</p>
+<h2 id="对处理函数的改装">对处理函数的改装</h2>
+<p>昨天我们进行了路由解析的书写，我们知道了继承了handler后我们就可以进行请求的处理，然后我们将处理的函数进行一个改装</p>
+<pre><code>package gee
+
+import (
+	&quot;log&quot;
+	&quot;net/http&quot;
+)
+
+type router struct {
+	handlers map[string]HandlerFunc
+}
+
+func newRouter() *router {
+	return &amp;router{handlers: make(map[string]HandlerFunc)}
+}
+
+func (r *router) addRoute(method string, pattern string, handler HandlerFunc) {
+	log.Printf(&quot;Route %4s - %s&quot;, method, pattern)
+	key := method + &quot;-&quot; + pattern
+	r.handlers[key] = handler
+}
+
+func (r *router) handle(c *Context) {
+	key := c.Method + &quot;-&quot; + c.Path
+	if handler, ok := r.handlers[key]; ok {
+		handler(c)
+	} else {
+		c.String(http.StatusNotFound, &quot;404 NOT FOUND: %s\n&quot;, c.Path)
+	}
+}
+</code></pre>
+<p>我们将增加处理函数的方法放在了这里，然后对昨天的代码进行一个改装</p>
+<pre><code>package gee
+
+import (
+	&quot;net/http&quot;
+)
+
+// HandlerFunc defines the request handler used by gee
+type HandlerFunc func(*Context)
+
+// Engine implement the interface of ServeHTTP
+type Engine struct {
+	router *router
+}
+
+// New is the constructor of gee.Engine
+//这里进行了router的创建
+func New() *Engine {
+	return &amp;Engine{router: newRouter()}
+}
+
+func (engine *Engine) addRoute(method string, pattern string, handler HandlerFunc) {
+	engine.router.addRoute(method, pattern, handler)
+}
+
+// GET defines the method to add GET request
+func (engine *Engine) GET(pattern string, handler HandlerFunc) {
+	engine.addRoute(&quot;GET&quot;, pattern, handler)
+}
+
+// POST defines the method to add POST request
+func (engine *Engine) POST(pattern string, handler HandlerFunc) {
+	engine.addRoute(&quot;POST&quot;, pattern, handler)
+}
+
+// Run defines the method to start a http server
+func (engine *Engine) Run(addr string) (err error) {
+	return http.ListenAndServe(addr, engine)
+}
+
+//这里就是最后的处理函数，这里开始建立的上下文。
+func (engine *Engine) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	c := newContext(w, req)
+	engine.router.handle(c)
+}
+</code></pre>
+<p>在这里我们结合了今天写的context进行了一个改装。 然后我们今天的上下文建立就建立好了。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[七天实现web框架--路由映射]]></title>
         <id>https://IseEkko.github.io/post/qi-tian-shi-xian-web-kuang-jia-lu-you-ying-she/</id>
@@ -515,20 +698,6 @@ array  := [5]int{1:10,2:20}</p>
 <p>动态转换：采用动态转换的方式时，私有 IP 地址每次转化成的公有 IP 地址是不唯一的。当私有 IP 地址被授权访问 Internet 时会被随机转换成一个合法的公有 IP 地址。当 ISP 通过的合法 IP 地址数量略少于网络内部计算机数量时，可以采用这种方式。</p>
 <h3 id="第三种">第三种</h3>
 <p>端口多路复用：该方式将外出数据包的源端口进行端口转换，通过端口多路复用的方式，实现内部网络所有主机共享一个合法的外部 IP 地址进行 Internet 访问，从而最大限度地节约 IP 地址资源。同时，该方案可以隐藏内部网络中的主机，从而有效避免来自 Internet 的攻击。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[ARP协议]]></title>
-        <id>https://IseEkko.github.io/post/arp-xie-yi/</id>
-        <link href="https://IseEkko.github.io/post/arp-xie-yi/">
-        </link>
-        <updated>2022-03-24T00:08:05.000Z</updated>
-        <content type="html"><![CDATA[<p>ARP协议是一个mac地址和IP地址的一个映射关系，也就是系统通过ip找到他的mac地址。<br>
-过程</p>
-<p>① 首先，每个主机都会在自己的 ARP 缓冲区中建立一个 ARP 列表，以表示 IP 地址和 MAC 地址之间的对应关系；</p>
-<p>② 当源主机要发送数据时，首先检查 ARP 列表中是否有 IP 地址对应的目的主机 MAC 地址，如果存在，则可以直接发送数据，否则就向同一子网的所有主机发送 ARP 数据包。该数据包包括的内容有源主机的 IP 地址和 MAC 地址，以及目的主机的 IP 地址。</p>
-<p>③ 当本网络中的所有主机收到该 ARP 数据包时，首先检查数据包中的 目的 主机IP 地址是否是自己的 IP 地址，如果不是，则忽略该数据包，如果是，则首先从数据包中取出源主机的 IP 和 MAC 地址写入到 ARP 列表中，如果已经存在，则覆盖，然后将自己的 MAC 地址写入 ARP 响应包中，告诉源主机自己是它想要找的 MAC 地址。</p>
-<p>④ 源主机收到 ARP 响应包后。将目的主机的 IP 和 MAC 地址写入 ARP 列表，并利用此信息发送数据。如果源主机一直没有收到 ARP 响应数据包，表示 ARP 查询失败。</p>
 ]]></content>
     </entry>
 </feed>

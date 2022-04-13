@@ -3,7 +3,7 @@
         <head>
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
-        <title>七天实现web框架--路由映射 | BytesLzz</title>
+        <title>七天实现web框架--上下文建立 | BytesLzz</title>
         <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
@@ -56,90 +56,157 @@
                 <div class="mdui-row">
                         <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
                                 <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="post-title  mdui-m-b-1">七天实现web框架--路由映射</div>
-                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-04-12 22:21:46">2022-04-12 / 5 min read</div>
-                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>最近在学习一个七天系列课程，然后在这里对自己学习到的东西进行一个总结。今天实现的是web框架中的路由映射。</p>
+                                    <div class="post-title  mdui-m-b-1">七天实现web框架--上下文建立</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-04-13 14:52:28">2022-04-13 / 6 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>对Web服务来说，无非是根据请求*http.Request，构造响应http.ResponseWriter</p>
 <!-- more -->
-<h2 id="http-net包">Http-Net包</h2>
-<p>在实现这个路由解析器的时候，我们首先要明白go原本的http/net包是如何实现路由解析定向的。<br>
-其中重要的函数</p>
-<pre><code>// HandleFunc registers the handler function for the given pattern
-// in the DefaultServeMux.
-// The documentation for ServeMux explains how patterns are matched.
-func HandleFunc(pattern string, handler func(ResponseWriter, *Request)) {
- DefaultServeMux.HandleFunc(pattern, handler)
+<h2 id="上下文必要性">上下文必要性</h2>
+<p>在书写web应用的时候，我们使用原始的库的时候，其中接受请求信息和返回的消息体是单独的存在，然后这样就会导致我们书写很多冗余的代码，然后在返回的时候我们需要返回json这个时候如果使用原生的库这个时候我们书写的代码是：</p>
+<pre><code>obj = map[string]interface{}{
+ &quot;name&quot;: &quot;geektutu&quot;,
+ &quot;password&quot;: &quot;1234&quot;,
+}
+w.Header().Set(&quot;Content-Type&quot;, &quot;application/json&quot;)
+w.WriteHeader(http.StatusOK)
+encoder := json.NewEncoder(w)
+if err := encoder.Encode(obj); err != nil {
+ http.Error(w, err.Error(), 500)
 }
 </code></pre>
-<p>这里的函数参数，第一个是路径的函数，第二个是处理函数handle，这个函数最后调用的其实就是</p>
-<pre><code>// The HandlerFunc type is an adapter to allow the use of
-// ordinary functions as HTTP handlers. If f is a function
-// with the appropriate signature, HandlerFunc(f) is a
-// Handler that calls f.
-type HandlerFunc func(ResponseWriter, *Request)
+<p>然后如果我们封装了过后我们书写的代码是：</p>
+<pre><code>c.JSON(http.StatusOK, gee.H{
+    &quot;username&quot;: c.PostForm(&quot;username&quot;),
+    &quot;password&quot;: c.PostForm(&quot;password&quot;),
+})
+</code></pre>
+<p>这里我们可以明显的感受到我们的代码简单了很多，如果没有进行封装，这个时候我们使用起来是非常难受的。在这里我们需要知道的是，其实在web应用中，我们需要很多的工具，在处理请求的时候，例如，将来解析动态路由/hello/:name，参数:name的值放在哪呢？再比如，框架需要支持中间件，那中间件产生的信息放在哪呢？Context 随着每一个请求的出现而产生，请求的结束而销毁，和当前请求强相关的信息都应由 Context 承载。<br>
+也就是在这次会话的时候context就是一个会话的百宝箱，这个时候我们可以找到我们处理这次会话的所有工具。</p>
+<h2 id="实现代码">实现代码</h2>
+<pre><code>type H map[string]interface{}
 
-// ServeHTTP calls f(w, r).
-func (f HandlerFunc) ServeHTTP(w ResponseWriter, r *Request) {
-	f(w, r)
-}
-</code></pre>
-<p>也就是说实现了handler的接口，那么就有了处理请求的能力。那么我们来看实现handler这个接口的条件是什么。这里肤浅的解释一下这个go接口的实现，在go语言中是支持鸭子类型的，所以我们只要实现了接口里面的方法，那么就实现了这个接口。<br>
-handler接口：</p>
-<pre><code>type Handler interface {
-	ServeHTTP(ResponseWriter, *Request)
-}
-</code></pre>
-<p>实现这个接口我们就有能力处理网络的请求了。但是其中我们还有东西需要我们去了解<br>
-首先就是我们如何获取网络请求中的路径呢？<br>
-其实这个很简单，在我们的Request中其实是包含了请求的路径的，获取的方式：<br>
-req.URL.Path<br>
-获取了过后我们就可以将请求的路径和对应的函数的建立起映射的关系。<br>
-在这里我们简单的演示了一下上面提到的基本的使用，也就是实现基本的网络请求处理。</p>
-<pre><code>type engine struct {
+type Context struct {
+	// origin objects
+	Writer http.ResponseWriter
+	Req    *http.Request
+	// request info
+	Path   string
+	Method string
+	// response info
+	StatusCode int
 }
 
-func (e *engine) ServeHTTP(w http.ResponseWriter, req *http.Request) {
-	switch req.URL.Path {
-	case &quot;/&quot;:
-		fmt.Fprintf(w, &quot;URL.Path = %q\n&quot;, req.URL.Path)
-	case &quot;/hello&quot;:
-		for k, v := range req.Header {
-			fmt.Fprintf(w, &quot;Header[%q] = %q\n&quot;, k, v)
-		}
-	default:
-		fmt.Fprintf(w, &quot;404 NOT FOUND: %s\n&quot;, req.URL)
+func newContext(w http.ResponseWriter, req *http.Request) *Context {
+	return &amp;Context{
+		Writer: w,
+		Req:    req,
+		Path:   req.URL.Path,
+		Method: req.Method,
 	}
 }
-func main() {
-	en := new(engine)
-	log.Fatal(http.ListenAndServe(&quot;:9999&quot;, en))
+
+func (c *Context) PostForm(key string) string {
+	return c.Req.FormValue(key)
+}
+
+func (c *Context) Query(key string) string {
+	return c.Req.URL.Query().Get(key)
+}
+
+func (c *Context) Status(code int) {
+	c.StatusCode = code
+	c.Writer.WriteHeader(code)
+}
+
+func (c *Context) SetHeader(key string, value string) {
+	c.Writer.Header().Set(key, value)
+}
+
+func (c *Context) String(code int, format string, values ...interface{}) {
+	c.SetHeader(&quot;Content-Type&quot;, &quot;text/plain&quot;)
+	c.Status(code)
+	c.Writer.Write([]byte(fmt.Sprintf(format, values...)))
+}
+
+func (c *Context) JSON(code int, obj interface{}) {
+	c.SetHeader(&quot;Content-Type&quot;, &quot;application/json&quot;)
+	c.Status(code)
+	encoder := json.NewEncoder(c.Writer)
+	if err := encoder.Encode(obj); err != nil {
+		http.Error(c.Writer, err.Error(), 500)
+	}
+}
+
+func (c *Context) Data(code int, data []byte) {
+	c.Status(code)
+	c.Writer.Write(data)
+}
+
+func (c *Context) HTML(code int, html string) {
+	c.SetHeader(&quot;Content-Type&quot;, &quot;text/html&quot;)
+	c.Status(code)
+	c.Writer.Write([]byte(html))
 }
 </code></pre>
-<p>然后我们就可以开始实现框架的第一步，路由映射关系。</p>
-<h2 id="框架映射结构">框架映射结构</h2>
-<p>最后实现的源码：</p>
+<p>在这里面我们将很多的工具进行了封装<br>
+代码最开头，给map[string]interface{}起了一个别名gee.H，构建JSON数据时，显得更简洁。<br>
+Context目前只包含了http.ResponseWriter和*http.Request，另外提供了对 Method 和 Path 这两个常用属性的直接访问。<br>
+提供了访问Query和PostForm参数的方法。<br>
+提供了快速构造String/Data/JSON/HTML响应的方法。</p>
+<h2 id="对处理函数的改装">对处理函数的改装</h2>
+<p>昨天我们进行了路由解析的书写，我们知道了继承了handler后我们就可以进行请求的处理，然后我们将处理的函数进行一个改装</p>
 <pre><code>package gee
 
 import (
-	&quot;fmt&quot;
+	&quot;log&quot;
+	&quot;net/http&quot;
+)
+
+type router struct {
+	handlers map[string]HandlerFunc
+}
+
+func newRouter() *router {
+	return &amp;router{handlers: make(map[string]HandlerFunc)}
+}
+
+func (r *router) addRoute(method string, pattern string, handler HandlerFunc) {
+	log.Printf(&quot;Route %4s - %s&quot;, method, pattern)
+	key := method + &quot;-&quot; + pattern
+	r.handlers[key] = handler
+}
+
+func (r *router) handle(c *Context) {
+	key := c.Method + &quot;-&quot; + c.Path
+	if handler, ok := r.handlers[key]; ok {
+		handler(c)
+	} else {
+		c.String(http.StatusNotFound, &quot;404 NOT FOUND: %s\n&quot;, c.Path)
+	}
+}
+</code></pre>
+<p>我们将增加处理函数的方法放在了这里，然后对昨天的代码进行一个改装</p>
+<pre><code>package gee
+
+import (
 	&quot;net/http&quot;
 )
 
 // HandlerFunc defines the request handler used by gee
-type HandlerFunc func(http.ResponseWriter, *http.Request)
+type HandlerFunc func(*Context)
 
 // Engine implement the interface of ServeHTTP
 type Engine struct {
-	router map[string]HandlerFunc
+	router *router
 }
 
 // New is the constructor of gee.Engine
+//这里进行了router的创建
 func New() *Engine {
-	return &amp;Engine{router: make(map[string]HandlerFunc)}
+	return &amp;Engine{router: newRouter()}
 }
 
 func (engine *Engine) addRoute(method string, pattern string, handler HandlerFunc) {
-	key := method + &quot;-&quot; + pattern
-	engine.router[key] = handler
+	engine.router.addRoute(method, pattern, handler)
 }
 
 // GET defines the method to add GET request
@@ -157,25 +224,22 @@ func (engine *Engine) Run(addr string) (err error) {
 	return http.ListenAndServe(addr, engine)
 }
 
+//这里就是最后的处理函数，这里开始建立的上下文。
 func (engine *Engine) ServeHTTP(w http.ResponseWriter, req *http.Request) {
-	key := req.Method + &quot;-&quot; + req.URL.Path
-	if handler, ok := engine.router[key]; ok {
-		handler(w, req)
-	} else {
-		fmt.Fprintf(w, &quot;404 NOT FOUND: %s\n&quot;, req.URL)
-	}
+	c := newContext(w, req)
+	engine.router.handle(c)
 }
 </code></pre>
-<p>在这里我们可以看到的是我们这里的实现的效果和gin很像，这里我们建立了一个map，用来映射路由和函数，然后这里我们在存储的时候，我们还将请求的方法进行了一个存储，也就是说相同的路径但是不同的请求方式他最后调用的函数也是不一样的。</p>
+<p>在这里我们结合了今天写的context进行了一个改装。 然后我们今天的上下文建立就建立好了。</p>
 </div>
                                     <div class="mdui-divider mdui-m-b-2"></div>
                                     <div class="mdui-row-xs-2 post-fenye">
                                        
-                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://IseEkko.github.io/post/qi-tian-shi-xian-web-kuang-jia-shang-xia-wen-jian-li/">七天实现web框架--上下文建立</a></div></div>
+                                        <div class="mdui-col"> </div>
                                         
 
                                         
-                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/cuo-wu-yi-chang-ji-zhi/">错误异常机制</a></div> </div>
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/qi-tian-shi-xian-web-kuang-jia-lu-you-ying-she/">七天实现web框架--路由映射</a></div> </div>
                                        
                                       </div>
                                    
