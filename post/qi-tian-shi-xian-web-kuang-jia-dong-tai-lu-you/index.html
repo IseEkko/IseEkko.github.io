@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+        <head>
+        <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
+        <meta charset="utf-8">
+        <title>七天实现web框架--动态路由 | BytesLzz</title>
+        <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
+        <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
+        <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+        <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+         <script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+         <script >hljs.initHighlightingOnLoad();</script>
+
+    </head>
+    <body>
+              <header class="header mdui-m-b-5">      
+            <div class="container  ">
+                <div class="index-title animated fadeInDown mdui-text-center mdui-text-color-white mdui-m-b-2" style="animation-delay: 0.2s"><a href="https://IseEkko.github.io/">BytesLzz</a></div>
+                <div class="mdui-text-color-white animated fadeInDown mdui-text-center  mdui-m-b-3" style="animation-delay: 0.4s">做好每一件事，读好每一本书，天道酬勤</div>
+           
+            <nav id="nav" class="mdui-text-center animated fadeInDown" style="animation-delay: 0.6s">
+                   
+                            <li><a href="/">首页</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                            <li><a href="/archives">归档</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                            <li><a href="/tags">标签</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                            <li><a href="/post/about">关于</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                  </nav>
+                </div>
+        </header>
+        <div class="mdui-container ">
+                <div class="mdui-row">
+                        <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
+                                <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
+                                    <div class="post-title  mdui-m-b-1">七天实现web框架--动态路由</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-04-14 19:54:47">2022-04-14 / 6 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>之前看学长他们用过这个动态路由，但是以前也没有太注意，最近在学习框架的建立。第一次让我感受到了算法在写项目时候的应用，之前都觉得算法这个东西，就是刷题用的，在实战的时候很少用。今天学习这一块稍微有一点吃力，但是还是看懂了，很nice。</p>
+<!-- more -->
+<h2 id="什么是动态路由呢">什么是动态路由呢</h2>
+<p>动态路由在开发的时候，就是说不是像原来写项目的时候，这个固定路由绑定固定的函数，而是变化的路由进行固定函数的绑定，这样就可以实现很多的功能。<br>
+动态路由的实例：/api/v1/:name<br>
+这里我们要知道的是，上面这个路由可以匹配很多的路由比如：<br>
+/api/v1/lzz     /api/v1/ceshi ....等<br>
+这里第三个分隔开的字段，就是对name的赋值。这就是动态路由</p>
+<h2 id="实现动态路由需要准备什么">实现动态路由需要准备什么</h2>
+<p>首先我们要用到的就是前缀树，这里我们看一下怎么实现前缀树。我们还是说明一下，比如说，在我们路由中我们可以通过/来分割节点，然后后面通过这些节点进行寻找正确的路由。<img src="https://IseEkko.github.io//post-images/1649937869081.jpeg" alt="" loading="lazy">、<br>
+上面的这个图就是展示了前缀树。然后下面我们就来实现一下这个前缀树。<br>
+首先定义前缀树的节点：</p>
+<pre><code>type node struct {
+  pattern  string  //待匹配的路由
+  part     string  //路由中的一部分
+  children []*node //子节点
+  isWild   bool //这里如果是*或者：开头的就是true
+}
+</code></pre>
+<p>然后我们建立一个注册函数，一个查找函数</p>
+<pre><code>func (n *node) insert(pattern string, parts []string, height int) {
+	//查看是不是最后一个，是的话就返回
+	if len(parts) == height {
+		n.pattern = pattern
+		return
+	}
+	//取出路径中的一部分
+	part := parts[height]
+	//查看现在的树中是不是有这个节点，没有的话就进行创建
+	child := n.matchChild(part)
+	//下面是创建的流程。也就是创建
+	if child == nil {
+		//如果是动态的就会设置为true
+		child = &amp;node{part: part, isWild: part[0] == ':' || part[0] == '*'}
+		n.children = append(n.children, child)
+	}
+	child.insert(pattern, parts, height+1)
+}
+</code></pre>
+<p>查找函数：</p>
+<pre><code>func (n *node) search(parts []string, height int) *node {
+	if len(parts) == height || strings.HasPrefix(n.part, &quot;*&quot;) {
+		if n.pattern == &quot;&quot; {
+			return nil
+		}
+		return n
+	}
+
+	part := parts[height]
+	children := n.matchChildren(part)
+
+	for _, child := range children {
+		result := child.search(parts, height+1)
+		if result != nil {
+			return result
+		}
+	}
+
+	return nil
+}
+</code></pre>
+<p>上面两个函数中有两个关键的函数，就是对路由的匹配，这两个函数我还是看了很久才理解，也是在学习的时候出现的问题。</p>
+<pre><code>//创建节点插入的时候的判断函数
+func (n *node) matchChild(part string) *node {
+	for _, child := range n.children {
+		if child.part == part || child.isWild {
+			return child
+		}
+	}
+	return nil
+}
+
+//查找路径
+func (n *node) matchChildren(part string) []*node {
+	nodes := make([]*node, 0)
+	for _, child := range n.children {
+		if child.part == part || child.isWild {
+			nodes = append(nodes, child)
+		}
+	}
+	return nodes
+}
+
+</code></pre>
+<p>两个函数的原理都是差不多的，传入需要判断的路径一部分，然后在节点里面去寻找是否有这个节点，然后找到了就返回，没有找到就返回nil，我认为的这两个函数，第一个就是判断有没有这个节点，如果没有就返回，然后建立新的节点进行存储，如果找到了就不做操作。<br>
+第二个函数，就是对没有部分的判断，然后进行一个添加。<br>
+前缀树完整的代码：</p>
+<pre><code>package gee
+
+import (
+	&quot;fmt&quot;
+	&quot;strings&quot;
+)
+
+type node struct {
+	pattern  string
+	part     string
+	children []*node
+	isWild   bool
+}
+
+func (n *node) String() string {
+	return fmt.Sprintf(&quot;node{pattern=%s, part=%s, isWild=%t}&quot;, n.pattern, n.part, n.isWild)
+}
+
+func (n *node) insert(pattern string, parts []string, height int) {
+	//查看是不是最后一个，是的话就返回
+	if len(parts) == height {
+		n.pattern = pattern
+		return
+	}
+	//取出路径中的一部分
+	part := parts[height]
+	//查看现在的树中是不是有这个节点，没有的话就进行创建
+	child := n.matchChild(part)
+	//下面是创建的流程。也就是创建
+	if child == nil {
+		//如果是动态的就会设置为true
+		child = &amp;node{part: part, isWild: part[0] == ':' || part[0] == '*'}
+		n.children = append(n.children, child)
+	}
+	child.insert(pattern, parts, height+1)
+}
+
+//路由的查找
+func (n *node) search(parts []string, height int) *node {
+	if len(parts) == height || strings.HasPrefix(n.part, &quot;*&quot;) {
+		if n.pattern == &quot;&quot; {
+			return nil
+		}
+		return n
+	}
+
+	part := parts[height]
+	children := n.matchChildren(part)
+
+	for _, child := range children {
+		result := child.search(parts, height+1)
+		if result != nil {
+			return result
+		}
+	}
+
+	return nil
+}
+
+func (n *node) travel(list *([]*node)) {
+	if n.pattern != &quot;&quot; {
+		*list = append(*list, n)
+	}
+	for _, child := range n.children {
+		child.travel(list)
+	}
+}
+
+//创建节点插入的时候的判断函数
+func (n *node) matchChild(part string) *node {
+	for _, child := range n.children {
+		if child.part == part || child.isWild {
+			return child
+		}
+	}
+	return nil
+}
+
+//查找路径
+func (n *node) matchChildren(part string) []*node {
+	nodes := make([]*node, 0)
+	for _, child := range n.children {
+		if child.part == part || child.isWild {
+			nodes = append(nodes, child)
+		}
+	}
+	return nodes
+}
+</code></pre>
+</div>
+                                    <div class="mdui-divider mdui-m-b-2"></div>
+                                    <div class="mdui-row-xs-2 post-fenye">
+                                       
+                                        <div class="mdui-col"> </div>
+                                        
+
+                                        
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/qi-tian-shi-xian-web-kuang-jia-shang-xia-wen-jian-li/">七天实现web框架--上下文建立</a></div> </div>
+                                       
+                                      </div>
+                                   
+                                    <div class="mdui-divider mdui-m-t-2 mdui-m-b-2"></div>
+                                    
+                                     <script src="https://IseEkko.github.io//media/scripts/Valine.min.js"></script>
+ <div class="comment"></div>
+
+<script>
+      new Valine({
+            el: '.comment',
+
+
+
+            path: window.location.pathname,
+            pageSize: 30,
+            avatar:'mm', 
+       })
+    </script> 
+<script>
+    if(window.location.hash){
+        var checkExist = setInterval(function() {
+           if ($(window.location.hash).length) {
+              $('html, body').animate({scrollTop: $(window.location.hash).offset().top-90}, 1000);
+              clearInterval(checkExist);
+           }
+        }, 100);
+    }
+</script>
+                                </article>
+
+                                    
+                        </div>
+                      </div>
+    
+                
+
+              </div>
+                    <footer class="footer mdui-m-t-5 mdui-text-center">
+               <nav class="social-links">
+                      <ul>
+                      
+                      	
+                        <li class="social-link"><a href="feed:https://iseekko.github.io//atom.xml" target="_blank"><i class="iconfont icon-rss"></i></a></li>
+                          
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      </ul>
+                    </nav>
+                    <div class="copyright">
+                      <p>Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> <br/> Theme <a href="https://github.com/alterfang/gridea-theme-song/" target="_blank"  title="宋"  >Song</a> by <a href="https://shanbu.fun/" target="_blank"  title="山卜方" >shanbufun</a> </p>
+                  </div>
+                  
+              </footer>
+    </body>
+</html>
