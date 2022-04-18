@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://IseEkko.github.io/</id>
     <title>BytesLzz</title>
-    <updated>2022-04-16T16:12:07.049Z</updated>
+    <updated>2022-04-18T07:45:17.333Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://IseEkko.github.io/"/>
     <link rel="self" href="https://IseEkko.github.io/atom.xml"/>
@@ -10,6 +10,210 @@
     <logo>https://IseEkko.github.io/images/avatar.png</logo>
     <icon>https://IseEkko.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, BytesLzz</rights>
+    <entry>
+        <title type="html"><![CDATA[七天实现web框架--错误处理]]></title>
+        <id>https://IseEkko.github.io/post/qi-tian-shi-xian-web-kuang-jia-cuo-wu-chu-li/</id>
+        <link href="https://IseEkko.github.io/post/qi-tian-shi-xian-web-kuang-jia-cuo-wu-chu-li/">
+        </link>
+        <updated>2022-04-18T07:23:33.000Z</updated>
+        <content type="html"><![CDATA[<p>很快到了七天实现web框架的最后一天了，今天的主题是错误处理，在go语言中我们是没有像其他语言一样的处理机制了。</p>
+<h2 id="错误处理">错误处理</h2>
+<p>在go语言中，我们使用panic对异常进行抛出，这样会将程序直接中断，但是这样肯定是不好的。<br>
+我们首先来看一下，defer的应用，对于defer函数，我们需要知道的是，defer就是将操作进行一个延迟，然后等待return前进行执行，这里是一个栈的实现方式。所以是先进后出的。<br>
+然后我们还要知道的是recover的使用，这个一定要在defer之后进行使用，它的作用是将panic的错误进行一个压栈的操作，这样程序就不会直接中断，起到了一个try-catch的作用。</p>
+<h2 id="具体的实现">具体的实现</h2>
+<pre><code>package gee
+
+import (
+ &quot;fmt&quot;
+ &quot;log&quot;
+ &quot;net/http&quot;
+ &quot;runtime&quot;
+ &quot;strings&quot;
+)
+
+// print stack trace for debug
+func trace(message string) string {
+ var pcs [32]uintptr
+ n := runtime.Callers(3, pcs[:]) // skip first 3 caller
+
+ var str strings.Builder
+ str.WriteString(message + &quot;\nTraceback:&quot;)
+ for _, pc := range pcs[:n] {
+ 	fn := runtime.FuncForPC(pc)
+ 	file, line := fn.FileLine(pc)
+ 	str.WriteString(fmt.Sprintf(&quot;\n\t%s:%d&quot;, file, line))
+ }
+ return str.String()
+}
+
+func Recovery() HandlerFunc {
+ return func(c *Context) {
+ 	defer func() {
+ 		if err := recover(); err != nil {
+ 			message := fmt.Sprintf(&quot;%s&quot;, err)
+ 			log.Printf(&quot;%s\n\n&quot;, trace(message))
+ 			c.Fail(http.StatusInternalServerError, &quot;Internal Server Error&quot;)
+ 		}
+ 	}()
+
+ 	c.Next()
+ }
+}
+
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[七天实现web框架--模版渲染]]></title>
+        <id>https://IseEkko.github.io/post/qi-tian-shi-xian-web-kuang-jia-mo-ban-xuan-ran/</id>
+        <link href="https://IseEkko.github.io/post/qi-tian-shi-xian-web-kuang-jia-mo-ban-xuan-ran/">
+        </link>
+        <updated>2022-04-17T07:56:25.000Z</updated>
+        <content type="html"><![CDATA[<p>现在流行的前后端分离项目，使用更加专业的前端框架来制作页面，使用ajax进行数据交互，这样使得页面更加的专业。<br>
+但是前后端分离的项目，还是很有缺点的，所以对于模版渲染这个功能还是要有的。</p>
+<h2 id="模版渲染的实现">模版渲染的实现</h2>
+<p>网页的三剑客，JavaScript、CSS 和 HTML。要做到服务端渲染，第一步便是要支持 JS、CSS 等静态文件。还记得我们之前设计动态路由的时候，支持通配符*匹配多级子路径。比如路由规则/assets/*filepath，可以匹配/assets/开头的所有的地址。例如/assets/js/geektutu.js，匹配后，参数filepath就赋值为js/geektutu.js。<br>
+那如果我么将所有的静态文件放在/usr/web目录下，那么filepath的值即是该目录下文件的相对地址。映射到真实的文件后，将文件返回，静态服务器就实现了。<br>
+找到文件后，如何返回这一步，net/http库已经实现了。因此，gee 框架要做的，仅仅是解析请求的地址，映射到服务器上文件的真实地址，交给http.FileServer处理就好了。</p>
+<pre><code>// create static handler
+func (group *RouterGroup) createStaticHandler(relativePath string, fs http.FileSystem) HandlerFunc {
+	absolutePath := path.Join(group.prefix, relativePath)
+	fileServer := http.StripPrefix(absolutePath, http.FileServer(fs))
+	return func(c *Context) {
+		file := c.Param(&quot;filepath&quot;)
+		// Check if file exists and/or if we have permission to access it
+		if _, err := fs.Open(file); err != nil {
+			c.Status(http.StatusNotFound)
+			return
+		}
+
+		fileServer.ServeHTTP(c.Writer, c.Req)
+	}
+}
+
+// serve static files
+func (group *RouterGroup) Static(relativePath string, root string) {
+	handler := group.createStaticHandler(relativePath, http.Dir(root))
+	urlPattern := path.Join(relativePath, &quot;/*filepath&quot;)
+	// Register GET handlers
+	group.GET(urlPattern, handler)
+}
+</code></pre>
+<p>我们给RouterGroup添加了2个方法，Static这个方法是暴露给用户的。用户可以将磁盘上的某个文件夹root映射到路由relativePath。例如：</p>
+<pre><code>r := gee.New()
+r.Static(&quot;/assets&quot;, &quot;/usr/geektutu/blog/static&quot;)
+// 或相对路径 r.Static(&quot;/assets&quot;, &quot;./static&quot;)
+r.Run(&quot;:9999&quot;)
+用户访问localhost:9999/assets/js/geektutu.js，最终返回/usr/geektutu/blog/static/js/geektutu.js。
+</code></pre>
+<h2 id="html-模板渲染">HTML 模板渲染</h2>
+<p>Go语言内置了text/template和html/template2个模板标准库，其中html/template为 HTML 提供了较为完整的支持。包括普通变量渲染、列表渲染、对象渲染等。gee 框架的模板渲染直接使用了html/template提供的能力。</p>
+<pre><code>Engine struct {
+	*RouterGroup
+	router        *router
+	groups        []*RouterGroup     // store all groups
+	htmlTemplates *template.Template // for html render
+	funcMap       template.FuncMap   // for html render
+}
+
+func (engine *Engine) SetFuncMap(funcMap template.FuncMap) {
+	engine.funcMap = funcMap
+}
+
+func (engine *Engine) LoadHTMLGlob(pattern string) {
+	engine.htmlTemplates = template.Must(template.New(&quot;&quot;).Funcs(engine.funcMap).ParseGlob(pattern))
+}
+</code></pre>
+<p>首先为 Engine 示例添加了 *template.Template 和 template.FuncMap对象，前者将所有的模板加载进内存，后者是所有的自定义模板渲染函数。</p>
+<p>另外，给用户分别提供了设置自定义渲染函数funcMap和加载模板的方法。</p>
+<p>接下来，对原来的 (*Context).HTML()方法做了些小修改，使之支持根据模板文件名选择模板进行渲染。</p>
+<pre><code>type Context struct {
+    // ...
+	// engine pointer
+	engine *Engine
+}
+
+func (c *Context) HTML(code int, name string, data interface{}) {
+	c.SetHeader(&quot;Content-Type&quot;, &quot;text/html&quot;)
+	c.Status(code)
+	if err := c.engine.htmlTemplates.ExecuteTemplate(c.Writer, name, data); err != nil {
+		c.Fail(500, err.Error())
+	}
+}
+</code></pre>
+<p>我们在 Context 中添加了成员变量 engine *Engine，这样就能够通过 Context 访问 Engine 中的 HTML 模板。实例化 Context 时，还需要给 c.engine 赋值。</p>
+<pre><code>func (engine *Engine) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	// ...
+	c := newContext(w, req)
+	c.handlers = middlewares
+	c.engine = engine
+	engine.router.handle(c)
+}
+</code></pre>
+<p>使用Demo<br>
+最终的目录结构<br>
+---gee/<br>
+---static/<br>
+|---css/<br>
+|---geektutu.css<br>
+|---file1.txt<br>
+---templates/<br>
+|---arr.tmpl<br>
+|---css.tmpl<br>
+|---custom_func.tmpl<br>
+---main.go</p>
+<pre><code>&lt;!-- day6-template/templates/css.tmpl --&gt;
+&lt;html&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/assets/css/geektutu.css&quot;&gt;
+    &lt;p&gt;geektutu.css is loaded&lt;/p&gt;
+&lt;/html&gt;
+day6-template/main.go
+</code></pre>
+<pre><code>type student struct {
+	Name string
+	Age  int8
+}
+
+func FormatAsDate(t time.Time) string {
+	year, month, day := t.Date()
+	return fmt.Sprintf(&quot;%d-%02d-%02d&quot;, year, month, day)
+}
+
+func main() {
+	r := gee.New()
+	r.Use(gee.Logger())
+	r.SetFuncMap(template.FuncMap{
+		&quot;FormatAsDate&quot;: FormatAsDate,
+	})
+	r.LoadHTMLGlob(&quot;templates/*&quot;)
+	r.Static(&quot;/assets&quot;, &quot;./static&quot;)
+
+	stu1 := &amp;student{Name: &quot;Geektutu&quot;, Age: 20}
+	stu2 := &amp;student{Name: &quot;Jack&quot;, Age: 22}
+	r.GET(&quot;/&quot;, func(c *gee.Context) {
+		c.HTML(http.StatusOK, &quot;css.tmpl&quot;, nil)
+	})
+	r.GET(&quot;/students&quot;, func(c *gee.Context) {
+		c.HTML(http.StatusOK, &quot;arr.tmpl&quot;, gee.H{
+			&quot;title&quot;:  &quot;gee&quot;,
+			&quot;stuArr&quot;: [2]*student{stu1, stu2},
+		})
+	})
+
+	r.GET(&quot;/date&quot;, func(c *gee.Context) {
+		c.HTML(http.StatusOK, &quot;custom_func.tmpl&quot;, gee.H{
+			&quot;title&quot;: &quot;gee&quot;,
+			&quot;now&quot;:   time.Date(2019, 8, 17, 0, 0, 0, 0, time.UTC),
+		})
+	})
+
+	r.Run(&quot;:9999&quot;)
+}
+</code></pre>
+<p>访问下主页，模板正常渲染，CSS 静态文件加载成功。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[七天实现web框架--中间件的实现]]></title>
         <id>https://IseEkko.github.io/post/qi-tian-shi-xian-web-kuang-jia-zhong-jian-jian-de-shi-xian/</id>
@@ -908,38 +1112,6 @@ func (p *Publisher) Close() {
 </code></pre>
 <p>最后的输出结果：<br>
 <img src="https://IseEkko.github.io//post-images/1649321380937.png" alt="" loading="lazy"></p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[打印齿形的二叉树层序遍历]]></title>
-        <id>https://IseEkko.github.io/post/da-yin-chi-xing-de-er-cha-shu-ceng-xu-bian-li/</id>
-        <link href="https://IseEkko.github.io/post/da-yin-chi-xing-de-er-cha-shu-ceng-xu-bian-li/">
-        </link>
-        <updated>2022-04-06T15:16:26.000Z</updated>
-        <content type="html"><![CDATA[<p>层序遍历是一个很常见的一个算法结构，这里我们进一步的进行二叉树的学习，这里需要蛇形的打印出二叉树的层序遍历</p>
-<h2 id="题目解析">题目解析</h2>
-<p>这里题目很简单，就是打印的顺序和上一层的顺序是相反的，也就是说单数层和双数层的打印顺序是相反的，那么就是说我们在打印不同层的时候，我们打印的顺序是不一样的，也就是说在之前层序的基础上，我们这里要判断一下层数的判断。<br>
-我们这里的代码使用的切片来进行数据的处理，这里我们还要注意的事情是我们在不同层打印顺序问题，使用到的是将顺序进行交换，就是在判断层数的基础上，我们将需要交换的位置进行交换。</p>
-<h2 id="解题源码">解题源码</h2>
-<figure data-type="image" tabindex="1"><img src="https://IseEkko.github.io//post-images/1649258272528.png" alt="" loading="lazy"></figure>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[一致性hash算法]]></title>
-        <id>https://IseEkko.github.io/post/yi-zhi-xing-hash-suan-fa/</id>
-        <link href="https://IseEkko.github.io/post/yi-zhi-xing-hash-suan-fa/">
-        </link>
-        <updated>2022-04-04T08:57:04.000Z</updated>
-        <content type="html"><![CDATA[<p>分布式缓存中的运用。</p>
-<h2 id="分布式缓存">分布式缓存</h2>
-<p>在我们的分布式应用中我们常常会用到分布式缓存，什么是分布式缓存，说简单点就是将缓存放在几台机器上，然后我们就会发现一个问题，我们怎么做到用户想要数据的时候将数据给到用户呢。</p>
-<h2 id="一般的hash算法">一般的hash算法</h2>
-<p>使用一般的hash算法呢，就是将值进行hash然后取余服务器的数量，然后就会得到数字，然后将数据放在对应编号的服务器中。<br>
-但是这样的话，容错性和扩展性都很差，为什么呢？<br>
-无论是多了一台机器还是少一台机器它的hash后取余的位置都会不一样，然后访问数据的时候，因为服务器数量的变化这里也是不一样的。也就是说如果出现宕机或者想要增加服务器，那么所有的缓存都会失效。<br>
-为了避免这样的问题产生，我们就要使用到hash一致性算法</p>
-<h2 id="hash一致性算法">hash一致性算法</h2>
-<p>hash一致性算法，在hash一致性算法中，我们首先先生成一个2^32的圆，然后将服务器节点进行hash放在圆上，然后将数据进行hash，然后hash到的位置，我们进行顺时针的寻找，寻找到第一个节点，我们就会将数据存放在上面，然后这里我们需要注意的事情是，这里我们需要增加虚拟节点，因为在hash的时候我们的服务器节点不一定说就是均匀分布的，这个时候如果节点很少，可能就会发生一些数据的偏移，可能会出现大部分的数据存放在一个服务器上，然后这个时候对于这个服务器来说，这样的压力就会很大，所以我们通过将节点进行增加几个虚拟节点来解决这个问题。</p>
 ]]></content>
     </entry>
 </feed>

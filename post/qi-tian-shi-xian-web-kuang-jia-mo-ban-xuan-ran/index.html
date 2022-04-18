@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+        <head>
+        <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
+        <meta charset="utf-8">
+        <title>七天实现web框架--模版渲染 | BytesLzz</title>
+        <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
+        <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
+        <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+        <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+         <script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+         <script >hljs.initHighlightingOnLoad();</script>
+
+    </head>
+    <body>
+              <header class="header mdui-m-b-5">      
+            <div class="container  ">
+                <div class="index-title animated fadeInDown mdui-text-center mdui-text-color-white mdui-m-b-2" style="animation-delay: 0.2s"><a href="https://IseEkko.github.io/">BytesLzz</a></div>
+                <div class="mdui-text-color-white animated fadeInDown mdui-text-center  mdui-m-b-3" style="animation-delay: 0.4s">做好每一件事，读好每一本书，天道酬勤</div>
+           
+            <nav id="nav" class="mdui-text-center animated fadeInDown" style="animation-delay: 0.6s">
+                   
+                            <li><a href="/">首页</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                            <li><a href="/archives">归档</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                            <li><a href="/tags">标签</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                            <li><a href="/post/about">关于</a>
+                                <span class="nav-style top"></span>
+                                <span class="nav-style bottom"></span>
+                                <span class="nav-style left"></span>
+                                <span class="nav-style right"></span>
+                                </li>
+                    
+                  </nav>
+                </div>
+        </header>
+        <div class="mdui-container ">
+                <div class="mdui-row">
+                        <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
+                                <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
+                                    <div class="post-title  mdui-m-b-1">七天实现web框架--模版渲染</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-04-17 15:56:25">2022-04-17 / 6 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>现在流行的前后端分离项目，使用更加专业的前端框架来制作页面，使用ajax进行数据交互，这样使得页面更加的专业。<br>
+但是前后端分离的项目，还是很有缺点的，所以对于模版渲染这个功能还是要有的。</p>
+<h2 id="模版渲染的实现">模版渲染的实现</h2>
+<p>网页的三剑客，JavaScript、CSS 和 HTML。要做到服务端渲染，第一步便是要支持 JS、CSS 等静态文件。还记得我们之前设计动态路由的时候，支持通配符*匹配多级子路径。比如路由规则/assets/*filepath，可以匹配/assets/开头的所有的地址。例如/assets/js/geektutu.js，匹配后，参数filepath就赋值为js/geektutu.js。<br>
+那如果我么将所有的静态文件放在/usr/web目录下，那么filepath的值即是该目录下文件的相对地址。映射到真实的文件后，将文件返回，静态服务器就实现了。<br>
+找到文件后，如何返回这一步，net/http库已经实现了。因此，gee 框架要做的，仅仅是解析请求的地址，映射到服务器上文件的真实地址，交给http.FileServer处理就好了。</p>
+<pre><code>// create static handler
+func (group *RouterGroup) createStaticHandler(relativePath string, fs http.FileSystem) HandlerFunc {
+	absolutePath := path.Join(group.prefix, relativePath)
+	fileServer := http.StripPrefix(absolutePath, http.FileServer(fs))
+	return func(c *Context) {
+		file := c.Param(&quot;filepath&quot;)
+		// Check if file exists and/or if we have permission to access it
+		if _, err := fs.Open(file); err != nil {
+			c.Status(http.StatusNotFound)
+			return
+		}
+
+		fileServer.ServeHTTP(c.Writer, c.Req)
+	}
+}
+
+// serve static files
+func (group *RouterGroup) Static(relativePath string, root string) {
+	handler := group.createStaticHandler(relativePath, http.Dir(root))
+	urlPattern := path.Join(relativePath, &quot;/*filepath&quot;)
+	// Register GET handlers
+	group.GET(urlPattern, handler)
+}
+</code></pre>
+<p>我们给RouterGroup添加了2个方法，Static这个方法是暴露给用户的。用户可以将磁盘上的某个文件夹root映射到路由relativePath。例如：</p>
+<pre><code>r := gee.New()
+r.Static(&quot;/assets&quot;, &quot;/usr/geektutu/blog/static&quot;)
+// 或相对路径 r.Static(&quot;/assets&quot;, &quot;./static&quot;)
+r.Run(&quot;:9999&quot;)
+用户访问localhost:9999/assets/js/geektutu.js，最终返回/usr/geektutu/blog/static/js/geektutu.js。
+</code></pre>
+<h2 id="html-模板渲染">HTML 模板渲染</h2>
+<p>Go语言内置了text/template和html/template2个模板标准库，其中html/template为 HTML 提供了较为完整的支持。包括普通变量渲染、列表渲染、对象渲染等。gee 框架的模板渲染直接使用了html/template提供的能力。</p>
+<pre><code>Engine struct {
+	*RouterGroup
+	router        *router
+	groups        []*RouterGroup     // store all groups
+	htmlTemplates *template.Template // for html render
+	funcMap       template.FuncMap   // for html render
+}
+
+func (engine *Engine) SetFuncMap(funcMap template.FuncMap) {
+	engine.funcMap = funcMap
+}
+
+func (engine *Engine) LoadHTMLGlob(pattern string) {
+	engine.htmlTemplates = template.Must(template.New(&quot;&quot;).Funcs(engine.funcMap).ParseGlob(pattern))
+}
+</code></pre>
+<p>首先为 Engine 示例添加了 *template.Template 和 template.FuncMap对象，前者将所有的模板加载进内存，后者是所有的自定义模板渲染函数。</p>
+<p>另外，给用户分别提供了设置自定义渲染函数funcMap和加载模板的方法。</p>
+<p>接下来，对原来的 (*Context).HTML()方法做了些小修改，使之支持根据模板文件名选择模板进行渲染。</p>
+<pre><code>type Context struct {
+    // ...
+	// engine pointer
+	engine *Engine
+}
+
+func (c *Context) HTML(code int, name string, data interface{}) {
+	c.SetHeader(&quot;Content-Type&quot;, &quot;text/html&quot;)
+	c.Status(code)
+	if err := c.engine.htmlTemplates.ExecuteTemplate(c.Writer, name, data); err != nil {
+		c.Fail(500, err.Error())
+	}
+}
+</code></pre>
+<p>我们在 Context 中添加了成员变量 engine *Engine，这样就能够通过 Context 访问 Engine 中的 HTML 模板。实例化 Context 时，还需要给 c.engine 赋值。</p>
+<pre><code>func (engine *Engine) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	// ...
+	c := newContext(w, req)
+	c.handlers = middlewares
+	c.engine = engine
+	engine.router.handle(c)
+}
+</code></pre>
+<p>使用Demo<br>
+最终的目录结构<br>
+---gee/<br>
+---static/<br>
+|---css/<br>
+|---geektutu.css<br>
+|---file1.txt<br>
+---templates/<br>
+|---arr.tmpl<br>
+|---css.tmpl<br>
+|---custom_func.tmpl<br>
+---main.go</p>
+<pre><code>&lt;!-- day6-template/templates/css.tmpl --&gt;
+&lt;html&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;/assets/css/geektutu.css&quot;&gt;
+    &lt;p&gt;geektutu.css is loaded&lt;/p&gt;
+&lt;/html&gt;
+day6-template/main.go
+</code></pre>
+<pre><code>type student struct {
+	Name string
+	Age  int8
+}
+
+func FormatAsDate(t time.Time) string {
+	year, month, day := t.Date()
+	return fmt.Sprintf(&quot;%d-%02d-%02d&quot;, year, month, day)
+}
+
+func main() {
+	r := gee.New()
+	r.Use(gee.Logger())
+	r.SetFuncMap(template.FuncMap{
+		&quot;FormatAsDate&quot;: FormatAsDate,
+	})
+	r.LoadHTMLGlob(&quot;templates/*&quot;)
+	r.Static(&quot;/assets&quot;, &quot;./static&quot;)
+
+	stu1 := &amp;student{Name: &quot;Geektutu&quot;, Age: 20}
+	stu2 := &amp;student{Name: &quot;Jack&quot;, Age: 22}
+	r.GET(&quot;/&quot;, func(c *gee.Context) {
+		c.HTML(http.StatusOK, &quot;css.tmpl&quot;, nil)
+	})
+	r.GET(&quot;/students&quot;, func(c *gee.Context) {
+		c.HTML(http.StatusOK, &quot;arr.tmpl&quot;, gee.H{
+			&quot;title&quot;:  &quot;gee&quot;,
+			&quot;stuArr&quot;: [2]*student{stu1, stu2},
+		})
+	})
+
+	r.GET(&quot;/date&quot;, func(c *gee.Context) {
+		c.HTML(http.StatusOK, &quot;custom_func.tmpl&quot;, gee.H{
+			&quot;title&quot;: &quot;gee&quot;,
+			&quot;now&quot;:   time.Date(2019, 8, 17, 0, 0, 0, 0, time.UTC),
+		})
+	})
+
+	r.Run(&quot;:9999&quot;)
+}
+</code></pre>
+<p>访问下主页，模板正常渲染，CSS 静态文件加载成功。</p>
+</div>
+                                    <div class="mdui-divider mdui-m-b-2"></div>
+                                    <div class="mdui-row-xs-2 post-fenye">
+                                       
+                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://IseEkko.github.io/post/qi-tian-shi-xian-web-kuang-jia-cuo-wu-chu-li/">七天实现web框架--错误处理</a></div></div>
+                                        
+
+                                        
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/qi-tian-shi-xian-web-kuang-jia-zhong-jian-jian-de-shi-xian/">七天实现web框架--中间件的实现</a></div> </div>
+                                       
+                                      </div>
+                                   
+                                    <div class="mdui-divider mdui-m-t-2 mdui-m-b-2"></div>
+                                    
+                                     <script src="https://IseEkko.github.io//media/scripts/Valine.min.js"></script>
+ <div class="comment"></div>
+
+<script>
+      new Valine({
+            el: '.comment',
+
+
+
+            path: window.location.pathname,
+            pageSize: 30,
+            avatar:'mm', 
+       })
+    </script> 
+<script>
+    if(window.location.hash){
+        var checkExist = setInterval(function() {
+           if ($(window.location.hash).length) {
+              $('html, body').animate({scrollTop: $(window.location.hash).offset().top-90}, 1000);
+              clearInterval(checkExist);
+           }
+        }, 100);
+    }
+</script>
+                                </article>
+
+                                    
+                        </div>
+                      </div>
+    
+                
+
+              </div>
+                    <footer class="footer mdui-m-t-5 mdui-text-center">
+               <nav class="social-links">
+                      <ul>
+                      
+                      	
+                        <li class="social-link"><a href="feed:https://iseekko.github.io//atom.xml" target="_blank"><i class="iconfont icon-rss"></i></a></li>
+                          
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      
+                           
+                      </ul>
+                    </nav>
+                    <div class="copyright">
+                      <p>Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> <br/> Theme <a href="https://github.com/alterfang/gridea-theme-song/" target="_blank"  title="宋"  >Song</a> by <a href="https://shanbu.fun/" target="_blank"  title="山卜方" >shanbufun</a> </p>
+                  </div>
+                  
+              </footer>
+    </body>
+</html>

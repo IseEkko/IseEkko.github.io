@@ -3,7 +3,7 @@
         <head>
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
-        <title>七天实现web框架--中间件的实现 | BytesLzz</title>
+        <title>七天实现web框架--错误处理 | BytesLzz</title>
         <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
@@ -56,112 +56,63 @@
                 <div class="mdui-row">
                         <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
                                 <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="post-title  mdui-m-b-1">七天实现web框架--中间件的实现</div>
-                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-04-16 23:58:36">2022-04-16 / 4 min read</div>
-                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>在web开发中，我们需要在真正的逻辑处理前，我们有些操作需要提前进行处理，同时逻辑处理后，我们需要处理其他的逻辑。</p>
-<h2 id="什么是中间件">什么是中间件</h2>
-<p>在正式的业务逻辑处理前或之后，我们需要进行一些处理。这些处理是需要我们添加中间件来进行添加的。因为在框架中，我们需要给用户自己添加一些处理方式函数的地方的，这个地方呢我们不能太过于底层，这样对于用户来说肯定是不好的。<br>
-所以我们需要一个比较好的方式进行添加。</p>
-<h2 id="实现思路">实现思路</h2>
-<p>对于这个中间件的添加，逻辑我们也是很简单的，我们使用一个切片进行存储函数来实现，首先是需要在路由中进行存储的，然后我们将这个东西放在上下文中去进行存储。</p>
-<pre><code>type RouterGroup struct {
-	prefix      string
-	middlewares []HandlerFunc // support middleware
-	parent      *RouterGroup  // support nesting
-	engine      *Engine       // all groups share a Engine instance
-}
-</code></pre>
-<p>上下文中的存储</p>
-<pre><code>type Context struct {
-	// origin objects
-	Writer http.ResponseWriter
-	Req    *http.Request
-	// request info
-	Path   string
-	Method string
-	Params map[string]string
-	// response info
-	StatusCode int
-	// middleware
-	handlers []HandlerFunc
-	index    int
+                                    <div class="post-title  mdui-m-b-1">七天实现web框架--错误处理</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-04-18 15:23:33">2022-04-18 / 2 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>很快到了七天实现web框架的最后一天了，今天的主题是错误处理，在go语言中我们是没有像其他语言一样的处理机制了。</p>
+<h2 id="错误处理">错误处理</h2>
+<p>在go语言中，我们使用panic对异常进行抛出，这样会将程序直接中断，但是这样肯定是不好的。<br>
+我们首先来看一下，defer的应用，对于defer函数，我们需要知道的是，defer就是将操作进行一个延迟，然后等待return前进行执行，这里是一个栈的实现方式。所以是先进后出的。<br>
+然后我们还要知道的是recover的使用，这个一定要在defer之后进行使用，它的作用是将panic的错误进行一个压栈的操作，这样程序就不会直接中断，起到了一个try-catch的作用。</p>
+<h2 id="具体的实现">具体的实现</h2>
+<pre><code>package gee
+
+import (
+ &quot;fmt&quot;
+ &quot;log&quot;
+ &quot;net/http&quot;
+ &quot;runtime&quot;
+ &quot;strings&quot;
+)
+
+// print stack trace for debug
+func trace(message string) string {
+ var pcs [32]uintptr
+ n := runtime.Callers(3, pcs[:]) // skip first 3 caller
+
+ var str strings.Builder
+ str.WriteString(message + &quot;\nTraceback:&quot;)
+ for _, pc := range pcs[:n] {
+ 	fn := runtime.FuncForPC(pc)
+ 	file, line := fn.FileLine(pc)
+ 	str.WriteString(fmt.Sprintf(&quot;\n\t%s:%d&quot;, file, line))
+ }
+ return str.String()
 }
 
-func (c *Context) Next() {
-	c.index++
-	s := len(c.handlers)
-	for ; c.index &lt; s; c.index++ {
-		c.handlers[c.index](c)
-	}
-}
-</code></pre>
-<p>为什么在路由中进行存储了我们还需要在上下文进行存储呢？<br>
-我们可以看到，在这里我们还实现了一个函数，就是next，关于next函数其实就是我们将中间件分成了两个部分，一个是处理业务代码前处理，和业务代码处理后处理，那么在next前的就是业务逻辑前，然后后面就是业务逻辑后。然后这里我们做一个演示：</p>
-<pre><code>func A(c *Context) {
-    part1
-    c.Next()
-    part2
-}
-func B(c *Context) {
-    part3
-    c.Next()
-    part4
-}
-</code></pre>
-<p>我们来看一下上面这个函数的执行顺序：<br>
-假设我们应用了中间件 A 和 B，和路由映射的 Handler。c.handlers是这样的[A, B, Handler]，c.index初始化为-1。调用c.Next()，接下来的流程是这样的：</p>
-<p>c.index++，c.index 变为 0<br>
-0 &lt; 3，调用 c.handlers[0]，即 A<br>
-执行 part1，调用 c.Next()<br>
-c.index++，c.index 变为 1<br>
-1 &lt; 3，调用 c.handlers[1]，即 B<br>
-执行 part3，调用 c.Next()<br>
-c.index++，c.index 变为 2<br>
-2 &lt; 3，调用 c.handlers[2]，即Handler<br>
-Handler 调用完毕，返回到 B 中的 part4，执行 part4<br>
-part4 执行完毕，返回到 A 中的 part2，执行 part2<br>
-part2 执行完毕，结束。<br>
-一句话说清楚重点，最终的顺序是part1 -&gt; part3 -&gt; Handler -&gt; part 4 -&gt; part2。恰恰满足了我们对中间件的要求，接下来看调用部分的代码，就能全部串起来了。</p>
-<h2 id="测试函数">测试函数</h2>
-<pre><code>func onlyForV2() gee.HandlerFunc {
-	return func(c *gee.Context) {
-		// Start timer
-		t := time.Now()
-		// if a server error occurred
-		c.Fail(500, &quot;Internal Server Error&quot;)
-		// Calculate resolution time
-		log.Printf(&quot;[%d] %s in %v for group v2&quot;, c.StatusCode, c.Req.RequestURI, time.Since(t))
-	}
+func Recovery() HandlerFunc {
+ return func(c *Context) {
+ 	defer func() {
+ 		if err := recover(); err != nil {
+ 			message := fmt.Sprintf(&quot;%s&quot;, err)
+ 			log.Printf(&quot;%s\n\n&quot;, trace(message))
+ 			c.Fail(http.StatusInternalServerError, &quot;Internal Server Error&quot;)
+ 		}
+ 	}()
+
+ 	c.Next()
+ }
 }
 
-func main() {
-	r := gee.New()
-	r.Use(gee.Logger()) // global midlleware
-	r.GET(&quot;/&quot;, func(c *gee.Context) {
-		c.HTML(http.StatusOK, &quot;&lt;h1&gt;Hello Gee&lt;/h1&gt;&quot;)
-	})
-
-	v2 := r.Group(&quot;/v2&quot;)
-	v2.Use(onlyForV2()) // v2 group middleware
-	{
-		v2.GET(&quot;/hello/:name&quot;, func(c *gee.Context) {
-			// expect /hello/geektutu
-			c.String(http.StatusOK, &quot;hello %s, you're at %s\n&quot;, c.Param(&quot;name&quot;), c.Path)
-		})
-	}
-
-	r.Run(&quot;:9999&quot;)
-}
 </code></pre>
 </div>
                                     <div class="mdui-divider mdui-m-b-2"></div>
                                     <div class="mdui-row-xs-2 post-fenye">
                                        
-                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://IseEkko.github.io/post/qi-tian-shi-xian-web-kuang-jia-mo-ban-xuan-ran/">七天实现web框架--模版渲染</a></div></div>
+                                        <div class="mdui-col"> </div>
                                         
 
                                         
-                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/qi-tian-shi-xian-web-kuang-jia-dong-tai-lu-you/">七天实现web框架--动态路由</a></div> </div>
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/qi-tian-shi-xian-web-kuang-jia-mo-ban-xuan-ran/">七天实现web框架--模版渲染</a></div> </div>
                                        
                                       </div>
                                    
