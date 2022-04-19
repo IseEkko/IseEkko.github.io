@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://IseEkko.github.io/</id>
     <title>BytesLzz</title>
-    <updated>2022-04-18T07:45:17.333Z</updated>
+    <updated>2022-04-19T15:38:30.510Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://IseEkko.github.io/"/>
     <link rel="self" href="https://IseEkko.github.io/atom.xml"/>
@@ -10,6 +10,48 @@
     <logo>https://IseEkko.github.io/images/avatar.png</logo>
     <icon>https://IseEkko.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, BytesLzz</rights>
+    <entry>
+        <title type="html"><![CDATA[Go语言-GMP调度模型]]></title>
+        <id>https://IseEkko.github.io/post/go-yu-yan-gmp-diao-du-mo-xing/</id>
+        <link href="https://IseEkko.github.io/post/go-yu-yan-gmp-diao-du-mo-xing/">
+        </link>
+        <updated>2022-04-19T14:48:20.000Z</updated>
+        <content type="html"><![CDATA[<p>今天学习了之前买的课程，今天主要是学习了一下goroutine的调度相关的事情。有了一个全新的认识</p>
+<h2 id="gmp调度分解">GMP调度分解</h2>
+<p>在go中，经过了多代的更新，才使用了现在的GMP调度，这里我们需要知道的是GMP到底都代表的什么东西</p>
+<h3 id="g">G</h3>
+<p>首先我们就来说一下这个G，在go语言中，每一个任务我们都封装成一个G，可以把G理解成一个任务。</p>
+<h3 id="m">M</h3>
+<p>M就是处理器，也就是是实体的线程，有了实体线程才能进行处理</p>
+<h3 id="p">P</h3>
+<p>P就是这个协程处理的时候需要的资源，可以说P相当于一个token，有了这个token才能进行相关的处理。也就是说有了P， M才能进行处理。</p>
+<p>##GMP调度<br>
+对于goroutine的调度，我们可以想像成一个生产消费的模型。<br>
+<img src="https://IseEkko.github.io//post-images/1650380773180.png" alt="" loading="lazy"><br>
+在详细的学习生产消费的时候，我们首先来认识一下，对于协程调度的几个东西。<br>
+<img src="https://IseEkko.github.io//post-images/1650380934050.png" alt="" loading="lazy"><br>
+这是一个完成的内部图片，我们首先认识一下里面的结构，其中GMP我们都认识了，现在主要是认识一下其他的东西，特别是三个队列。<br>
+我们可以清楚的看到，有三个队列：runnext、本地队列、全局队列<br>
+后面我们会详细的说明这个几个队列的详细细节。<br>
+首先第一个runnext就只能放下一个Goruntine<br>
+第二个本地队列是用的数组实现的。为什么？主要依据的是局部性原理，最后调用的程序，可能是最进行调用的，所以我们使用的是数组实现。这里的数组大小是256.<br>
+第三那个全局的队列，是使用的是链表的数据结构实现的。</p>
+<h3 id="生产">生产</h3>
+<p>有了生产消费的模型，现在我们来看一下生产端是怎么来进行的。<br>
+<img src="https://IseEkko.github.io//post-images/1650381240895.png" alt="" loading="lazy"><br>
+在这里，主要需要了解的事情就是runqput这里是怎么进行运行的，也就是goruntine是怎么选择队列进行存储的。<br>
+首先创建出来的G，首先会到runnext，然后如果说runnext上有G，我们就会将老的G进行踢出，然后将老的G放入到本地队列中。如果本地队列放满了，这个时候我们会将这个G，然后加上本地队列的一半生成一个batch，转换成链表加入到全局队列中。<br>
+这里我们大概的讲解了一下生产的逻辑，然后我们下面来看一下消费的逻辑。</p>
+<h3 id="消费">消费</h3>
+<p><img src="https://IseEkko.github.io//post-images/1650381761371.png" alt="" loading="lazy"><br>
+上面的就是消费端的结构图，其实消费的逻辑，就是在这个四个里面一直进行循环，但是对于不同的队列中我们还是有不同的调度。<br>
+在这个循环里面有一个魔法数字，61。下面我们就进行详细的讲解。<br>
+进入这个循环过后，我们首先对循环次数进行61取模，当为0的时候，我们就会取全局队列的第一个G进行执行。当然如果不是，我们回去runnext中取，如果有就执行，如果没有我们就会在本地队列中进行查找，然后取出进行执行，当然我们也会遇见本地队列也没有的情况，这个时候我们会取全局队列中取，首先拿出一半，然后取一个取执行，其他的放入本地队列。在这里如果都没有的时候，我们的调度也不会结束，而是取其他的处理器中取取。</p>
+<h2 id="总结">总结</h2>
+<p>GMP的调度过程，看代码确实有点打老壳，但是有了这个图后，我觉得更加的好理解。<br>
+最后感谢大家的观看，希望大家多多支持，给我点点赞谢谢。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[七天实现web框架--错误处理]]></title>
         <id>https://IseEkko.github.io/post/qi-tian-shi-xian-web-kuang-jia-cuo-wu-chu-li/</id>
@@ -988,130 +1030,6 @@ func TreeNum(nums []int)[][]int{
    return res
 }
 </code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[go语言并发-订阅者模式]]></title>
-        <id>https://IseEkko.github.io/post/go-yu-yan-bing-fa-ding-yue-zhe-mo-shi/</id>
-        <link href="https://IseEkko.github.io/post/go-yu-yan-bing-fa-ding-yue-zhe-mo-shi/">
-        </link>
-        <updated>2022-04-07T07:44:39.000Z</updated>
-        <content type="html"><![CDATA[<p>在之前的学习中，接触到了消息队列的一些知识，然后今天在看书的时候，发现了一个使用go channel完成了一个订阅者模式的并发demo。</p>
-<h2 id="订阅者模式">订阅者模式</h2>
-<p>关于订阅者模式，在这里给大家讲解一下，订阅者模式其实就是将产生的消息，给多个订阅者，然后订阅者可以看到这里订阅的消息。<br>
-这里实现的时候呢，因为有并发的知识，所以我们用到了协程，下面我们来具体的实现一下。</p>
-<h2 id="具体的实现流程">具体的实现流程</h2>
-<h3 id="创建订阅者结构">创建订阅者结构</h3>
-<pre><code>type (
-	subscriber chan interface{}         //订阅者的通道
-	topicFunc  func(v interface{}) bool //主题过滤器
-)
-
-//发布者对象
-type Publisher struct {
-	m           sync.Mutex               //读写锁
-	buffer      int                      //订阅队列缓存大小
-	timeout     time.Duration            //发布者超时时间
-	subscribers map[subscriber]topicFunc //订阅者消息
-}
-</code></pre>
-<p>上面我们定义了基本的订阅者的结构，上面也有对订阅者字段的解释，这里着重理解的东西就是：</p>
-<pre><code>subscribers map[subscriber]topicFunc //订阅者消息
-</code></pre>
-<p>这个结构其实就是订阅者模式的一个重要的结构，这里存放的是订阅者的过滤器，也就是通过这个结构我们可以清楚的知道，订阅者订阅的是那个主题。</p>
-<h3 id="构造函数">构造函数</h3>
-<p>使用构造函数构造出订阅者的实体，然后进行后面的操作</p>
-<pre><code>func NewPublisher(publishTimeout time.Duration, buffer int) *Publisher {
-	return &amp;Publisher{
-		buffer:      buffer,
-		timeout:     publishTimeout,
-		subscribers: make(map[subscriber]topicFunc),
-	}
-}
-</code></pre>
-<h3 id="添加订阅者信息">添加订阅者信息</h3>
-<pre><code>//订阅全部，也就是不加入过滤器
-func (p *Publisher) Subscribe() chan interface{} {
-	return p.SubscribeTopic(nil)
-}
-
-//添加一个订阅者，同时订阅者是有过滤器的
-//这里其实就是返回一个订阅者的信息，然后添加上过滤器
-func (p *Publisher) SubscribeTopic(topic topicFunc) chan interface{} {
-	ch := make(chan interface{}, p.buffer)
-	p.m.Lock()
-	p.subscribers[ch] = topic
-	p.m.Unlock()
-	return ch
-}
-</code></pre>
-<p>这里就是添加订阅者，这里添加的时候添加订阅者的过滤器，也就是增加一个映射关系。</p>
-<h3 id="添加主题">添加主题</h3>
-<pre><code>//发布一个主题
-func (p *Publisher) Publish(v interface{}) {
-	p.m.Lock()
-	defer p.m.Unlock()
-	var wg sync.WaitGroup
-	//这里返回的是订阅者，然后后面是返回的过滤器
-	for sub, topic := range p.subscribers {
-		wg.Add(1)
-		go p.sendTopic(sub, topic, v, &amp;wg)
-	}
-	wg.Wait()
-}
-
-//发布主题，可以容忍一定的超时
-func (p *Publisher) sendTopic(sub subscriber, topic topicFunc, v interface{}, wg *sync.WaitGroup) {
-	defer wg.Done()
-	if topic != nil &amp;&amp; !topic(v) {
-		return
-	}
-	select {
-	case sub &lt;- v:
-	case &lt;-time.After(p.timeout):
-	}
-}
-</code></pre>
-<p>这里我们使用到的并发式的添加消息，这里使用到了sync.WaitGroup，进行协程的同步。</p>
-<h3 id="关闭订阅者模式">关闭订阅者模式</h3>
-<pre><code>//关闭发布对象，同时关闭
-func (p *Publisher) Close() {
-	p.m.Lock()
-	defer p.m.Unlock()
-	for sub := range p.subscribers {
-		delete(p.subscribers, sub)
-		close(sub)
-	}
-}
-</code></pre>
-<h2 id="最后的测试">最后的测试</h2>
-<pre><code>func main() {
-	p := NewPublisher(100*time.Millisecond, 10)
-	defer p.Close()
-	all := p.Subscribe()
-	golang := p.SubscribeTopic(func(v interface{}) bool {
-		if s, ok := v.(string); ok {
-			return strings.Contains(s, &quot;golang&quot;)
-		}
-		return false
-	})
-	p.Publish(&quot;hello,lzz&quot;)
-	p.Publish(&quot;hello,golang&quot;)
-	go func() {
-		for msg := range all {
-			fmt.Println(&quot;all:&quot;, msg)
-		}
-	}()
-	go func() {
-		for msg := range golang {
-			fmt.Println(&quot;golang:&quot;, msg)
-		}
-	}()
-	time.Sleep(3 * time.Second)
-}
-</code></pre>
-<p>最后的输出结果：<br>
-<img src="https://IseEkko.github.io//post-images/1649321380937.png" alt="" loading="lazy"></p>
 ]]></content>
     </entry>
 </feed>
