@@ -3,7 +3,7 @@
         <head>
         <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,initial-scale=1,user-scalable=no" />
         <meta charset="utf-8">
-        <title>Go语言-GMP调度模型 | BytesLzz</title>
+        <title>操作系统-PCB | BytesLzz</title>
         <link rel="stylesheet" href="https://IseEkko.github.io//styles/main.css">
         <link rel="stylesheet" href="https://at.alicdn.com/t/font_1306644_jwtuc2zzbrd.css">
         <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
@@ -56,51 +56,32 @@
                 <div class="mdui-row">
                         <div class="mdui-col-md-8 mdui-col-offset-md-2 ">
                                 <article class="mdui-p-a-2 post animated fadeIn" style="animation-delay: 0.8s;animation-duration: 2s">
-                                    <div class="post-title  mdui-m-b-1">Go语言-GMP调度模型</div>
-                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-04-19 22:48:20">2022-04-19 / 4 min read</div>
-                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>今天学习了之前买的课程，今天主要是学习了一下goroutine的调度相关的事情。有了一个全新的认识</p>
-<h2 id="gmp调度分解">GMP调度分解</h2>
-<p>在go中，经过了多代的更新，才使用了现在的GMP调度，这里我们需要知道的是GMP到底都代表的什么东西</p>
-<h3 id="g">G</h3>
-<p>首先我们就来说一下这个G，在go语言中，每一个任务我们都封装成一个G，可以把G理解成一个任务。</p>
-<h3 id="m">M</h3>
-<p>M就是处理器，也就是是实体的线程，有了实体线程才能进行处理</p>
-<h3 id="p">P</h3>
-<p>P就是这个协程处理的时候需要的资源，可以说P相当于一个token，有了这个token才能进行相关的处理。也就是说有了P， M才能进行处理。</p>
-<p>##GMP调度<br>
-对于goroutine的调度，我们可以想像成一个生产消费的模型。<br>
-<img src="https://IseEkko.github.io//post-images/1650380773180.png" alt="" loading="lazy"><br>
-在详细的学习生产消费的时候，我们首先来认识一下，对于协程调度的几个东西。<br>
-<img src="https://IseEkko.github.io//post-images/1650380934050.png" alt="" loading="lazy"><br>
-这是一个完成的内部图片，我们首先认识一下里面的结构，其中GMP我们都认识了，现在主要是认识一下其他的东西，特别是三个队列。<br>
-我们可以清楚的看到，有三个队列：runnext、本地队列、全局队列<br>
-后面我们会详细的说明这个几个队列的详细细节。<br>
-首先第一个runnext就只能放下一个Goruntine<br>
-第二个本地队列是用的数组实现的。为什么？主要依据的是局部性原理，最后调用的程序，可能是最进行调用的，所以我们使用的是数组实现。这里的数组大小是256.<br>
-第三那个全局的队列，是使用的是链表的数据结构实现的。</p>
-<h3 id="生产">生产</h3>
-<p>有了生产消费的模型，现在我们来看一下生产端是怎么来进行的。<br>
-<img src="https://IseEkko.github.io//post-images/1650381240895.png" alt="" loading="lazy"><br>
-在这里，主要需要了解的事情就是runqput这里是怎么进行运行的，也就是goruntine是怎么选择队列进行存储的。<br>
-首先创建出来的G，首先会到runnext，然后如果说runnext上有G，我们就会将老的G进行踢出，然后将老的G放入到本地队列中。如果本地队列放满了，这个时候我们会将这个G，然后加上本地队列的一半生成一个batch，转换成链表加入到全局队列中。<br>
-这里我们大概的讲解了一下生产的逻辑，然后我们下面来看一下消费的逻辑。</p>
-<h3 id="消费">消费</h3>
-<p><img src="https://IseEkko.github.io//post-images/1650381761371.png" alt="" loading="lazy"><br>
-上面的就是消费端的结构图，其实消费的逻辑，就是在这个四个里面一直进行循环，但是对于不同的队列中我们还是有不同的调度。<br>
-在这个循环里面有一个魔法数字，61。下面我们就进行详细的讲解。<br>
-进入这个循环过后，我们首先对循环次数进行61取模，当为0的时候，我们就会取全局队列的第一个G进行执行。当然如果不是，我们回去runnext中取，如果有就执行，如果没有我们就会在本地队列中进行查找，然后取出进行执行，当然我们也会遇见本地队列也没有的情况，这个时候我们会取全局队列中取，首先拿出一半，然后取一个取执行，其他的放入本地队列。在这里如果都没有的时候，我们的调度也不会结束，而是取其他的处理器中取取。</p>
-<h2 id="总结">总结</h2>
-<p>GMP的调度过程，看代码确实有点打老壳，但是有了这个图后，我觉得更加的好理解。<br>
-最后感谢大家的观看，希望大家多多支持，给我点点赞谢谢。</p>
+                                    <div class="post-title  mdui-m-b-1">操作系统-PCB</div>
+                                    <div class="mdui-typo-body-2 mdui-m-b-2" datetime="2022-04-21 19:08:29">2022-04-21 / 1 min read</div>
+                                    <div class="mdui-m-b-2 mdui-typo post-neirong"><p>在操作系统中，其实并发的实体不是程序，因为程序是代码块，真正的并发体是进程。</p>
+<h2 id="什么是进程">什么是进程</h2>
+<p>在原来的os中，所有的程序都是顺序执行的，也就是说只能执行完一个程序过后才能执行另外一个程序，然后这样的话其实是对资源的一种浪费，同时体验也是不好的，所以后来人们都想有没有办法实现多程序的执行，多道程序执行系统就出现了，把每一个程序加上资源控制块就组成了进程实体，简称进程。其实严格的来说进程是程序执行的过程。</p>
+<h2 id="pcb">PCB</h2>
+<p>记录相关的信息，然后切换的时候还能保存现场，这个时候就出现了PCB控制块。<br>
+我们来看一下PCB中包含了什么：<br>
+<img src="https://IseEkko.github.io//post-images/1650539365338.png" alt="" loading="lazy"><br>
+我们可以看到，PCB包含了四大部分：</p>
+<ol>
+<li>进程表示符</li>
+<li>处理机状态</li>
+<li>进程调度信息</li>
+<li>进程控制信息<br>
+图中有对这里面包含的东西进行了例举并解释，这里就不过多的解释了。</li>
+</ol>
 </div>
                                     <div class="mdui-divider mdui-m-b-2"></div>
                                     <div class="mdui-row-xs-2 post-fenye">
                                        
-                                        <div class="mdui-col"> <div class="mdui-text-left"><a href="https://IseEkko.github.io/post/cao-zuo-xi-tong-pcb/">操作系统-PCB</a></div></div>
+                                        <div class="mdui-col"> </div>
                                         
 
                                         
-                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/qi-tian-shi-xian-web-kuang-jia-cuo-wu-chu-li/">七天实现web框架--错误处理</a></div> </div>
+                                        <div class="mdui-col"><div class="mdui-text-right "><a href="https://IseEkko.github.io/post/go-yu-yan-gmp-diao-du-mo-xing/">Go语言-GMP调度模型</a></div> </div>
                                        
                                       </div>
                                    
